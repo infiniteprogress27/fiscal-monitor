@@ -1,0 +1,3902 @@
+{
+ "sample": false,
+ "records": [
+  {
+   "auction_date": "2025-07-01",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 50.0,
+   "high_yield": 4.423,
+   "btc": 2.97
+  },
+  {
+   "auction_date": "2025-07-02",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.303,
+   "btc": 3.04
+  },
+  {
+   "auction_date": "2025-07-03",
+   "type": "Bill",
+   "term": "77-Day",
+   "offering_bn": 60.0,
+   "high_yield": 4.385,
+   "btc": 2.9
+  },
+  {
+   "auction_date": "2025-07-03",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 55.0,
+   "high_yield": 4.313,
+   "btc": 3.26
+  },
+  {
+   "auction_date": "2025-07-03",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 45.0,
+   "high_yield": 4.389,
+   "btc": 3.1
+  },
+  {
+   "auction_date": "2025-07-07",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.293,
+   "btc": 3.0
+  },
+  {
+   "auction_date": "2025-07-07",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.361,
+   "btc": 2.75
+  },
+  {
+   "auction_date": "2025-07-08",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.891,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2025-07-08",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 4.102,
+   "btc": 3.23
+  },
+  {
+   "auction_date": "2025-07-08",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 50.0,
+   "high_yield": 4.346,
+   "btc": 3.27
+  },
+  {
+   "auction_date": "2025-07-09",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.362,
+   "btc": 2.61
+  },
+  {
+   "auction_date": "2025-07-09",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.35,
+   "btc": 3.03
+  },
+  {
+   "auction_date": "2025-07-10",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 70.0,
+   "high_yield": 4.363,
+   "btc": 2.86
+  },
+  {
+   "auction_date": "2025-07-10",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 4.308,
+   "btc": 3.08
+  },
+  {
+   "auction_date": "2025-07-10",
+   "type": "Bond",
+   "term": "29-Year 10-Month",
+   "offering_bn": 22.0,
+   "high_yield": 4.889,
+   "btc": 2.38
+  },
+  {
+   "auction_date": "2025-07-14",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.351,
+   "btc": 3.1
+  },
+  {
+   "auction_date": "2025-07-14",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.271,
+   "btc": 3.1
+  },
+  {
+   "auction_date": "2025-07-15",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 70.0,
+   "high_yield": 4.341,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2025-07-16",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.35,
+   "btc": 3.02
+  },
+  {
+   "auction_date": "2025-07-17",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 4.358,
+   "btc": 2.6
+  },
+  {
+   "auction_date": "2025-07-17",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 90.0,
+   "high_yield": 4.303,
+   "btc": 2.91
+  },
+  {
+   "auction_date": "2025-07-21",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.345,
+   "btc": 2.98
+  },
+  {
+   "auction_date": "2025-07-21",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.261,
+   "btc": 3.06
+  },
+  {
+   "auction_date": "2025-07-22",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 80.0,
+   "high_yield": 4.341,
+   "btc": 2.85
+  },
+  {
+   "auction_date": "2025-07-23",
+   "type": "Bond",
+   "term": "19-Year 10-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.935,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2025-07-23",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.344,
+   "btc": 3.55
+  },
+  {
+   "auction_date": "2025-07-24",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.353,
+   "btc": 2.63
+  },
+  {
+   "auction_date": "2025-07-24",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.318,
+   "btc": 2.69
+  },
+  {
+   "auction_date": "2025-07-24",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 21.0,
+   "high_yield": 1.985,
+   "btc": 2.41
+  },
+  {
+   "auction_date": "2025-07-28",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.34,
+   "btc": 3.21
+  },
+  {
+   "auction_date": "2025-07-28",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.266,
+   "btc": 3.36
+  },
+  {
+   "auction_date": "2025-07-28",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.92,
+   "btc": 2.62
+  },
+  {
+   "auction_date": "2025-07-28",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.983,
+   "btc": 2.31
+  },
+  {
+   "auction_date": "2025-07-29",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 30.0,
+   "high_yield": null,
+   "btc": 2.81
+  },
+  {
+   "auction_date": "2025-07-29",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 4.092,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2025-07-29",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 80.0,
+   "high_yield": 4.351,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2025-07-30",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.329,
+   "btc": 3.45
+  },
+  {
+   "auction_date": "2025-07-31",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.379,
+   "btc": 2.52
+  },
+  {
+   "auction_date": "2025-07-31",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.364,
+   "btc": 2.63
+  },
+  {
+   "auction_date": "2025-08-04",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.118,
+   "btc": 3.14
+  },
+  {
+   "auction_date": "2025-08-04",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.268,
+   "btc": 3.17
+  },
+  {
+   "auction_date": "2025-08-05",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.382,
+   "btc": 2.6
+  },
+  {
+   "auction_date": "2025-08-05",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.924,
+   "btc": 2.85
+  },
+  {
+   "auction_date": "2025-08-05",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.669,
+   "btc": 2.53
+  },
+  {
+   "auction_date": "2025-08-06",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.219,
+   "btc": 3.31
+  },
+  {
+   "auction_date": "2025-08-06",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 42.0,
+   "high_yield": 4.255,
+   "btc": 2.35
+  },
+  {
+   "auction_date": "2025-08-07",
+   "type": "Bond",
+   "term": "30-Year",
+   "offering_bn": 25.0,
+   "high_yield": 4.813,
+   "btc": 2.27
+  },
+  {
+   "auction_date": "2025-08-07",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.374,
+   "btc": 2.82
+  },
+  {
+   "auction_date": "2025-08-07",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.322,
+   "btc": 3.16
+  },
+  {
+   "auction_date": "2025-08-11",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.252,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2025-08-11",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.108,
+   "btc": 3.21
+  },
+  {
+   "auction_date": "2025-08-12",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.346,
+   "btc": 2.4
+  },
+  {
+   "auction_date": "2025-08-13",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.162,
+   "btc": 3.5
+  },
+  {
+   "auction_date": "2025-08-14",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.354,
+   "btc": 2.67
+  },
+  {
+   "auction_date": "2025-08-14",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.271,
+   "btc": 2.72
+  },
+  {
+   "auction_date": "2025-08-18",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.232,
+   "btc": 2.7
+  },
+  {
+   "auction_date": "2025-08-18",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.081,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2025-08-19",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.325,
+   "btc": 2.57
+  },
+  {
+   "auction_date": "2025-08-20",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.162,
+   "btc": 3.14
+  },
+  {
+   "auction_date": "2025-08-20",
+   "type": "Bond",
+   "term": "20-Year",
+   "offering_bn": 16.0,
+   "high_yield": 4.876,
+   "btc": 2.54
+  },
+  {
+   "auction_date": "2025-08-21",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.374,
+   "btc": 2.61
+  },
+  {
+   "auction_date": "2025-08-21",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.307,
+   "btc": 2.71
+  },
+  {
+   "auction_date": "2025-08-21",
+   "type": "Bond",
+   "term": "29-Year 6-Month",
+   "offering_bn": 8.0,
+   "high_yield": 2.65,
+   "btc": 2.78
+  },
+  {
+   "auction_date": "2025-08-25",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.201,
+   "btc": 3.07
+  },
+  {
+   "auction_date": "2025-08-25",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.05,
+   "btc": 3.36
+  },
+  {
+   "auction_date": "2025-08-26",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.641,
+   "btc": 2.69
+  },
+  {
+   "auction_date": "2025-08-26",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.29,
+   "btc": 2.93
+  },
+  {
+   "auction_date": "2025-08-27",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.724,
+   "btc": 2.36
+  },
+  {
+   "auction_date": "2025-08-27",
+   "type": "Note",
+   "term": "1-Year 11-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 3.22
+  },
+  {
+   "auction_date": "2025-08-27",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.131,
+   "btc": 3.0
+  },
+  {
+   "auction_date": "2025-08-28",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.318,
+   "btc": 2.68
+  },
+  {
+   "auction_date": "2025-08-28",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.23,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2025-08-28",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 3.925,
+   "btc": 2.49
+  },
+  {
+   "auction_date": "2025-09-02",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.817,
+   "btc": 3.82
+  },
+  {
+   "auction_date": "2025-09-02",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.144,
+   "btc": 2.96
+  },
+  {
+   "auction_date": "2025-09-02",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.269,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2025-09-02",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 4.013,
+   "btc": 2.7
+  },
+  {
+   "auction_date": "2025-09-03",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 4.073,
+   "btc": 3.34
+  },
+  {
+   "auction_date": "2025-09-04",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.184,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2025-09-04",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.247,
+   "btc": 2.78
+  },
+  {
+   "auction_date": "2025-09-08",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.035,
+   "btc": 2.81
+  },
+  {
+   "auction_date": "2025-09-08",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 3.854,
+   "btc": 3.17
+  },
+  {
+   "auction_date": "2025-09-09",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.485,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-09-09",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.167,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-09-10",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 3.954,
+   "btc": 3.26
+  },
+  {
+   "auction_date": "2025-09-10",
+   "type": "Note",
+   "term": "9-Year 11-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.033,
+   "btc": 2.65
+  },
+  {
+   "auction_date": "2025-09-11",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.081,
+   "btc": 2.81
+  },
+  {
+   "auction_date": "2025-09-11",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.129,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2025-09-11",
+   "type": "Bond",
+   "term": "29-Year 11-Month",
+   "offering_bn": 22.0,
+   "high_yield": 4.651,
+   "btc": 2.38
+  },
+  {
+   "auction_date": "2025-09-15",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 3.999,
+   "btc": 3.11
+  },
+  {
+   "auction_date": "2025-09-15",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 3.839,
+   "btc": 3.09
+  },
+  {
+   "auction_date": "2025-09-16",
+   "type": "Bond",
+   "term": "19-Year 11-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.613,
+   "btc": 2.74
+  },
+  {
+   "auction_date": "2025-09-16",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.116,
+   "btc": 2.82
+  },
+  {
+   "auction_date": "2025-09-17",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 3.917,
+   "btc": 3.06
+  },
+  {
+   "auction_date": "2025-09-18",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.045,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2025-09-18",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.109,
+   "btc": 2.71
+  },
+  {
+   "auction_date": "2025-09-18",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 19.0,
+   "high_yield": 1.734,
+   "btc": 2.2
+  },
+  {
+   "auction_date": "2025-09-22",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 3.828,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2025-09-22",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 3.953,
+   "btc": 3.33
+  },
+  {
+   "auction_date": "2025-09-23",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.085,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2025-09-23",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.571,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2025-09-24",
+   "type": "Note",
+   "term": "1-Year 10-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 3.15
+  },
+  {
+   "auction_date": "2025-09-24",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.71,
+   "btc": 2.34
+  },
+  {
+   "auction_date": "2025-09-24",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 65.0,
+   "high_yield": 3.907,
+   "btc": 2.93
+  },
+  {
+   "auction_date": "2025-09-25",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 3.953,
+   "btc": 2.4
+  },
+  {
+   "auction_date": "2025-09-25",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 4.15,
+   "btc": 2.61
+  },
+  {
+   "auction_date": "2025-09-25",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.081,
+   "btc": 2.65
+  },
+  {
+   "auction_date": "2025-09-29",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 82.0,
+   "high_yield": 3.953,
+   "btc": 2.74
+  },
+  {
+   "auction_date": "2025-09-29",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 73.0,
+   "high_yield": 3.839,
+   "btc": 3.0
+  },
+  {
+   "auction_date": "2025-09-30",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.688,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2025-09-30",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.095,
+   "btc": 2.58
+  },
+  {
+   "auction_date": "2025-10-01",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 67.0,
+   "high_yield": 3.886,
+   "btc": 3.32
+  },
+  {
+   "auction_date": "2025-10-02",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 4.129,
+   "btc": 2.67
+  },
+  {
+   "auction_date": "2025-10-02",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 90.0,
+   "high_yield": 4.04,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2025-10-06",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 84.0,
+   "high_yield": 3.942,
+   "btc": 2.91
+  },
+  {
+   "auction_date": "2025-10-06",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.818,
+   "btc": 3.04
+  },
+  {
+   "auction_date": "2025-10-07",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.576,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2025-10-07",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 4.075,
+   "btc": 2.69
+  },
+  {
+   "auction_date": "2025-10-08",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.117,
+   "btc": 2.48
+  },
+  {
+   "auction_date": "2025-10-08",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.876,
+   "btc": 3.28
+  },
+  {
+   "auction_date": "2025-10-09",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.035,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2025-10-09",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 4.099,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2025-10-09",
+   "type": "Bond",
+   "term": "29-Year 10-Month",
+   "offering_bn": 22.0,
+   "high_yield": 4.734,
+   "btc": 2.38
+  },
+  {
+   "auction_date": "2025-10-14",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.937,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2025-10-14",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.085,
+   "btc": 2.62
+  },
+  {
+   "auction_date": "2025-10-14",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.807,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2025-10-15",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.912,
+   "btc": 2.87
+  },
+  {
+   "auction_date": "2025-10-16",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 4.099,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2025-10-16",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.04,
+   "btc": 2.91
+  },
+  {
+   "auction_date": "2025-10-20",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.781,
+   "btc": 3.02
+  },
+  {
+   "auction_date": "2025-10-20",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.9,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2025-10-21",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.013,
+   "btc": 2.93
+  },
+  {
+   "auction_date": "2025-10-22",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.834,
+   "btc": 3.27
+  },
+  {
+   "auction_date": "2025-10-22",
+   "type": "Bond",
+   "term": "19-Year 10-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.506,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-10-23",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 4.012,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-10-23",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.978,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2025-10-23",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 26.0,
+   "high_yield": 1.182,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2025-10-27",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.504,
+   "btc": 2.59
+  },
+  {
+   "auction_date": "2025-10-27",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.818,
+   "btc": 3.07
+  },
+  {
+   "auction_date": "2025-10-27",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.625,
+   "btc": 2.38
+  },
+  {
+   "auction_date": "2025-10-27",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.76,
+   "btc": 3.06
+  },
+  {
+   "auction_date": "2025-10-28",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.952,
+   "btc": 2.87
+  },
+  {
+   "auction_date": "2025-10-28",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.587,
+   "btc": 3.21
+  },
+  {
+   "auction_date": "2025-10-28",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 3.79,
+   "btc": 2.46
+  },
+  {
+   "auction_date": "2025-10-29",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 30.0,
+   "high_yield": null,
+   "btc": 3.63
+  },
+  {
+   "auction_date": "2025-10-29",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.803,
+   "btc": 2.94
+  },
+  {
+   "auction_date": "2025-10-30",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.976,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2025-10-30",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.968,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2025-11-03",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.823,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2025-11-03",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.906,
+   "btc": 2.62
+  },
+  {
+   "auction_date": "2025-11-04",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.972,
+   "btc": 2.67
+  },
+  {
+   "auction_date": "2025-11-05",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.87,
+   "btc": 3.36
+  },
+  {
+   "auction_date": "2025-11-06",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.94,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-11-06",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.891,
+   "btc": 2.9
+  },
+  {
+   "auction_date": "2025-11-10",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.579,
+   "btc": 2.85
+  },
+  {
+   "auction_date": "2025-11-10",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.962,
+   "btc": 2.7
+  },
+  {
+   "auction_date": "2025-11-10",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.869,
+   "btc": 2.83
+  },
+  {
+   "auction_date": "2025-11-10",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.812,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2025-11-12",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.85,
+   "btc": 3.18
+  },
+  {
+   "auction_date": "2025-11-12",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 42.0,
+   "high_yield": 4.074,
+   "btc": 2.43
+  },
+  {
+   "auction_date": "2025-11-13",
+   "type": "Bond",
+   "term": "30-Year",
+   "offering_bn": 25.0,
+   "high_yield": 4.694,
+   "btc": 2.29
+  },
+  {
+   "auction_date": "2025-11-13",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.912,
+   "btc": 2.87
+  },
+  {
+   "auction_date": "2025-11-13",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.966,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-11-17",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.885,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2025-11-17",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.833,
+   "btc": 2.8
+  },
+  {
+   "auction_date": "2025-11-18",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.922,
+   "btc": 2.8
+  },
+  {
+   "auction_date": "2025-11-19",
+   "type": "Bond",
+   "term": "20-Year",
+   "offering_bn": 16.0,
+   "high_yield": 4.706,
+   "btc": 2.41
+  },
+  {
+   "auction_date": "2025-11-19",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.85,
+   "btc": 3.15
+  },
+  {
+   "auction_date": "2025-11-20",
+   "type": "Note",
+   "term": "9-Year 8-Month",
+   "offering_bn": 19.0,
+   "high_yield": 1.843,
+   "btc": 2.41
+  },
+  {
+   "auction_date": "2025-11-20",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.956,
+   "btc": 2.75
+  },
+  {
+   "auction_date": "2025-11-20",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.927,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2025-11-24",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.791,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2025-11-24",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.833,
+   "btc": 2.85
+  },
+  {
+   "auction_date": "2025-11-24",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.489,
+   "btc": 2.68
+  },
+  {
+   "auction_date": "2025-11-25",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.921,
+   "btc": 2.71
+  },
+  {
+   "auction_date": "2025-11-25",
+   "type": "Note",
+   "term": "1-Year 11-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 3.03
+  },
+  {
+   "auction_date": "2025-11-25",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.562,
+   "btc": 2.41
+  },
+  {
+   "auction_date": "2025-11-25",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.603,
+   "btc": 3.08
+  },
+  {
+   "auction_date": "2025-11-26",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 3.781,
+   "btc": 2.46
+  },
+  {
+   "auction_date": "2025-11-26",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.917,
+   "btc": 2.87
+  },
+  {
+   "auction_date": "2025-11-26",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.971,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2025-11-26",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.839,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2025-12-01",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.813,
+   "btc": 2.82
+  },
+  {
+   "auction_date": "2025-12-01",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.754,
+   "btc": 3.02
+  },
+  {
+   "auction_date": "2025-12-02",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.768,
+   "btc": 3.15
+  },
+  {
+   "auction_date": "2025-12-03",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.715,
+   "btc": 3.17
+  },
+  {
+   "auction_date": "2025-12-04",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.742,
+   "btc": 2.69
+  },
+  {
+   "auction_date": "2025-12-04",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.691,
+   "btc": 2.98
+  },
+  {
+   "auction_date": "2025-12-04",
+   "type": "Bill",
+   "term": "2-Day",
+   "offering_bn": 0.0,
+   "high_yield": 3.773,
+   "btc": 4.32
+  },
+  {
+   "auction_date": "2025-12-08",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.614,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2025-12-08",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.735,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-12-08",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.697,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2025-12-09",
+   "type": "Note",
+   "term": "9-Year 11-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.175,
+   "btc": 2.55
+  },
+  {
+   "auction_date": "2025-12-09",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.717,
+   "btc": 2.89
+  },
+  {
+   "auction_date": "2025-12-10",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.704,
+   "btc": 3.04
+  },
+  {
+   "auction_date": "2025-12-11",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.67,
+   "btc": 2.97
+  },
+  {
+   "auction_date": "2025-12-11",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.681,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2025-12-11",
+   "type": "Bond",
+   "term": "29-Year 11-Month",
+   "offering_bn": 22.0,
+   "high_yield": 4.773,
+   "btc": 2.36
+  },
+  {
+   "auction_date": "2025-12-15",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.607,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2025-12-15",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.642,
+   "btc": 2.68
+  },
+  {
+   "auction_date": "2025-12-16",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.691,
+   "btc": 2.73
+  },
+  {
+   "auction_date": "2025-12-17",
+   "type": "Bond",
+   "term": "19-Year 11-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.798,
+   "btc": 2.67
+  },
+  {
+   "auction_date": "2025-12-17",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.632,
+   "btc": 3.27
+  },
+  {
+   "auction_date": "2025-12-18",
+   "type": "Note",
+   "term": "4-Year 10-Month",
+   "offering_bn": 24.0,
+   "high_yield": 1.433,
+   "btc": 2.62
+  },
+  {
+   "auction_date": "2025-12-18",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.655,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2025-12-18",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.64,
+   "btc": 3.28
+  },
+  {
+   "auction_date": "2025-12-22",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.499,
+   "btc": 2.54
+  },
+  {
+   "auction_date": "2025-12-22",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.642,
+   "btc": 2.86
+  },
+  {
+   "auction_date": "2025-12-22",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.596,
+   "btc": 3.18
+  },
+  {
+   "auction_date": "2025-12-23",
+   "type": "Note",
+   "term": "1-Year 10-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 3.75
+  },
+  {
+   "auction_date": "2025-12-23",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.645,
+   "btc": 2.87
+  },
+  {
+   "auction_date": "2025-12-23",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.747,
+   "btc": 2.35
+  },
+  {
+   "auction_date": "2025-12-23",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.517,
+   "btc": 3.74
+  },
+  {
+   "auction_date": "2025-12-24",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.63,
+   "btc": 3.14
+  },
+  {
+   "auction_date": "2025-12-24",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 3.93,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2025-12-24",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.655,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2025-12-24",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.647,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2025-12-29",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.612,
+   "btc": 2.52
+  },
+  {
+   "auction_date": "2025-12-29",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.652,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2025-12-30",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.639,
+   "btc": 2.96
+  },
+  {
+   "auction_date": "2025-12-31",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.65,
+   "btc": 2.83
+  },
+  {
+   "auction_date": "2025-12-31",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.632,
+   "btc": 3.11
+  },
+  {
+   "auction_date": "2025-12-31",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.65,
+   "btc": 2.9
+  },
+  {
+   "auction_date": "2026-01-05",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.622,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-01-05",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.586,
+   "btc": 3.28
+  },
+  {
+   "auction_date": "2026-01-06",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.624,
+   "btc": 2.89
+  },
+  {
+   "auction_date": "2026-01-07",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.601,
+   "btc": 3.02
+  },
+  {
+   "auction_date": "2026-01-08",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.609,
+   "btc": 2.85
+  },
+  {
+   "auction_date": "2026-01-08",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.609,
+   "btc": 3.18
+  },
+  {
+   "auction_date": "2026-01-12",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.602,
+   "btc": 3.17
+  },
+  {
+   "auction_date": "2026-01-12",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.609,
+   "btc": 2.65
+  },
+  {
+   "auction_date": "2026-01-12",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.173,
+   "btc": 2.55
+  },
+  {
+   "auction_date": "2026-01-12",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 86.0,
+   "high_yield": 3.653,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-01-13",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.65,
+   "btc": 2.97
+  },
+  {
+   "auction_date": "2026-01-13",
+   "type": "Bond",
+   "term": "29-Year 10-Month",
+   "offering_bn": 22.0,
+   "high_yield": 4.825,
+   "btc": 2.42
+  },
+  {
+   "auction_date": "2026-01-14",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.652,
+   "btc": 3.0
+  },
+  {
+   "auction_date": "2026-01-15",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.655,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2026-01-15",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.671,
+   "btc": 2.71
+  },
+  {
+   "auction_date": "2026-01-20",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.634,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2026-01-20",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.673,
+   "btc": 2.7
+  },
+  {
+   "auction_date": "2026-01-20",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.528,
+   "btc": 3.42
+  },
+  {
+   "auction_date": "2026-01-20",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.696,
+   "btc": 2.42
+  },
+  {
+   "auction_date": "2026-01-21",
+   "type": "Bond",
+   "term": "19-Year 10-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.846,
+   "btc": 2.86
+  },
+  {
+   "auction_date": "2026-01-21",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.673,
+   "btc": 2.99
+  },
+  {
+   "auction_date": "2026-01-22",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 21.0,
+   "high_yield": 1.94,
+   "btc": 2.38
+  },
+  {
+   "auction_date": "2026-01-22",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.701,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-01-22",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 3.691,
+   "btc": 2.86
+  },
+  {
+   "auction_date": "2026-01-26",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.663,
+   "btc": 2.9
+  },
+  {
+   "auction_date": "2026-01-26",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.639,
+   "btc": 3.07
+  },
+  {
+   "auction_date": "2026-01-26",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.58,
+   "btc": 2.75
+  },
+  {
+   "auction_date": "2026-01-27",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.701,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-01-27",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.823,
+   "btc": 2.34
+  },
+  {
+   "auction_date": "2026-01-28",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 30.0,
+   "high_yield": null,
+   "btc": 3.16
+  },
+  {
+   "auction_date": "2026-01-28",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.684,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2026-01-29",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 4.018,
+   "btc": 2.45
+  },
+  {
+   "auction_date": "2026-01-29",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.706,
+   "btc": 2.87
+  },
+  {
+   "auction_date": "2026-01-29",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 3.691,
+   "btc": 2.86
+  },
+  {
+   "auction_date": "2026-02-02",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.684,
+   "btc": 2.81
+  },
+  {
+   "auction_date": "2026-02-02",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.639,
+   "btc": 3.08
+  },
+  {
+   "auction_date": "2026-02-03",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.706,
+   "btc": 2.83
+  },
+  {
+   "auction_date": "2026-02-04",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.689,
+   "btc": 2.97
+  },
+  {
+   "auction_date": "2026-02-05",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 3.691,
+   "btc": 2.85
+  },
+  {
+   "auction_date": "2026-02-05",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.701,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-02-09",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.684,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2026-02-09",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.613,
+   "btc": 3.09
+  },
+  {
+   "auction_date": "2026-02-10",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.518,
+   "btc": 2.62
+  },
+  {
+   "auction_date": "2026-02-10",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.701,
+   "btc": 2.96
+  },
+  {
+   "auction_date": "2026-02-11",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.689,
+   "btc": 3.38
+  },
+  {
+   "auction_date": "2026-02-11",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 42.0,
+   "high_yield": 4.177,
+   "btc": 2.39
+  },
+  {
+   "auction_date": "2026-02-12",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 3.691,
+   "btc": 2.78
+  },
+  {
+   "auction_date": "2026-02-12",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.701,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2026-02-12",
+   "type": "Bond",
+   "term": "30-Year",
+   "offering_bn": 25.0,
+   "high_yield": 4.75,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2026-02-17",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.613,
+   "btc": 3.08
+  },
+  {
+   "auction_date": "2026-02-17",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.48,
+   "btc": 2.96
+  },
+  {
+   "auction_date": "2026-02-17",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.706,
+   "btc": 2.75
+  },
+  {
+   "auction_date": "2026-02-17",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.684,
+   "btc": 2.71
+  },
+  {
+   "auction_date": "2026-02-18",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.689,
+   "btc": 3.15
+  },
+  {
+   "auction_date": "2026-02-18",
+   "type": "Bond",
+   "term": "20-Year",
+   "offering_bn": 16.0,
+   "high_yield": 4.664,
+   "btc": 2.36
+  },
+  {
+   "auction_date": "2026-02-19",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 3.686,
+   "btc": 2.94
+  },
+  {
+   "auction_date": "2026-02-19",
+   "type": "Bond",
+   "term": "30-Year",
+   "offering_bn": 9.0,
+   "high_yield": 2.473,
+   "btc": 2.75
+  },
+  {
+   "auction_date": "2026-02-19",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.701,
+   "btc": 2.82
+  },
+  {
+   "auction_date": "2026-02-23",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.673,
+   "btc": 3.3
+  },
+  {
+   "auction_date": "2026-02-23",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.639,
+   "btc": 3.03
+  },
+  {
+   "auction_date": "2026-02-24",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.455,
+   "btc": 2.63
+  },
+  {
+   "auction_date": "2026-02-24",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.701,
+   "btc": 2.82
+  },
+  {
+   "auction_date": "2026-02-25",
+   "type": "Note",
+   "term": "1-Year 11-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2026-02-25",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.615,
+   "btc": 2.32
+  },
+  {
+   "auction_date": "2026-02-25",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.684,
+   "btc": 3.2
+  },
+  {
+   "auction_date": "2026-02-26",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.701,
+   "btc": 2.8
+  },
+  {
+   "auction_date": "2026-02-26",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 3.79,
+   "btc": 2.5
+  },
+  {
+   "auction_date": "2026-02-26",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 3.686,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2026-03-02",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.649,
+   "btc": 3.1
+  },
+  {
+   "auction_date": "2026-03-02",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.694,
+   "btc": 3.16
+  },
+  {
+   "auction_date": "2026-03-03",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.706,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2026-03-04",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.684,
+   "btc": 3.25
+  },
+  {
+   "auction_date": "2026-03-05",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.701,
+   "btc": 3.21
+  },
+  {
+   "auction_date": "2026-03-05",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 105.0,
+   "high_yield": 3.701,
+   "btc": 2.89
+  },
+  {
+   "auction_date": "2026-03-09",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.649,
+   "btc": 3.09
+  },
+  {
+   "auction_date": "2026-03-09",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.689,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2026-03-10",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.579,
+   "btc": 2.55
+  },
+  {
+   "auction_date": "2026-03-10",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.701,
+   "btc": 2.98
+  },
+  {
+   "auction_date": "2026-03-11",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.694,
+   "btc": 3.19
+  },
+  {
+   "auction_date": "2026-03-11",
+   "type": "Note",
+   "term": "9-Year 11-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.217,
+   "btc": 2.45
+  },
+  {
+   "auction_date": "2026-03-12",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.696,
+   "btc": 3.1
+  },
+  {
+   "auction_date": "2026-03-12",
+   "type": "Bond",
+   "term": "29-Year 11-Month",
+   "offering_bn": 22.0,
+   "high_yield": 4.871,
+   "btc": 2.45
+  },
+  {
+   "auction_date": "2026-03-12",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.701,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2026-03-16",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.694,
+   "btc": 2.94
+  },
+  {
+   "auction_date": "2026-03-16",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.686,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-03-17",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.701,
+   "btc": 3.02
+  },
+  {
+   "auction_date": "2026-03-17",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.63,
+   "btc": 3.43
+  },
+  {
+   "auction_date": "2026-03-17",
+   "type": "Bond",
+   "term": "19-Year 11-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.817,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2026-03-18",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.704,
+   "btc": 3.05
+  },
+  {
+   "auction_date": "2026-03-19",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 19.0,
+   "high_yield": 1.896,
+   "btc": 2.47
+  },
+  {
+   "auction_date": "2026-03-19",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.706,
+   "btc": 2.83
+  },
+  {
+   "auction_date": "2026-03-19",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.676,
+   "btc": 3.12
+  },
+  {
+   "auction_date": "2026-03-23",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.749,
+   "btc": 3.03
+  },
+  {
+   "auction_date": "2026-03-23",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.72,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-03-24",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.701,
+   "btc": 2.98
+  },
+  {
+   "auction_date": "2026-03-24",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.936,
+   "btc": 2.44
+  },
+  {
+   "auction_date": "2026-03-25",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.98,
+   "btc": 2.29
+  },
+  {
+   "auction_date": "2026-03-25",
+   "type": "Note",
+   "term": "1-Year 10-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 2.78
+  },
+  {
+   "auction_date": "2026-03-25",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.73,
+   "btc": 2.82
+  },
+  {
+   "auction_date": "2026-03-26",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 4.255,
+   "btc": 2.43
+  },
+  {
+   "auction_date": "2026-03-26",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.701,
+   "btc": 3.14
+  },
+  {
+   "auction_date": "2026-03-26",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.681,
+   "btc": 3.03
+  },
+  {
+   "auction_date": "2026-03-30",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.704,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2026-03-30",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.723,
+   "btc": 2.83
+  },
+  {
+   "auction_date": "2026-03-31",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.711,
+   "btc": 2.89
+  },
+  {
+   "auction_date": "2026-04-01",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.71,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2026-04-02",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.681,
+   "btc": 3.15
+  },
+  {
+   "auction_date": "2026-04-02",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.691,
+   "btc": 3.26
+  },
+  {
+   "auction_date": "2026-04-06",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.72,
+   "btc": 2.58
+  },
+  {
+   "auction_date": "2026-04-06",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.733,
+   "btc": 3.06
+  },
+  {
+   "auction_date": "2026-04-07",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 70.0,
+   "high_yield": 3.681,
+   "btc": 3.57
+  },
+  {
+   "auction_date": "2026-04-07",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.897,
+   "btc": 2.68
+  },
+  {
+   "auction_date": "2026-04-08",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.282,
+   "btc": 2.43
+  },
+  {
+   "auction_date": "2026-04-08",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.694,
+   "btc": 3.34
+  },
+  {
+   "auction_date": "2026-04-09",
+   "type": "Bond",
+   "term": "29-Year 10-Month",
+   "offering_bn": 22.0,
+   "high_yield": 4.876,
+   "btc": 2.39
+  },
+  {
+   "auction_date": "2026-04-09",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.619,
+   "btc": 3.28
+  },
+  {
+   "auction_date": "2026-04-09",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.645,
+   "btc": 3.16
+  },
+  {
+   "auction_date": "2026-04-13",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.728,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-04-13",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.704,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2026-04-14",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.71,
+   "btc": 3.21
+  },
+  {
+   "auction_date": "2026-04-14",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 70.0,
+   "high_yield": 3.696,
+   "btc": 3.04
+  },
+  {
+   "auction_date": "2026-04-15",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.72,
+   "btc": 2.93
+  },
+  {
+   "auction_date": "2026-04-16",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.655,
+   "btc": 3.12
+  },
+  {
+   "auction_date": "2026-04-16",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.686,
+   "btc": 3.22
+  },
+  {
+   "auction_date": "2026-04-20",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.707,
+   "btc": 2.89
+  },
+  {
+   "auction_date": "2026-04-20",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.694,
+   "btc": 2.94
+  },
+  {
+   "auction_date": "2026-04-21",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 70.0,
+   "high_yield": 3.676,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2026-04-22",
+   "type": "Bond",
+   "term": "19-Year 10-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.883,
+   "btc": 2.68
+  },
+  {
+   "auction_date": "2026-04-22",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.704,
+   "btc": 3.02
+  },
+  {
+   "auction_date": "2026-04-23",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 26.0,
+   "high_yield": 1.367,
+   "btc": 2.57
+  },
+  {
+   "auction_date": "2026-04-23",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.655,
+   "btc": 2.98
+  },
+  {
+   "auction_date": "2026-04-23",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.676,
+   "btc": 2.91
+  },
+  {
+   "auction_date": "2026-04-27",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.673,
+   "btc": 3.09
+  },
+  {
+   "auction_date": "2026-04-27",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 3.812,
+   "btc": 2.65
+  },
+  {
+   "auction_date": "2026-04-27",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.707,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2026-04-27",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 3.955,
+   "btc": 2.33
+  },
+  {
+   "auction_date": "2026-04-28",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 30.0,
+   "high_yield": null,
+   "btc": 3.52
+  },
+  {
+   "auction_date": "2026-04-28",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 70.0,
+   "high_yield": 3.655,
+   "btc": 3.14
+  },
+  {
+   "auction_date": "2026-04-28",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 4.175,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2026-04-29",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.715,
+   "btc": 2.78
+  },
+  {
+   "auction_date": "2026-04-30",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.66,
+   "btc": 2.92
+  },
+  {
+   "auction_date": "2026-04-30",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.691,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-05-04",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.694,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2026-05-04",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.728,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-05-05",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.66,
+   "btc": 3.07
+  },
+  {
+   "auction_date": "2026-05-06",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.699,
+   "btc": 3.13
+  },
+  {
+   "auction_date": "2026-05-07",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.665,
+   "btc": 2.91
+  },
+  {
+   "auction_date": "2026-05-07",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.67,
+   "btc": 2.59
+  },
+  {
+   "auction_date": "2026-05-11",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 3.965,
+   "btc": 2.54
+  },
+  {
+   "auction_date": "2026-05-11",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.733,
+   "btc": 2.91
+  },
+  {
+   "auction_date": "2026-05-11",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.694,
+   "btc": 2.86
+  },
+  {
+   "auction_date": "2026-05-12",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 42.0,
+   "high_yield": 4.468,
+   "btc": 2.4
+  },
+  {
+   "auction_date": "2026-05-12",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.681,
+   "btc": 2.8
+  },
+  {
+   "auction_date": "2026-05-12",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.806,
+   "btc": 3.41
+  },
+  {
+   "auction_date": "2026-05-13",
+   "type": "Bond",
+   "term": "30-Year",
+   "offering_bn": 25.0,
+   "high_yield": 5.046,
+   "btc": 2.3
+  },
+  {
+   "auction_date": "2026-05-13",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.71,
+   "btc": 3.2
+  },
+  {
+   "auction_date": "2026-05-14",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.681,
+   "btc": 2.72
+  },
+  {
+   "auction_date": "2026-05-14",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.665,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2026-05-18",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.684,
+   "btc": 3.17
+  },
+  {
+   "auction_date": "2026-05-18",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.733,
+   "btc": 3.07
+  },
+  {
+   "auction_date": "2026-05-19",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.645,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2026-05-20",
+   "type": "Bond",
+   "term": "20-Year",
+   "offering_bn": 16.0,
+   "high_yield": 5.122,
+   "btc": 2.55
+  },
+  {
+   "auction_date": "2026-05-20",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.684,
+   "btc": 3.34
+  },
+  {
+   "auction_date": "2026-05-21",
+   "type": "Note",
+   "term": "9-Year 8-Month",
+   "offering_bn": 19.0,
+   "high_yield": 2.169,
+   "btc": 2.52
+  },
+  {
+   "auction_date": "2026-05-21",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.67,
+   "btc": 2.6
+  },
+  {
+   "auction_date": "2026-05-21",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.671,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2026-05-21",
+   "type": "Bill",
+   "term": "27-Day",
+   "offering_bn": 25.0,
+   "high_yield": 3.665,
+   "btc": 4.6
+  },
+  {
+   "auction_date": "2026-05-26",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.686,
+   "btc": 2.71
+  },
+  {
+   "auction_date": "2026-05-26",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.771,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2026-05-26",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 4.071,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-05-26",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.678,
+   "btc": 3.08
+  },
+  {
+   "auction_date": "2026-05-27",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.725,
+   "btc": 3.01
+  },
+  {
+   "auction_date": "2026-05-27",
+   "type": "Note",
+   "term": "1-Year 11-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 3.49
+  },
+  {
+   "auction_date": "2026-05-27",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 4.182,
+   "btc": 2.34
+  },
+  {
+   "auction_date": "2026-05-28",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.691,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2026-05-28",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.686,
+   "btc": 3.08
+  },
+  {
+   "auction_date": "2026-05-28",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 4.29,
+   "btc": 2.52
+  },
+  {
+   "auction_date": "2026-06-01",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.714,
+   "btc": 2.69
+  },
+  {
+   "auction_date": "2026-06-01",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.786,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-06-02",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.691,
+   "btc": 3.28
+  },
+  {
+   "auction_date": "2026-06-03",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.73,
+   "btc": 3.15
+  },
+  {
+   "auction_date": "2026-06-04",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.676,
+   "btc": 3.07
+  },
+  {
+   "auction_date": "2026-06-04",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.681,
+   "btc": 3.2
+  },
+  {
+   "auction_date": "2026-06-08",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.812,
+   "btc": 2.75
+  },
+  {
+   "auction_date": "2026-06-08",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.725,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-06-09",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 4.192,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-06-09",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 65.0,
+   "high_yield": 3.665,
+   "btc": 3.25
+  },
+  {
+   "auction_date": "2026-06-09",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 50.0,
+   "high_yield": 3.914,
+   "btc": 3.34
+  },
+  {
+   "auction_date": "2026-06-10",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.761,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2026-06-10",
+   "type": "Note",
+   "term": "9-Year 11-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.538,
+   "btc": 2.57
+  },
+  {
+   "auction_date": "2026-06-11",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.681,
+   "btc": 2.94
+  },
+  {
+   "auction_date": "2026-06-11",
+   "type": "Bond",
+   "term": "29-Year 11-Month",
+   "offering_bn": 22.0,
+   "high_yield": 5.02,
+   "btc": 2.33
+  },
+  {
+   "auction_date": "2026-06-11",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 70.0,
+   "high_yield": 3.655,
+   "btc": 3.13
+  },
+  {
+   "auction_date": "2026-06-15",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.802,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2026-06-15",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.725,
+   "btc": 2.47
+  },
+  {
+   "auction_date": "2026-06-16",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 65.0,
+   "high_yield": 3.665,
+   "btc": 3.12
+  },
+  {
+   "auction_date": "2026-06-16",
+   "type": "Bond",
+   "term": "19-Year 11-Month",
+   "offering_bn": 13.0,
+   "high_yield": 4.927,
+   "btc": 2.75
+  },
+  {
+   "auction_date": "2026-06-17",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.767,
+   "btc": 2.87
+  },
+  {
+   "auction_date": "2026-06-18",
+   "type": "Note",
+   "term": "4-Year 10-Month",
+   "offering_bn": 24.0,
+   "high_yield": 1.955,
+   "btc": 2.61
+  },
+  {
+   "auction_date": "2026-06-18",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 70.0,
+   "high_yield": 3.64,
+   "btc": 2.99
+  },
+  {
+   "auction_date": "2026-06-18",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.712,
+   "btc": 2.57
+  },
+  {
+   "auction_date": "2026-06-22",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 77.0,
+   "high_yield": 3.97,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2026-06-22",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 89.0,
+   "high_yield": 3.782,
+   "btc": 2.68
+  },
+  {
+   "auction_date": "2026-06-23",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 65.0,
+   "high_yield": 3.686,
+   "btc": 2.91
+  },
+  {
+   "auction_date": "2026-06-23",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 4.189,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-06-24",
+   "type": "Note",
+   "term": "1-Year 10-Month",
+   "offering_bn": 28.0,
+   "high_yield": null,
+   "btc": 2.99
+  },
+  {
+   "auction_date": "2026-06-24",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 4.2,
+   "btc": 2.35
+  },
+  {
+   "auction_date": "2026-06-24",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 69.0,
+   "high_yield": 3.871,
+   "btc": 2.55
+  },
+  {
+   "auction_date": "2026-06-25",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 4.26,
+   "btc": 2.5
+  },
+  {
+   "auction_date": "2026-06-25",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 75.0,
+   "high_yield": 3.732,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-06-25",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 70.0,
+   "high_yield": 3.67,
+   "btc": 2.74
+  },
+  {
+   "auction_date": "2026-06-29",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 79.0,
+   "high_yield": 3.97,
+   "btc": 2.58
+  },
+  {
+   "auction_date": "2026-06-29",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 92.0,
+   "high_yield": 3.828,
+   "btc": 2.32
+  },
+  {
+   "auction_date": "2026-06-30",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 80.0,
+   "high_yield": 3.722,
+   "btc": 2.71
+  },
+  {
+   "auction_date": "2026-07-01",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 72.0,
+   "high_yield": 3.897,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2026-07-02",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.665,
+   "btc": 2.72
+  },
+  {
+   "auction_date": "2026-07-02",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 3.722,
+   "btc": 2.7
+  },
+  {
+   "auction_date": "2026-07-06",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 79.0,
+   "high_yield": 3.96,
+   "btc": 3.05
+  },
+  {
+   "auction_date": "2026-07-06",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 92.0,
+   "high_yield": 3.823,
+   "btc": 2.58
+  },
+  {
+   "auction_date": "2026-07-07",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 52.0,
+   "high_yield": 4.032,
+   "btc": 3.14
+  },
+  {
+   "auction_date": "2026-07-07",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.701,
+   "btc": 2.74
+  },
+  {
+   "auction_date": "2026-07-07",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 4.179,
+   "btc": 2.6
+  },
+  {
+   "auction_date": "2026-07-08",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 72.0,
+   "high_yield": 3.891,
+   "btc": 3.41
+  },
+  {
+   "auction_date": "2026-07-08",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 39.0,
+   "high_yield": 4.58,
+   "btc": 2.59
+  },
+  {
+   "auction_date": "2026-07-09",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.691,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-07-09",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.706,
+   "btc": 2.95
+  },
+  {
+   "auction_date": "2026-07-09",
+   "type": "Bond",
+   "term": "29-Year 10-Month",
+   "offering_bn": 22.0,
+   "high_yield": 5.058,
+   "btc": 2.44
+  },
+  {
+   "auction_date": "2026-07-13",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 79.0,
+   "high_yield": 3.992,
+   "btc": 3.11
+  },
+  {
+   "auction_date": "2026-07-13",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 92.0,
+   "high_yield": 3.849,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-07-14",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.706,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-07-15",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 72.0,
+   "high_yield": 3.845,
+   "btc": 3.35
+  },
+  {
+   "auction_date": "2026-07-16",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.721,
+   "btc": 2.57
+  },
+  {
+   "auction_date": "2026-07-16",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.722,
+   "btc": 2.84
+  },
+  {
+   "auction_date": "2026-07-20",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 79.0,
+   "high_yield": 3.965,
+   "btc": 2.94
+  },
+  {
+   "auction_date": "2026-07-20",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 92.0,
+   "high_yield": 3.818,
+   "btc": 3.0
+  },
+  {
+   "auction_date": "2026-07-21",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.717,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-07-22",
+   "type": "Bond",
+   "term": "19-Year 10-Month",
+   "offering_bn": 13.0,
+   "high_yield": 5.163,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-07-22",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 72.0,
+   "high_yield": 3.949,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2026-07-23",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 21.0,
+   "high_yield": 2.438,
+   "btc": 2.3
+  },
+  {
+   "auction_date": "2026-07-23",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.871,
+   "btc": 2.31
+  },
+  {
+   "auction_date": "2026-07-23",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.793,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-07-27",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 92.0,
+   "high_yield": 3.906,
+   "btc": 3.06
+  },
+  {
+   "auction_date": "2026-07-27",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 69.0,
+   "high_yield": 4.315,
+   "btc": 2.66
+  },
+  {
+   "auction_date": "2026-07-27",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 79.0,
+   "high_yield": 4.081,
+   "btc": 3.12
+  },
+  {
+   "auction_date": "2026-07-27",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": 70.0,
+   "high_yield": 4.408,
+   "btc": 2.28
+  },
+  {
+   "auction_date": "2026-07-28",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": 44.0,
+   "high_yield": 4.473,
+   "btc": 2.49
+  },
+  {
+   "auction_date": "2026-07-28",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.768,
+   "btc": 2.93
+  },
+  {
+   "auction_date": "2026-07-29",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": 30.0,
+   "high_yield": null,
+   "btc": 3.37
+  },
+  {
+   "auction_date": "2026-07-29",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 72.0,
+   "high_yield": 3.98,
+   "btc": 3.04
+  },
+  {
+   "auction_date": "2026-07-30",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.747,
+   "btc": 2.74
+  },
+  {
+   "auction_date": "2026-07-30",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.691,
+   "btc": 2.8
+  },
+  {
+   "auction_date": "2026-08-03",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 79.0,
+   "high_yield": 3.986,
+   "btc": 2.98
+  },
+  {
+   "auction_date": "2026-08-03",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 92.0,
+   "high_yield": 3.838,
+   "btc": 2.61
+  },
+  {
+   "auction_date": "2026-08-04",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 52.0,
+   "high_yield": 4.054,
+   "btc": 3.62
+  },
+  {
+   "auction_date": "2026-08-04",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 3.706,
+   "btc": 2.93
+  },
+  {
+   "auction_date": "2026-08-05",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 72.0,
+   "high_yield": 3.886,
+   "btc": 3.19
+  },
+  {
+   "auction_date": "2026-08-06",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 3.701,
+   "btc": 2.68
+  },
+  {
+   "auction_date": "2026-08-06",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 100.0,
+   "high_yield": 3.783,
+   "btc": 2.74
+  },
+  {
+   "auction_date": "2026-08-10",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 92.0,
+   "high_yield": 3.823,
+   "btc": 2.88
+  },
+  {
+   "auction_date": "2026-08-10",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 79.0,
+   "high_yield": 3.96,
+   "btc": 2.85
+  },
+  {
+   "auction_date": "2026-08-11",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-08-11",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-08-12",
+   "type": "Note",
+   "term": "10-Year",
+   "offering_bn": 42.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-08-13",
+   "type": "Bond",
+   "term": "30-Year",
+   "offering_bn": 25.0,
+   "high_yield": null,
+   "btc": null
+  }
+ ],
+ "fetched_at": "2026-08-10T16:09:09.219581Z"
+}

@@ -1,58 +1,9 @@
 {
- "sample": true,
- "as_of": "2026-06-30",
- "mix": [
-  {
-   "type": "Bills",
-   "out_bn": 6600
-  },
-  {
-   "type": "Notes",
-   "out_bn": 15200
-  },
-  {
-   "type": "Bonds",
-   "out_bn": 5200
-  },
-  {
-   "type": "TIPS",
-   "out_bn": 2100
-  },
-  {
-   "type": "FRN",
-   "out_bn": 650
-  }
- ],
- "maturity_wall": [
-  {
-   "bucket": "<1y",
-   "bn": 8200
-  },
-  {
-   "bucket": "1-2y",
-   "bn": 3900
-  },
-  {
-   "bucket": "2-3y",
-   "bn": 3300
-  },
-  {
-   "bucket": "3-5y",
-   "bn": 4800
-  },
-  {
-   "bucket": "5-7y",
-   "bn": 2900
-  },
-  {
-   "bucket": "7-10y",
-   "bn": 2600
-  },
-  {
-   "bucket": "10y+",
-   "bn": 4050
-  }
- ],
- "wam_months": 71,
- "fetched_at": "2026-08-10T03:33:15.129461Z"
+ "sample": false,
+ "as_of": "2026-07-31",
+ "mix": [],
+ "maturity_wall": [],
+ "wam_months": null,
+ "note": "首跑后按_debug_mspd.json校正品种/到期字段映射",
+ "fetched_at": "2026-08-10T16:09:07.476850Z"
 }

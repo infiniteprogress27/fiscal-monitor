@@ -1,0 +1,1396 @@
+{
+ "sample": false,
+ "series": [
+  {
+   "month": "2003-07",
+   "soma_bills": 239.7,
+   "soma_total": 651.4
+  },
+  {
+   "month": "2003-08",
+   "soma_bills": 240.5,
+   "soma_total": 652.2
+  },
+  {
+   "month": "2003-09",
+   "soma_bills": 241.4,
+   "soma_total": 654.5
+  },
+  {
+   "month": "2003-10",
+   "soma_bills": 242.3,
+   "soma_total": 657.1
+  },
+  {
+   "month": "2003-11",
+   "soma_bills": 243.3,
+   "soma_total": 662.9
+  },
+  {
+   "month": "2003-12",
+   "soma_bills": 244.8,
+   "soma_total": 665.0
+  },
+  {
+   "month": "2004-01",
+   "soma_bills": 245.3,
+   "soma_total": 665.4
+  },
+  {
+   "month": "2004-02",
+   "soma_bills": 246.1,
+   "soma_total": 669.9
+  },
+  {
+   "month": "2004-03",
+   "soma_bills": 246.5,
+   "soma_total": 672.4
+  },
+  {
+   "month": "2004-04",
+   "soma_bills": 248.8,
+   "soma_total": 674.6
+  },
+  {
+   "month": "2004-05",
+   "soma_bills": 250.4,
+   "soma_total": 678.8
+  },
+  {
+   "month": "2004-06",
+   "soma_bills": 254.3,
+   "soma_total": 685.5
+  },
+  {
+   "month": "2004-07",
+   "soma_bills": 255.2,
+   "soma_total": 691.7
+  },
+  {
+   "month": "2004-08",
+   "soma_bills": 255.3,
+   "soma_total": 692.7
+  },
+  {
+   "month": "2004-09",
+   "soma_bills": 257.1,
+   "soma_total": 696.5
+  },
+  {
+   "month": "2004-10",
+   "soma_bills": 259.2,
+   "soma_total": 704.6
+  },
+  {
+   "month": "2004-11",
+   "soma_bills": 261.2,
+   "soma_total": 709.4
+  },
+  {
+   "month": "2004-12",
+   "soma_bills": 263.0,
+   "soma_total": 715.5
+  },
+  {
+   "month": "2005-01",
+   "soma_bills": 263.0,
+   "soma_total": 715.5
+  },
+  {
+   "month": "2005-02",
+   "soma_bills": 263.0,
+   "soma_total": 715.5
+  },
+  {
+   "month": "2005-03",
+   "soma_bills": 263.0,
+   "soma_total": 715.2
+  },
+  {
+   "month": "2005-04",
+   "soma_bills": 263.0,
+   "soma_total": 716.2
+  },
+  {
+   "month": "2005-05",
+   "soma_bills": 264.5,
+   "soma_total": 720.4
+  },
+  {
+   "month": "2005-06",
+   "soma_bills": 265.0,
+   "soma_total": 723.2
+  },
+  {
+   "month": "2005-07",
+   "soma_bills": 265.0,
+   "soma_total": 721.9
+  },
+  {
+   "month": "2005-08",
+   "soma_bills": 267.8,
+   "soma_total": 727.6
+  },
+  {
+   "month": "2005-09",
+   "soma_bills": 269.5,
+   "soma_total": 733.2
+  },
+  {
+   "month": "2005-10",
+   "soma_bills": 270.6,
+   "soma_total": 736.5
+  },
+  {
+   "month": "2005-11",
+   "soma_bills": 271.3,
+   "soma_total": 740.8
+  },
+  {
+   "month": "2005-12",
+   "soma_bills": 271.3,
+   "soma_total": 740.8
+  },
+  {
+   "month": "2006-01",
+   "soma_bills": 272.8,
+   "soma_total": 743.3
+  },
+  {
+   "month": "2006-02",
+   "soma_bills": 274.1,
+   "soma_total": 749.4
+  },
+  {
+   "month": "2006-03",
+   "soma_bills": 275.4,
+   "soma_total": 755.2
+  },
+  {
+   "month": "2006-04",
+   "soma_bills": 275.4,
+   "soma_total": 756.3
+  },
+  {
+   "month": "2006-05",
+   "soma_bills": 275.4,
+   "soma_total": 758.9
+  },
+  {
+   "month": "2006-06",
+   "soma_bills": 275.4,
+   "soma_total": 762.6
+  },
+  {
+   "month": "2006-07",
+   "soma_bills": 277.0,
+   "soma_total": 760.9
+  },
+  {
+   "month": "2006-08",
+   "soma_bills": 277.0,
+   "soma_total": 762.7
+  },
+  {
+   "month": "2006-09",
+   "soma_bills": 277.0,
+   "soma_total": 764.8
+  },
+  {
+   "month": "2006-10",
+   "soma_bills": 277.0,
+   "soma_total": 764.3
+  },
+  {
+   "month": "2006-11",
+   "soma_bills": 277.0,
+   "soma_total": 768.5
+  },
+  {
+   "month": "2006-12",
+   "soma_bills": 277.0,
+   "soma_total": 775.0
+  },
+  {
+   "month": "2007-01",
+   "soma_bills": 277.0,
+   "soma_total": 775.5
+  },
+  {
+   "month": "2007-02",
+   "soma_bills": 277.0,
+   "soma_total": 777.3
+  },
+  {
+   "month": "2007-03",
+   "soma_bills": 277.0,
+   "soma_total": 777.3
+  },
+  {
+   "month": "2007-04",
+   "soma_bills": 277.0,
+   "soma_total": 783.4
+  },
+  {
+   "month": "2007-05",
+   "soma_bills": 277.0,
+   "soma_total": 786.1
+  },
+  {
+   "month": "2007-06",
+   "soma_bills": 277.0,
+   "soma_total": 786.1
+  },
+  {
+   "month": "2007-07",
+   "soma_bills": 277.0,
+   "soma_total": 786.1
+  },
+  {
+   "month": "2007-08",
+   "soma_bills": 272.0,
+   "soma_total": 779.9
+  },
+  {
+   "month": "2007-09",
+   "soma_bills": 267.0,
+   "soma_total": 774.9
+  },
+  {
+   "month": "2007-10",
+   "soma_bills": 267.0,
+   "soma_total": 774.9
+  },
+  {
+   "month": "2007-11",
+   "soma_bills": 267.0,
+   "soma_total": 774.9
+  },
+  {
+   "month": "2007-12",
+   "soma_bills": 241.9,
+   "soma_total": 749.8
+  },
+  {
+   "month": "2008-01",
+   "soma_bills": 205.4,
+   "soma_total": 713.8
+  },
+  {
+   "month": "2008-02",
+   "soma_bills": 200.4,
+   "soma_total": 708.8
+  },
+  {
+   "month": "2008-03",
+   "soma_bills": 114.1,
+   "soma_total": 607.6
+  },
+  {
+   "month": "2008-04",
+   "soma_bills": 70.3,
+   "soma_total": 543.8
+  },
+  {
+   "month": "2008-05",
+   "soma_bills": 34.3,
+   "soma_total": 485.9
+  },
+  {
+   "month": "2008-06",
+   "soma_bills": 21.7,
+   "soma_total": 473.3
+  },
+  {
+   "month": "2008-07",
+   "soma_bills": 21.7,
+   "soma_total": 473.3
+  },
+  {
+   "month": "2008-08",
+   "soma_bills": 21.7,
+   "soma_total": 473.3
+  },
+  {
+   "month": "2008-09",
+   "soma_bills": 18.4,
+   "soma_total": 480.0
+  },
+  {
+   "month": "2008-10",
+   "soma_bills": 18.4,
+   "soma_total": 483.6
+  },
+  {
+   "month": "2008-11",
+   "soma_bills": 18.4,
+   "soma_total": 482.2
+  },
+  {
+   "month": "2008-12",
+   "soma_bills": 18.4,
+   "soma_total": 489.7
+  },
+  {
+   "month": "2009-01",
+   "soma_bills": 18.4,
+   "soma_total": 506.5
+  },
+  {
+   "month": "2009-02",
+   "soma_bills": 18.4,
+   "soma_total": 577.8
+  },
+  {
+   "month": "2009-03",
+   "soma_bills": 18.4,
+   "soma_total": 757.3
+  },
+  {
+   "month": "2009-04",
+   "soma_bills": 18.4,
+   "soma_total": 978.8
+  },
+  {
+   "month": "2009-05",
+   "soma_bills": 18.4,
+   "soma_total": 1102.6
+  },
+  {
+   "month": "2009-06",
+   "soma_bills": 18.4,
+   "soma_total": 1212.0
+  },
+  {
+   "month": "2009-07",
+   "soma_bills": 18.4,
+   "soma_total": 1339.2
+  },
+  {
+   "month": "2009-08",
+   "soma_bills": 18.4,
+   "soma_total": 1479.4
+  },
+  {
+   "month": "2009-09",
+   "soma_bills": 18.4,
+   "soma_total": 1587.0
+  },
+  {
+   "month": "2009-10",
+   "soma_bills": 18.4,
+   "soma_total": 1684.4
+  },
+  {
+   "month": "2009-11",
+   "soma_bills": 18.4,
+   "soma_total": 1777.9
+  },
+  {
+   "month": "2009-12",
+   "soma_bills": 18.4,
+   "soma_total": 1838.8
+  },
+  {
+   "month": "2010-01",
+   "soma_bills": 18.4,
+   "soma_total": 1904.5
+  },
+  {
+   "month": "2010-02",
+   "soma_bills": 18.4,
+   "soma_total": 1970.2
+  },
+  {
+   "month": "2010-03",
+   "soma_bills": 18.4,
+   "soma_total": 2008.8
+  },
+  {
+   "month": "2010-04",
+   "soma_bills": 18.4,
+   "soma_total": 2036.9
+  },
+  {
+   "month": "2010-05",
+   "soma_bills": 18.4,
+   "soma_total": 2051.9
+  },
+  {
+   "month": "2010-06",
+   "soma_bills": 18.4,
+   "soma_total": 2054.5
+  },
+  {
+   "month": "2010-07",
+   "soma_bills": 18.4,
+   "soma_total": 2048.4
+  },
+  {
+   "month": "2010-08",
+   "soma_bills": 18.4,
+   "soma_total": 2038.8
+  },
+  {
+   "month": "2010-09",
+   "soma_bills": 18.4,
+   "soma_total": 2038.8
+  },
+  {
+   "month": "2010-10",
+   "soma_bills": 18.4,
+   "soma_total": 2033.0
+  },
+  {
+   "month": "2010-11",
+   "soma_bills": 18.4,
+   "soma_total": 2081.4
+  },
+  {
+   "month": "2010-12",
+   "soma_bills": 18.4,
+   "soma_total": 2149.5
+  },
+  {
+   "month": "2011-01",
+   "soma_bills": 18.4,
+   "soma_total": 2218.1
+  },
+  {
+   "month": "2011-02",
+   "soma_bills": 18.4,
+   "soma_total": 2309.3
+  },
+  {
+   "month": "2011-03",
+   "soma_bills": 18.4,
+   "soma_total": 2396.3
+  },
+  {
+   "month": "2011-04",
+   "soma_bills": 18.4,
+   "soma_total": 2459.7
+  },
+  {
+   "month": "2011-05",
+   "soma_bills": 18.4,
+   "soma_total": 2548.4
+  },
+  {
+   "month": "2011-06",
+   "soma_bills": 18.4,
+   "soma_total": 2633.6
+  },
+  {
+   "month": "2011-07",
+   "soma_bills": 18.4,
+   "soma_total": 2638.6
+  },
+  {
+   "month": "2011-08",
+   "soma_bills": 18.4,
+   "soma_total": 2637.4
+  },
+  {
+   "month": "2011-09",
+   "soma_bills": 18.4,
+   "soma_total": 2634.2
+  },
+  {
+   "month": "2011-10",
+   "soma_bills": 18.4,
+   "soma_total": 2625.2
+  },
+  {
+   "month": "2011-11",
+   "soma_bills": 18.4,
+   "soma_total": 2595.2
+  },
+  {
+   "month": "2011-12",
+   "soma_bills": 18.4,
+   "soma_total": 2603.8
+  },
+  {
+   "month": "2012-01",
+   "soma_bills": 18.4,
+   "soma_total": 2589.2
+  },
+  {
+   "month": "2012-02",
+   "soma_bills": 18.4,
+   "soma_total": 2594.1
+  },
+  {
+   "month": "2012-03",
+   "soma_bills": 18.4,
+   "soma_total": 2589.0
+  },
+  {
+   "month": "2012-04",
+   "soma_bills": 18.4,
+   "soma_total": 2601.0
+  },
+  {
+   "month": "2012-05",
+   "soma_bills": 18.4,
+   "soma_total": 2592.0
+  },
+  {
+   "month": "2012-06",
+   "soma_bills": 18.4,
+   "soma_total": 2603.2
+  },
+  {
+   "month": "2012-07",
+   "soma_bills": 5.9,
+   "soma_total": 2585.9
+  },
+  {
+   "month": "2012-08",
+   "soma_bills": 0.0,
+   "soma_total": 2560.3
+  },
+  {
+   "month": "2012-09",
+   "soma_bills": 0.0,
+   "soma_total": 2556.8
+  },
+  {
+   "month": "2012-10",
+   "soma_bills": 0.0,
+   "soma_total": 2568.9
+  },
+  {
+   "month": "2012-11",
+   "soma_bills": 0.0,
+   "soma_total": 2598.6
+  },
+  {
+   "month": "2012-12",
+   "soma_bills": 0.0,
+   "soma_total": 2649.3
+  },
+  {
+   "month": "2013-01",
+   "soma_bills": 0.0,
+   "soma_total": 2740.3
+  },
+  {
+   "month": "2013-02",
+   "soma_bills": 0.0,
+   "soma_total": 2828.6
+  },
+  {
+   "month": "2013-03",
+   "soma_bills": 0.0,
+   "soma_total": 2927.0
+  },
+  {
+   "month": "2013-04",
+   "soma_bills": 0.0,
+   "soma_total": 3032.4
+  },
+  {
+   "month": "2013-05",
+   "soma_bills": 0.0,
+   "soma_total": 3106.8
+  },
+  {
+   "month": "2013-06",
+   "soma_bills": 0.0,
+   "soma_total": 3194.6
+  },
+  {
+   "month": "2013-07",
+   "soma_bills": 0.0,
+   "soma_total": 3283.0
+  },
+  {
+   "month": "2013-08",
+   "soma_bills": 0.0,
+   "soma_total": 3367.5
+  },
+  {
+   "month": "2013-09",
+   "soma_bills": 0.0,
+   "soma_total": 3454.3
+  },
+  {
+   "month": "2013-10",
+   "soma_bills": 0.0,
+   "soma_total": 3556.9
+  },
+  {
+   "month": "2013-11",
+   "soma_bills": 0.0,
+   "soma_total": 3648.1
+  },
+  {
+   "month": "2013-12",
+   "soma_bills": 0.0,
+   "soma_total": 3742.6
+  },
+  {
+   "month": "2014-01",
+   "soma_bills": 0.0,
+   "soma_total": 3817.0
+  },
+  {
+   "month": "2014-02",
+   "soma_bills": 0.0,
+   "soma_total": 3886.4
+  },
+  {
+   "month": "2014-03",
+   "soma_bills": 0.0,
+   "soma_total": 3948.1
+  },
+  {
+   "month": "2014-04",
+   "soma_bills": 0.0,
+   "soma_total": 4012.6
+  },
+  {
+   "month": "2014-05",
+   "soma_bills": 0.0,
+   "soma_total": 4047.6
+  },
+  {
+   "month": "2014-06",
+   "soma_bills": 0.0,
+   "soma_total": 4088.8
+  },
+  {
+   "month": "2014-07",
+   "soma_bills": 0.0,
+   "soma_total": 4120.6
+  },
+  {
+   "month": "2014-08",
+   "soma_bills": 0.0,
+   "soma_total": 4139.3
+  },
+  {
+   "month": "2014-09",
+   "soma_bills": 0.0,
+   "soma_total": 4178.3
+  },
+  {
+   "month": "2014-10",
+   "soma_bills": 0.0,
+   "soma_total": 4202.8
+  },
+  {
+   "month": "2014-11",
+   "soma_bills": 0.0,
+   "soma_total": 4213.6
+  },
+  {
+   "month": "2014-12",
+   "soma_bills": 0.0,
+   "soma_total": 4220.7
+  },
+  {
+   "month": "2015-01",
+   "soma_bills": 0.0,
+   "soma_total": 4221.4
+  },
+  {
+   "month": "2015-02",
+   "soma_bills": 0.0,
+   "soma_total": 4222.3
+  },
+  {
+   "month": "2015-03",
+   "soma_bills": 0.0,
+   "soma_total": 4214.0
+  },
+  {
+   "month": "2015-04",
+   "soma_bills": 0.0,
+   "soma_total": 4199.9
+  },
+  {
+   "month": "2015-05",
+   "soma_bills": 0.0,
+   "soma_total": 4203.5
+  },
+  {
+   "month": "2015-06",
+   "soma_bills": 0.0,
+   "soma_total": 4227.5
+  },
+  {
+   "month": "2015-07",
+   "soma_bills": 0.0,
+   "soma_total": 4215.1
+  },
+  {
+   "month": "2015-08",
+   "soma_bills": 0.0,
+   "soma_total": 4216.9
+  },
+  {
+   "month": "2015-09",
+   "soma_bills": 0.0,
+   "soma_total": 4221.5
+  },
+  {
+   "month": "2015-10",
+   "soma_bills": 0.0,
+   "soma_total": 4223.4
+  },
+  {
+   "month": "2015-11",
+   "soma_bills": 0.0,
+   "soma_total": 4222.9
+  },
+  {
+   "month": "2015-12",
+   "soma_bills": 0.0,
+   "soma_total": 4225.6
+  },
+  {
+   "month": "2016-01",
+   "soma_bills": 0.0,
+   "soma_total": 4220.7
+  },
+  {
+   "month": "2016-02",
+   "soma_bills": 0.0,
+   "soma_total": 4237.6
+  },
+  {
+   "month": "2016-03",
+   "soma_bills": 0.0,
+   "soma_total": 4227.7
+  },
+  {
+   "month": "2016-04",
+   "soma_bills": 0.0,
+   "soma_total": 4217.3
+  },
+  {
+   "month": "2016-05",
+   "soma_bills": 0.0,
+   "soma_total": 4213.4
+  },
+  {
+   "month": "2016-06",
+   "soma_bills": 0.0,
+   "soma_total": 4213.9
+  },
+  {
+   "month": "2016-07",
+   "soma_bills": 0.0,
+   "soma_total": 4209.4
+  },
+  {
+   "month": "2016-08",
+   "soma_bills": 0.0,
+   "soma_total": 4212.7
+  },
+  {
+   "month": "2016-09",
+   "soma_bills": 0.0,
+   "soma_total": 4203.6
+  },
+  {
+   "month": "2016-10",
+   "soma_bills": 0.0,
+   "soma_total": 4200.5
+  },
+  {
+   "month": "2016-11",
+   "soma_bills": 0.0,
+   "soma_total": 4205.4
+  },
+  {
+   "month": "2016-12",
+   "soma_bills": 0.0,
+   "soma_total": 4203.4
+  },
+  {
+   "month": "2017-01",
+   "soma_bills": 0.0,
+   "soma_total": 4207.1
+  },
+  {
+   "month": "2017-02",
+   "soma_bills": 0.0,
+   "soma_total": 4233.3
+  },
+  {
+   "month": "2017-03",
+   "soma_bills": 0.0,
+   "soma_total": 4229.0
+  },
+  {
+   "month": "2017-04",
+   "soma_bills": 0.0,
+   "soma_total": 4227.4
+  },
+  {
+   "month": "2017-05",
+   "soma_bills": 0.0,
+   "soma_total": 4226.1
+  },
+  {
+   "month": "2017-06",
+   "soma_bills": 0.0,
+   "soma_total": 4224.7
+  },
+  {
+   "month": "2017-07",
+   "soma_bills": 0.0,
+   "soma_total": 4223.6
+  },
+  {
+   "month": "2017-08",
+   "soma_bills": 0.0,
+   "soma_total": 4220.8
+  },
+  {
+   "month": "2017-09",
+   "soma_bills": 0.0,
+   "soma_total": 4221.7
+  },
+  {
+   "month": "2017-10",
+   "soma_bills": 0.0,
+   "soma_total": 4224.1
+  },
+  {
+   "month": "2017-11",
+   "soma_bills": 0.0,
+   "soma_total": 4208.7
+  },
+  {
+   "month": "2017-12",
+   "soma_bills": 0.0,
+   "soma_total": 4203.9
+  },
+  {
+   "month": "2018-01",
+   "soma_bills": 0.0,
+   "soma_total": 4182.1
+  },
+  {
+   "month": "2018-02",
+   "soma_bills": 0.0,
+   "soma_total": 4169.5
+  },
+  {
+   "month": "2018-03",
+   "soma_bills": 0.0,
+   "soma_total": 4163.9
+  },
+  {
+   "month": "2018-04",
+   "soma_bills": 0.0,
+   "soma_total": 4142.3
+  },
+  {
+   "month": "2018-05",
+   "soma_bills": 0.0,
+   "soma_total": 4105.4
+  },
+  {
+   "month": "2018-06",
+   "soma_bills": 0.0,
+   "soma_total": 4080.7
+  },
+  {
+   "month": "2018-07",
+   "soma_bills": 0.0,
+   "soma_total": 4050.3
+  },
+  {
+   "month": "2018-08",
+   "soma_bills": 0.1,
+   "soma_total": 4002.1
+  },
+  {
+   "month": "2018-09",
+   "soma_bills": 0.1,
+   "soma_total": 3975.5
+  },
+  {
+   "month": "2018-10",
+   "soma_bills": 0.1,
+   "soma_total": 3919.8
+  },
+  {
+   "month": "2018-11",
+   "soma_bills": 0.0,
+   "soma_total": 3886.8
+  },
+  {
+   "month": "2018-12",
+   "soma_bills": 0.0,
+   "soma_total": 3857.9
+  },
+  {
+   "month": "2019-01",
+   "soma_bills": 0.0,
+   "soma_total": 3822.6
+  },
+  {
+   "month": "2019-02",
+   "soma_bills": 0.0,
+   "soma_total": 3770.9
+  },
+  {
+   "month": "2019-03",
+   "soma_bills": 0.0,
+   "soma_total": 3749.2
+  },
+  {
+   "month": "2019-04",
+   "soma_bills": 0.0,
+   "soma_total": 3717.4
+  },
+  {
+   "month": "2019-05",
+   "soma_bills": 0.1,
+   "soma_total": 3649.7
+  },
+  {
+   "month": "2019-06",
+   "soma_bills": 0.0,
+   "soma_total": 3621.9
+  },
+  {
+   "month": "2019-07",
+   "soma_bills": 0.0,
+   "soma_total": 3571.1
+  },
+  {
+   "month": "2019-08",
+   "soma_bills": 3.0,
+   "soma_total": 3563.3
+  },
+  {
+   "month": "2019-09",
+   "soma_bills": 6.0,
+   "soma_total": 3553.0
+  },
+  {
+   "month": "2019-10",
+   "soma_bills": 51.0,
+   "soma_total": 3599.1
+  },
+  {
+   "month": "2019-11",
+   "soma_bills": 106.5,
+   "soma_total": 3649.6
+  },
+  {
+   "month": "2019-12",
+   "soma_bills": 169.5,
+   "soma_total": 3714.5
+  },
+  {
+   "month": "2020-01",
+   "soma_bills": 232.5,
+   "soma_total": 3773.3
+  },
+  {
+   "month": "2020-02",
+   "soma_bills": 280.5,
+   "soma_total": 3822.9
+  },
+  {
+   "month": "2020-03",
+   "soma_bills": 326.0,
+   "soma_total": 4336.0
+  },
+  {
+   "month": "2020-04",
+   "soma_bills": 326.0,
+   "soma_total": 5542.4
+  },
+  {
+   "month": "2020-05",
+   "soma_bills": 326.0,
+   "soma_total": 5910.1
+  },
+  {
+   "month": "2020-06",
+   "soma_bills": 326.0,
+   "soma_total": 6107.3
+  },
+  {
+   "month": "2020-07",
+   "soma_bills": 326.0,
+   "soma_total": 6193.8
+  },
+  {
+   "month": "2020-08",
+   "soma_bills": 326.0,
+   "soma_total": 6272.7
+  },
+  {
+   "month": "2020-09",
+   "soma_bills": 326.0,
+   "soma_total": 6390.4
+  },
+  {
+   "month": "2020-10",
+   "soma_bills": 326.0,
+   "soma_total": 6487.9
+  },
+  {
+   "month": "2020-11",
+   "soma_bills": 326.0,
+   "soma_total": 6569.5
+  },
+  {
+   "month": "2020-12",
+   "soma_bills": 326.0,
+   "soma_total": 6687.1
+  },
+  {
+   "month": "2021-01",
+   "soma_bills": 326.0,
+   "soma_total": 6795.3
+  },
+  {
+   "month": "2021-02",
+   "soma_bills": 326.0,
+   "soma_total": 6983.9
+  },
+  {
+   "month": "2021-03",
+   "soma_bills": 326.0,
+   "soma_total": 7083.2
+  },
+  {
+   "month": "2021-04",
+   "soma_bills": 326.0,
+   "soma_total": 7160.7
+  },
+  {
+   "month": "2021-05",
+   "soma_bills": 326.0,
+   "soma_total": 7283.3
+  },
+  {
+   "month": "2021-06",
+   "soma_bills": 326.0,
+   "soma_total": 7450.3
+  },
+  {
+   "month": "2021-07",
+   "soma_bills": 326.0,
+   "soma_total": 7593.9
+  },
+  {
+   "month": "2021-08",
+   "soma_bills": 326.0,
+   "soma_total": 7725.8
+  },
+  {
+   "month": "2021-09",
+   "soma_bills": 326.0,
+   "soma_total": 7863.9
+  },
+  {
+   "month": "2021-10",
+   "soma_bills": 326.0,
+   "soma_total": 7977.6
+  },
+  {
+   "month": "2021-11",
+   "soma_bills": 326.0,
+   "soma_total": 8123.1
+  },
+  {
+   "month": "2021-12",
+   "soma_bills": 326.0,
+   "soma_total": 8197.9
+  },
+  {
+   "month": "2022-01",
+   "soma_bills": 326.0,
+   "soma_total": 8305.9
+  },
+  {
+   "month": "2022-02",
+   "soma_bills": 326.0,
+   "soma_total": 8386.8
+  },
+  {
+   "month": "2022-03",
+   "soma_bills": 326.0,
+   "soma_total": 8398.4
+  },
+  {
+   "month": "2022-04",
+   "soma_bills": 326.0,
+   "soma_total": 8399.7
+  },
+  {
+   "month": "2022-05",
+   "soma_bills": 326.0,
+   "soma_total": 8392.2
+  },
+  {
+   "month": "2022-06",
+   "soma_bills": 326.0,
+   "soma_total": 8384.7
+  },
+  {
+   "month": "2022-07",
+   "soma_bills": 326.0,
+   "soma_total": 8360.9
+  },
+  {
+   "month": "2022-08",
+   "soma_bills": 326.0,
+   "soma_total": 8306.5
+  },
+  {
+   "month": "2022-09",
+   "soma_bills": 312.7,
+   "soma_total": 8272.3
+  },
+  {
+   "month": "2022-10",
+   "soma_bills": 298.3,
+   "soma_total": 8189.7
+  },
+  {
+   "month": "2022-11",
+   "soma_bills": 296.1,
+   "soma_total": 8076.1
+  },
+  {
+   "month": "2022-12",
+   "soma_bills": 291.2,
+   "soma_total": 8041.9
+  },
+  {
+   "month": "2023-01",
+   "soma_bills": 286.2,
+   "soma_total": 7960.9
+  },
+  {
+   "month": "2023-02",
+   "soma_bills": 285.0,
+   "soma_total": 7886.3
+  },
+  {
+   "month": "2023-03",
+   "soma_bills": 281.8,
+   "soma_total": 7822.3
+  },
+  {
+   "month": "2023-04",
+   "soma_bills": 281.0,
+   "soma_total": 7739.9
+  },
+  {
+   "month": "2023-05",
+   "soma_bills": 281.0,
+   "soma_total": 7618.9
+  },
+  {
+   "month": "2023-06",
+   "soma_bills": 271.8,
+   "soma_total": 7577.4
+  },
+  {
+   "month": "2023-07",
+   "soma_bills": 261.3,
+   "soma_total": 7492.7
+  },
+  {
+   "month": "2023-08",
+   "soma_bills": 259.4,
+   "soma_total": 7398.2
+  },
+  {
+   "month": "2023-09",
+   "soma_bills": 244.1,
+   "soma_total": 7329.5
+  },
+  {
+   "month": "2023-10",
+   "soma_bills": 232.8,
+   "soma_total": 7265.0
+  },
+  {
+   "month": "2023-11",
+   "soma_bills": 231.3,
+   "soma_total": 7178.5
+  },
+  {
+   "month": "2023-12",
+   "soma_bills": 222.4,
+   "soma_total": 7110.7
+  },
+  {
+   "month": "2024-01",
+   "soma_bills": 210.4,
+   "soma_total": 7001.0
+  },
+  {
+   "month": "2024-02",
+   "soma_bills": 210.4,
+   "soma_total": 6956.0
+  },
+  {
+   "month": "2024-03",
+   "soma_bills": 199.2,
+   "soma_total": 6895.8
+  },
+  {
+   "month": "2024-04",
+   "soma_bills": 195.1,
+   "soma_total": 6813.6
+  },
+  {
+   "month": "2024-05",
+   "soma_bills": 195.2,
+   "soma_total": 6729.8
+  },
+  {
+   "month": "2024-06",
+   "soma_bills": 195.3,
+   "soma_total": 6673.5
+  },
+  {
+   "month": "2024-07",
+   "soma_bills": 195.3,
+   "soma_total": 6617.3
+  },
+  {
+   "month": "2024-08",
+   "soma_bills": 195.3,
+   "soma_total": 6583.9
+  },
+  {
+   "month": "2024-09",
+   "soma_bills": 195.3,
+   "soma_total": 6551.1
+  },
+  {
+   "month": "2024-10",
+   "soma_bills": 195.3,
+   "soma_total": 6509.0
+  },
+  {
+   "month": "2024-11",
+   "soma_bills": 195.3,
+   "soma_total": 6456.6
+  },
+  {
+   "month": "2024-12",
+   "soma_bills": 195.3,
+   "soma_total": 6408.3
+  },
+  {
+   "month": "2025-01",
+   "soma_bills": 195.3,
+   "soma_total": 6387.8
+  },
+  {
+   "month": "2025-02",
+   "soma_bills": 195.3,
+   "soma_total": 6350.2
+  },
+  {
+   "month": "2025-03",
+   "soma_bills": 195.3,
+   "soma_total": 6319.6
+  },
+  {
+   "month": "2025-04",
+   "soma_bills": 195.3,
+   "soma_total": 6281.8
+  },
+  {
+   "month": "2025-05",
+   "soma_bills": 195.4,
+   "soma_total": 6262.1
+  },
+  {
+   "month": "2025-06",
+   "soma_bills": 195.4,
+   "soma_total": 6242.1
+  },
+  {
+   "month": "2025-07",
+   "soma_bills": 195.5,
+   "soma_total": 6220.4
+  },
+  {
+   "month": "2025-08",
+   "soma_bills": 195.5,
+   "soma_total": 6196.7
+  },
+  {
+   "month": "2025-09",
+   "soma_bills": 195.5,
+   "soma_total": 6191.2
+  },
+  {
+   "month": "2025-10",
+   "soma_bills": 195.5,
+   "soma_total": 6156.8
+  },
+  {
+   "month": "2025-11",
+   "soma_bills": 195.5,
+   "soma_total": 6133.9
+  },
+  {
+   "month": "2025-12",
+   "soma_bills": 233.6,
+   "soma_total": 6154.7
+  },
+  {
+   "month": "2026-01",
+   "soma_bills": 273.5,
+   "soma_total": 6190.3
+  },
+  {
+   "month": "2026-02",
+   "soma_bills": 329.3,
+   "soma_total": 6232.9
+  },
+  {
+   "month": "2026-03",
+   "soma_bills": 381.6,
+   "soma_total": 6271.5
+  },
+  {
+   "month": "2026-04",
+   "soma_bills": 430.3,
+   "soma_total": 6308.1
+  },
+  {
+   "month": "2026-05",
+   "soma_bills": 462.9,
+   "soma_total": 6324.5
+  },
+  {
+   "month": "2026-06",
+   "soma_bills": 486.0,
+   "soma_total": 6344.3
+  },
+  {
+   "month": "2026-07",
+   "soma_bills": 514.5,
+   "soma_total": 6345.6
+  },
+  {
+   "month": "2026-08",
+   "soma_bills": 524.9,
+   "soma_total": 6356.0
+  }
+ ],
+ "fetched_at": "2026-08-10T16:10:11.951391Z"
+}
