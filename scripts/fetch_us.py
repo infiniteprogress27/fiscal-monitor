@@ -349,17 +349,25 @@ def _spx_yahoo():
                          "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"),
           "Accept": "application/json"}
     r = None
-    for host in ("query1", "query2"):
-        try:
-            r = requests.get(f"https://{host}.finance.yahoo.com/v8/finance/chart/%5EGSPC",
-                             params={"range": "max", "interval": "1d"}, headers=ua, timeout=90)
-            r.raise_for_status()
+    param_sets = [{"range": "max", "interval": "1d"},
+                  {"period1": "694224000", "period2": "9999999999", "interval": "1d"}]
+    for params in param_sets:
+        for host in ("query1", "query2"):
+            try:
+                r0 = requests.get(f"https://{host}.finance.yahoo.com/v8/finance/chart/%5EGSPC",
+                                  params=params, headers=ua, timeout=90)
+                r0.raise_for_status()
+                ts0 = (r0.json()["chart"]["result"][0]).get("timestamp") or []
+                if len(ts0) > 7000:
+                    r = r0
+                    break
+                print(f"  yahoo {host} {list(params)[0]} 返回过短({len(ts0)}), 换参数")
+            except Exception as e:
+                print(f"  yahoo {host} 失败: {e}")
+        if r is not None:
             break
-        except Exception as e:
-            print(f"  yahoo {host} 失败: {e}")
-            r = None
     if r is None:
-        raise ValueError("yahoo双域名均失败")
+        raise ValueError("yahoo双域名双参数均失败")
     res = r.json()["chart"]["result"][0]
     ts = res["timestamp"]
     closes = res["indicators"]["quote"][0]["close"]
