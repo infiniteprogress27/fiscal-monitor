@@ -107,6 +107,13 @@ def fy_paths(mts_series):
 # ---------------------------------------------------------------- 状态行
 
 def status_metric(obj, ctx):
+    try:
+        return _status_metric(obj, ctx)
+    except Exception:
+        return '<span class="stub">数据待校准</span>'
+
+
+def _status_metric(obj, ctx):
     t = obj.get("status_line", "stage")
     a = ctx["anchors"]
     if t == "headroom":
@@ -599,7 +606,11 @@ def render_object(obj, ctx):
                          for lid in obj["laws"])
         dossier += f'<div class="mech"><b>相关框架法</b><br>{links}</div>'
     dossier += sources_table(obj)
-    view_html = VIEWS[obj["view"]](obj, ctx)
+    try:
+        view_html = VIEWS[obj["view"]](obj, ctx)
+    except Exception as e:
+        view_html = (f'<div class="anchor-note">模块渲染降级: 数据待首跑校准 '
+                     f'({type(e).__name__}) · 校正字段映射后自动恢复</div>')
     return f"""
 <section class="obj" id="obj-{obj['id']}">
   <div class="srow">
