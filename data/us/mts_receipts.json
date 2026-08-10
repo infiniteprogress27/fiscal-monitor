@@ -1,6 +1,31 @@
 {
  "sample": false,
- "as_of": "2026-06-30",
- "rows": [],
- "fetched_at": "2026-08-10T16:38:34.533865Z"
+ "as_of": "2026-06",
+ "rows": [
+  {
+   "id": "rev_pay",
+   "cat": "Payroll(社保税)",
+   "fytd": 1384.0,
+   "fytd_prior": 1349.0
+  },
+  {
+   "id": "rev_corp",
+   "cat": "企业所得税",
+   "fytd": 279.0,
+   "fytd_prior": 366.0
+  },
+  {
+   "id": "rev_tariff",
+   "cat": "关税",
+   "fytd": 163.0,
+   "fytd_prior": 108.0
+  },
+  {
+   "id": "rev_other",
+   "cat": "其他收入",
+   "fytd": 130.0,
+   "fytd_prior": 125.0
+  }
+ ],
+ "fetched_at": "2026-08-10T16:55:01.826006Z"
 }

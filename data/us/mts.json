@@ -1,5 +1,582 @@
 {
  "sample": false,
- "series": [],
- "fetched_at": "2026-08-10T16:38:33.974760Z"
+ "series": [
+  {
+   "month": "2018-07",
+   "receipts": 316.3,
+   "outlays": 391.1,
+   "balance": -74.9
+  },
+  {
+   "month": "2018-08",
+   "receipts": 240.4,
+   "outlays": 328.8,
+   "balance": -88.4
+  },
+  {
+   "month": "2018-09",
+   "receipts": 225.3,
+   "outlays": 302.1,
+   "balance": -76.9
+  },
+  {
+   "month": "2018-10",
+   "receipts": 252.7,
+   "outlays": 353.2,
+   "balance": -100.5
+  },
+  {
+   "month": "2018-11",
+   "receipts": 206.0,
+   "outlays": 410.9,
+   "balance": -204.9
+  },
+  {
+   "month": "2018-12",
+   "receipts": 312.6,
+   "outlays": 326.1,
+   "balance": -13.5
+  },
+  {
+   "month": "2019-01",
+   "receipts": 340.0,
+   "outlays": 331.3,
+   "balance": 8.7
+  },
+  {
+   "month": "2019-02",
+   "receipts": 210.8,
+   "outlays": 419.6,
+   "balance": -208.7
+  },
+  {
+   "month": "2019-03",
+   "receipts": 155.6,
+   "outlays": 370.9,
+   "balance": -215.2
+  },
+  {
+   "month": "2019-04",
+   "receipts": 206.0,
+   "outlays": 410.9,
+   "balance": -204.9
+  },
+  {
+   "month": "2019-05",
+   "receipts": 316.3,
+   "outlays": 391.1,
+   "balance": -74.9
+  },
+  {
+   "month": "2019-06",
+   "receipts": 340.0,
+   "outlays": 331.3,
+   "balance": 8.7
+  },
+  {
+   "month": "2019-07",
+   "receipts": 219.1,
+   "outlays": 433.3,
+   "balance": -214.1
+  },
+  {
+   "month": "2019-08",
+   "receipts": 312.6,
+   "outlays": 326.1,
+   "balance": -13.5
+  },
+  {
+   "month": "2019-09",
+   "receipts": 208.4,
+   "outlays": 346.9,
+   "balance": -138.5
+  },
+  {
+   "month": "2019-10",
+   "receipts": 245.5,
+   "outlays": 380.0,
+   "balance": -134.5
+  },
+  {
+   "month": "2019-11",
+   "receipts": 232.1,
+   "outlays": 439.8,
+   "balance": -207.8
+  },
+  {
+   "month": "2019-12",
+   "receipts": 335.8,
+   "outlays": 349.1,
+   "balance": -13.3
+  },
+  {
+   "month": "2020-01",
+   "receipts": 334.0,
+   "outlays": 342.4,
+   "balance": -8.5
+  },
+  {
+   "month": "2020-02",
+   "receipts": 188.0,
+   "outlays": 423.3,
+   "balance": -235.3
+  },
+  {
+   "month": "2020-03",
+   "receipts": 236.8,
+   "outlays": 355.9,
+   "balance": -119.1
+  },
+  {
+   "month": "2020-04",
+   "receipts": 334.0,
+   "outlays": 342.4,
+   "balance": -8.5
+  },
+  {
+   "month": "2020-05",
+   "receipts": 225.2,
+   "outlays": 434.0,
+   "balance": -208.8
+  },
+  {
+   "month": "2020-06",
+   "receipts": 240.8,
+   "outlays": 1104.9,
+   "balance": -864.1
+  },
+  {
+   "month": "2020-07",
+   "receipts": 374.1,
+   "outlays": 291.3,
+   "balance": 82.8
+  },
+  {
+   "month": "2020-08",
+   "receipts": 228.0,
+   "outlays": 428.3,
+   "balance": -200.3
+  },
+  {
+   "month": "2020-09",
+   "receipts": 372.3,
+   "outlays": 404.9,
+   "balance": -32.6
+  },
+  {
+   "month": "2020-10",
+   "receipts": 237.7,
+   "outlays": 521.8,
+   "balance": -284.1
+  },
+  {
+   "month": "2020-11",
+   "receipts": 225.2,
+   "outlays": 434.0,
+   "balance": -208.8
+  },
+  {
+   "month": "2020-12",
+   "receipts": 346.1,
+   "outlays": 489.7,
+   "balance": -143.6
+  },
+  {
+   "month": "2021-01",
+   "receipts": 384.7,
+   "outlays": 547.5,
+   "balance": -162.8
+  },
+  {
+   "month": "2021-02",
+   "receipts": 248.3,
+   "outlays": 559.2,
+   "balance": -310.9
+  },
+  {
+   "month": "2021-03",
+   "receipts": 267.6,
+   "outlays": 927.2,
+   "balance": -659.6
+  },
+  {
+   "month": "2021-04",
+   "receipts": 439.2,
+   "outlays": 664.8,
+   "balance": -225.6
+  },
+  {
+   "month": "2021-05",
+   "receipts": 245.5,
+   "outlays": 380.0,
+   "balance": -134.5
+  },
+  {
+   "month": "2021-06",
+   "receipts": 449.2,
+   "outlays": 623.4,
+   "balance": -174.2
+  },
+  {
+   "month": "2021-07",
+   "receipts": 262.0,
+   "outlays": 564.1,
+   "balance": -302.1
+  },
+  {
+   "month": "2021-08",
+   "receipts": 225.2,
+   "outlays": 434.0,
+   "balance": -208.8
+  },
+  {
+   "month": "2021-09",
+   "receipts": 459.5,
+   "outlays": 521.1,
+   "balance": -61.5
+  },
+  {
+   "month": "2021-10",
+   "receipts": 248.3,
+   "outlays": 559.2,
+   "balance": -310.9
+  },
+  {
+   "month": "2021-11",
+   "receipts": 281.2,
+   "outlays": 472.5,
+   "balance": -191.3
+  },
+  {
+   "month": "2021-12",
+   "receipts": 281.2,
+   "outlays": 472.5,
+   "balance": -191.3
+  },
+  {
+   "month": "2022-01",
+   "receipts": 465.1,
+   "outlays": 346.4,
+   "balance": 118.7
+  },
+  {
+   "month": "2022-02",
+   "receipts": 289.9,
+   "outlays": 506.5,
+   "balance": -216.6
+  },
+  {
+   "month": "2022-03",
+   "receipts": 315.2,
+   "outlays": 507.9,
+   "balance": -192.7
+  },
+  {
+   "month": "2022-04",
+   "receipts": 863.6,
+   "outlays": 555.4,
+   "balance": 308.2
+  },
+  {
+   "month": "2022-05",
+   "receipts": 389.0,
+   "outlays": 455.2,
+   "balance": -66.2
+  },
+  {
+   "month": "2022-06",
+   "receipts": 460.8,
+   "outlays": 549.6,
+   "balance": -88.8
+  },
+  {
+   "month": "2022-07",
+   "receipts": 269.3,
+   "outlays": 480.4,
+   "balance": -211.1
+  },
+  {
+   "month": "2022-08",
+   "receipts": 303.7,
+   "outlays": 523.3,
+   "balance": -219.6
+  },
+  {
+   "month": "2022-09",
+   "receipts": 487.7,
+   "outlays": 917.4,
+   "balance": -429.7
+  },
+  {
+   "month": "2022-10",
+   "receipts": 318.6,
+   "outlays": 406.4,
+   "balance": -87.8
+  },
+  {
+   "month": "2022-11",
+   "receipts": 252.1,
+   "outlays": 500.6,
+   "balance": -248.5
+  },
+  {
+   "month": "2022-12",
+   "receipts": 454.9,
+   "outlays": 539.9,
+   "balance": -85.0
+  },
+  {
+   "month": "2023-01",
+   "receipts": 447.3,
+   "outlays": 486.1,
+   "balance": -38.8
+  },
+  {
+   "month": "2023-02",
+   "receipts": 262.1,
+   "outlays": 524.5,
+   "balance": -262.4
+  },
+  {
+   "month": "2023-03",
+   "receipts": 313.2,
+   "outlays": 691.3,
+   "balance": -378.1
+  },
+  {
+   "month": "2023-04",
+   "receipts": 638.5,
+   "outlays": 462.3,
+   "balance": 176.2
+  },
+  {
+   "month": "2023-05",
+   "receipts": 307.5,
+   "outlays": 547.8,
+   "balance": -240.3
+  },
+  {
+   "month": "2023-06",
+   "receipts": 418.3,
+   "outlays": 646.1,
+   "balance": -227.8
+  },
+  {
+   "month": "2023-07",
+   "receipts": 276.2,
+   "outlays": 496.9,
+   "balance": -220.8
+  },
+  {
+   "month": "2023-08",
+   "receipts": 283.1,
+   "outlays": 193.9,
+   "balance": 89.3
+  },
+  {
+   "month": "2023-09",
+   "receipts": 467.5,
+   "outlays": 638.5,
+   "balance": -171.0
+  },
+  {
+   "month": "2023-10",
+   "receipts": 403.4,
+   "outlays": 470.0,
+   "balance": -66.6
+  },
+  {
+   "month": "2023-11",
+   "receipts": 274.8,
+   "outlays": 588.8,
+   "balance": -314.0
+  },
+  {
+   "month": "2023-12",
+   "receipts": 429.3,
+   "outlays": 558.7,
+   "balance": -129.4
+  },
+  {
+   "month": "2024-01",
+   "receipts": 477.3,
+   "outlays": 499.3,
+   "balance": -21.9
+  },
+  {
+   "month": "2024-02",
+   "receipts": 271.1,
+   "outlays": 567.4,
+   "balance": -296.3
+  },
+  {
+   "month": "2024-03",
+   "receipts": 283.1,
+   "outlays": 193.9,
+   "balance": 89.3
+  },
+  {
+   "month": "2024-04",
+   "receipts": 283.1,
+   "outlays": 193.9,
+   "balance": 89.3
+  },
+  {
+   "month": "2024-05",
+   "receipts": 467.5,
+   "outlays": 638.2,
+   "balance": -170.7
+  },
+  {
+   "month": "2024-06",
+   "receipts": 332.1,
+   "outlays": 568.6,
+   "balance": -236.6
+  },
+  {
+   "month": "2024-07",
+   "receipts": 276.2,
+   "outlays": 496.9,
+   "balance": -220.8
+  },
+  {
+   "month": "2024-08",
+   "receipts": 776.2,
+   "outlays": 566.7,
+   "balance": 209.5
+  },
+  {
+   "month": "2024-09",
+   "receipts": 276.2,
+   "outlays": 496.9,
+   "balance": -220.8
+  },
+  {
+   "month": "2024-10",
+   "receipts": 332.1,
+   "outlays": 568.6,
+   "balance": -236.6
+  },
+  {
+   "month": "2024-11",
+   "receipts": 301.8,
+   "outlays": 668.5,
+   "balance": -366.8
+  },
+  {
+   "month": "2024-12",
+   "receipts": 527.0,
+   "outlays": 462.3,
+   "balance": 64.7
+  },
+  {
+   "month": "2025-01",
+   "receipts": 477.3,
+   "outlays": 499.3,
+   "balance": -21.9
+  },
+  {
+   "month": "2025-02",
+   "receipts": 332.1,
+   "outlays": 568.6,
+   "balance": -236.6
+  },
+  {
+   "month": "2025-03",
+   "receipts": 326.8,
+   "outlays": 584.2,
+   "balance": -257.5
+  },
+  {
+   "month": "2025-04",
+   "receipts": 367.6,
+   "outlays": 528.2,
+   "balance": -160.5
+  },
+  {
+   "month": "2025-05",
+   "receipts": 371.2,
+   "outlays": 687.2,
+   "balance": -316.0
+  },
+  {
+   "month": "2025-06",
+   "receipts": 526.4,
+   "outlays": 499.4,
+   "balance": 27.0
+  },
+  {
+   "month": "2025-07",
+   "receipts": 776.2,
+   "outlays": 566.7,
+   "balance": 209.5
+  },
+  {
+   "month": "2025-08",
+   "receipts": 429.3,
+   "outlays": 558.7,
+   "balance": -129.4
+  },
+  {
+   "month": "2025-09",
+   "receipts": 306.5,
+   "outlays": 686.6,
+   "balance": -380.1
+  },
+  {
+   "month": "2025-10",
+   "receipts": 344.3,
+   "outlays": 689.1,
+   "balance": -344.8
+  },
+  {
+   "month": "2025-11",
+   "receipts": 404.4,
+   "outlays": 688.7,
+   "balance": -284.4
+  },
+  {
+   "month": "2025-12",
+   "receipts": 484.4,
+   "outlays": 629.1,
+   "balance": -144.7
+  },
+  {
+   "month": "2026-01",
+   "receipts": 559.9,
+   "outlays": 654.6,
+   "balance": -94.6
+  },
+  {
+   "month": "2026-02",
+   "receipts": 850.2,
+   "outlays": 591.8,
+   "balance": 258.4
+  },
+  {
+   "month": "2026-03",
+   "receipts": 384.9,
+   "outlays": 549.0,
+   "balance": -164.1
+  },
+  {
+   "month": "2026-04",
+   "receipts": 560.1,
+   "outlays": 654.7,
+   "balance": -94.6
+  },
+  {
+   "month": "2026-05",
+   "receipts": 371.2,
+   "outlays": 686.9,
+   "balance": -315.7
+  },
+  {
+   "month": "2026-06",
+   "receipts": 344.3,
+   "outlays": 689.1,
+   "balance": -344.8
+  }
+ ],
+ "fetched_at": "2026-08-10T16:55:01.410108Z"
 }

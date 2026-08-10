@@ -54,1009 +54,197 @@
    "actual": 7932.7
   },
   {
-   "month": "2005-10",
-   "actual": 0.1
-  },
-  {
-   "month": "2005-11",
-   "actual": 0.1
-  },
-  {
-   "month": "2005-12",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-01",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-02",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-03",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-04",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-05",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-06",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-07",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-08",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-09",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-10",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-11",
-   "actual": 0.1
-  },
-  {
-   "month": "2006-12",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-01",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-02",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-03",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-04",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-05",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-06",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-07",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-08",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-09",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-10",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-11",
-   "actual": 0.1
-  },
-  {
-   "month": "2007-12",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-01",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-02",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-03",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-04",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-05",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-06",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-07",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-08",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-09",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-10",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-11",
-   "actual": 0.1
-  },
-  {
-   "month": "2008-12",
-   "actual": 0.1
-  },
-  {
-   "month": "2009-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2009-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2010-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2011-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2012-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2013-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2014-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2015-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2016-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2017-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2018-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2019-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2020-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-08",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-09",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-10",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-11",
-   "actual": 0.0
-  },
-  {
-   "month": "2021-12",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-01",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-02",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-03",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-04",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-05",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-06",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-07",
-   "actual": 0.0
-  },
-  {
-   "month": "2022-08",
-   "actual": 0.0
-  },
-  {
    "month": "2022-09",
-   "actual": 0.0
+   "actual": 30924.1
   },
   {
    "month": "2022-10",
-   "actual": 0.0
+   "actual": 31233.5
   },
   {
    "month": "2022-11",
-   "actual": 0.0
+   "actual": 31408.5
   },
   {
    "month": "2022-12",
-   "actual": 0.0
+   "actual": 31414.8
   },
   {
    "month": "2023-01",
-   "actual": 0.0
+   "actual": 31450.1
   },
   {
    "month": "2023-02",
-   "actual": 0.0
+   "actual": 31454.4
   },
   {
    "month": "2023-03",
-   "actual": 0.0
+   "actual": 31453.6
   },
   {
    "month": "2023-04",
-   "actual": 0.0
+   "actual": 31453.0
   },
   {
    "month": "2023-05",
-   "actual": 0.0
+   "actual": 31457.7
   },
   {
    "month": "2023-06",
-   "actual": 0.0
+   "actual": 32326.8
   },
   {
    "month": "2023-07",
-   "actual": 0.0
+   "actual": 32603.1
   },
   {
    "month": "2023-08",
-   "actual": 0.0
+   "actual": 32908.7
   },
   {
    "month": "2023-09",
-   "actual": 0.0
+   "actual": 33161.8
   },
   {
    "month": "2023-10",
-   "actual": 0.0
+   "actual": 33694.1
   },
   {
    "month": "2023-11",
-   "actual": 0.0
+   "actual": 33873.2
   },
   {
    "month": "2023-12",
-   "actual": 0.0
+   "actual": 33996.0
   },
   {
    "month": "2024-01",
-   "actual": 0.0
+   "actual": 34185.7
   },
   {
    "month": "2024-02",
-   "actual": 0.0
+   "actual": 34465.6
   },
   {
    "month": "2024-03",
-   "actual": 0.0
+   "actual": 34581.0
   },
   {
    "month": "2024-04",
-   "actual": 0.0
+   "actual": 34611.5
   },
   {
    "month": "2024-05",
-   "actual": 0.0
+   "actual": 34661.6
   },
   {
    "month": "2024-06",
-   "actual": 0.0
+   "actual": 34827.1
   },
   {
    "month": "2024-07",
-   "actual": 0.0
+   "actual": 35100.3
   },
   {
    "month": "2024-08",
-   "actual": 0.0
+   "actual": 35251.5
   },
   {
    "month": "2024-09",
-   "actual": 0.0
+   "actual": 35460.2
   },
   {
    "month": "2024-10",
-   "actual": 0.0
+   "actual": 35947.1
   },
   {
    "month": "2024-11",
-   "actual": 0.0
+   "actual": 36082.8
   },
   {
    "month": "2024-12",
-   "actual": 0.0
+   "actual": 36214.1
   },
   {
    "month": "2025-01",
-   "actual": 0.0
+   "actual": 36215.7
   },
   {
    "month": "2025-02",
-   "actual": 0.0
+   "actual": 36214.4
   },
   {
    "month": "2025-03",
-   "actual": 0.0
+   "actual": 36209.8
   },
   {
    "month": "2025-04",
-   "actual": 0.0
+   "actual": 36209.0
   },
   {
    "month": "2025-05",
-   "actual": 0.0
+   "actual": 36211.3
   },
   {
    "month": "2025-06",
-   "actual": 0.0
+   "actual": 36207.4
   },
   {
    "month": "2025-07",
-   "actual": 0.0
+   "actual": 36912.9
   },
   {
    "month": "2025-08",
-   "actual": 0.0
+   "actual": 37270.2
   },
   {
    "month": "2025-09",
-   "actual": 0.0
+   "actual": 37633.5
   },
   {
    "month": "2025-10",
-   "actual": 0.0
+   "actual": 38036.0
   },
   {
    "month": "2025-11",
-   "actual": 0.0
+   "actual": 38392.1
   },
   {
    "month": "2025-12",
-   "actual": 0.0
+   "actual": 38509.9
   },
   {
    "month": "2026-01",
-   "actual": 0.0
+   "actual": 38517.3
   },
   {
    "month": "2026-02",
-   "actual": 0.0
+   "actual": 38765.7
   },
   {
    "month": "2026-03",
-   "actual": 0.0
+   "actual": 39061.3
   },
   {
    "month": "2026-04",
-   "actual": 0.0
+   "actual": 38963.7
   },
   {
    "month": "2026-05",
-   "actual": 0.0
+   "actual": 39203.7
   },
   {
    "month": "2026-06",
-   "actual": 0.0
+   "actual": 39458.8
   },
   {
    "month": "2026-07",
-   "actual": 0.0
+   "actual": 39768.0
   },
   {
    "month": "2026-08",
-   "actual": 0.0
+   "actual": 39886.7
   }
  ],
- "fetched_at": "2026-08-10T16:38:03.532765Z"
+ "fetched_at": "2026-08-10T16:54:36.648992Z"
 }
