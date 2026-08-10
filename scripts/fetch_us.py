@@ -81,7 +81,8 @@ def fetch_debt_limit():
     s = []
     for r in recs:
         catg = (r.get("debt_catg") or "")
-        if "Subject to Limit" not in catg or "Total" not in catg: continue
+        if "Subject to Limit" not in catg or "Not Subject" in catg:
+            continue
         v = _pick(r, ["close_today_bal", "total_debt_subj_limit_amt"])
         if v is not None:
             s.append({"date": r["record_date"], "subj_limit": round(v/1e3, 1)})
@@ -112,7 +113,9 @@ def fetch_mts():
         cls = (r.get("classification_desc") or "").lower()
         cur = _pick(r, ["current_month_gross_amt", "current_month_net_amt",
                         "current_month_rcpt_outly_amt", "current_month_dfct_sur_amt",
-                        "current_month_amt"])
+                        "current_month_amt", "current_month_net_rcpt_amt",
+                        "current_month_gross_rcpt_amt", "current_month_net_outly_amt",
+                        "current_month_gross_outly_amt"])
         if cur is None: continue
         slot = bym.setdefault(r["record_date"][:7], {})
         if "receipt" in cls and "total" in cls: slot["receipts"] = cur/1e3; hit += 1
@@ -137,8 +140,12 @@ def _fetch_mts_cat(table, name):
         for r in recs:
             if r["record_date"] != latest: continue
             cls = r.get("classification_desc") or ""
-            fytd = _pick(r, ["fytd_gross_amt", "fytd_net_amt", "fytd_rcpt_outly_amt", "fytd_amt"])
-            py = _pick(r, ["prior_fytd_gross_amt", "prior_fytd_net_amt", "prior_fytd_rcpt_outly_amt"])
+            fytd = _pick(r, ["fytd_gross_amt", "fytd_net_amt", "fytd_rcpt_outly_amt", "fytd_amt",
+                             "fytd_net_rcpt_amt", "fytd_gross_rcpt_amt",
+                             "fytd_net_outly_amt", "fytd_gross_outly_amt"])
+            py = _pick(r, ["prior_fytd_gross_amt", "prior_fytd_net_amt", "prior_fytd_rcpt_outly_amt",
+                           "prior_fytd_net_rcpt_amt", "prior_fytd_net_outly_amt",
+                           "prior_fytd_gross_rcpt_amt", "prior_fytd_gross_outly_amt"])
             if fytd is None or "total" in cls.lower(): continue
             rows.append({"cat": cls, "fytd": round(fytd/1e3, 1),
                          "fytd_prior": round(py/1e3, 1) if py else None})
@@ -174,9 +181,22 @@ def fetch_upcoming():
     _write("upcoming", {"sample": False, "records": rows})
 
 
+BUYBACK_ENDPOINTS = ["/v1/accounting/od/treasury_securities_buybacks_operations",
+                     "/v1/accounting/od/buybacks_operations",
+                     "/v1/accounting/od/tsb_operations",
+                     "/v1/accounting/od/buybacks_security_details",
+                     "/v1/accounting/od/buybacks"]
+
 def fetch_buybacks():
-    recs = api_get("/v1/accounting/od/treasury_securities_buybacks_operations",
-                   {"filter": f"operation_date:gte:{ago(180)}", "sort": "-operation_date"})
+    recs, used = [], None
+    for ep in BUYBACK_ENDPOINTS:
+        try:
+            recs = api_get(ep, {"filter": f"operation_date:gte:{ago(180)}", "sort": "-operation_date"})
+            if recs:
+                used = ep; break
+        except Exception:
+            continue
+    if used: print(f"  buybacks端点: {used}")
     rows = []
     for r in recs:
         mx = _pick(r, ["max_purchase_amt", "maximum_purchase_amt"])
@@ -211,14 +231,55 @@ def fetch_interest():
     _write("interest", {"sample": False, "series": s})
 
 
+MSPD_CLS = {"Bills": "Bills", "Notes": "Notes", "Bonds": "Bonds",
+            "Treasury Inflation-Protected Securities": "TIPS",
+            "Floating Rate Notes": "FRN"}
+
 def fetch_mspd():
     recs = api_get("/v1/debt/mspd/mspd_table_1",
                    {"filter": f"record_date:gte:{ago(70)}", "sort": "-record_date"})
-    # 品种结构留待字段校验; 先落原始
-    if recs: _debug("mspd", recs)
-    _write("mspd_structure", {"sample": False, "as_of": recs[0]["record_date"] if recs else None,
-                              "mix": [], "maturity_wall": [], "wam_months": None,
-                              "note": "首跑后按_debug_mspd.json校正品种/到期字段映射"})
+    latest = max((r["record_date"] for r in recs), default=None)
+    mix = []
+    for r in recs:
+        if r["record_date"] != latest: continue
+        if (r.get("security_type_desc") or "") != "Marketable": continue
+        cls = r.get("security_class_desc") or ""
+        if cls in MSPD_CLS:
+            v = _pick(r, ["total_mil_amt"])
+            if v is not None:
+                mix.append({"type": MSPD_CLS[cls], "out_bn": round(v/1e3, 0)})
+    if not mix and recs: _debug("mspd", recs)
+    _write("mspd_structure", {"sample": False, "as_of": latest, "mix": mix,
+                              "maturity_wall": [], "wam_months": None,
+                              "note": "到期墙待mspd_table_3接入"})
+
+
+def fetch_supply():
+    """供给结构真实序列: MSPD月度bills/marketable + SOMA bills合并 (weekly)。"""
+    recs = api_get("/v1/debt/mspd/mspd_table_1",
+                   {"filter": "record_date:gte:2001-01-01", "sort": "record_date"}, max_pages=30)
+    bym = {}
+    for r in recs:
+        if (r.get("security_type_desc") or "") != "Marketable": continue
+        m = r["record_date"][:7]
+        cls = r.get("security_class_desc") or ""
+        v = _pick(r, ["total_mil_amt"])
+        if v is None: continue
+        slot = bym.setdefault(m, {})
+        if cls == "Bills": slot["bills"] = v/1e3
+        if "Total" in cls: slot["mkt"] = v/1e3
+    soma = {}
+    p = OUT / "soma.json"
+    if p.exists():
+        soma = {r["month"]: r["soma_bills"] for r in json.loads(p.read_text(encoding="utf-8")).get("series", [])}
+    s = []
+    for m in sorted(bym):
+        b, k = bym[m].get("bills"), bym[m].get("mkt")
+        if not b or not k: continue
+        s.append({"month": m, "tbills_share": round(100*b/k, 1), "bills_bn": round(b, 0),
+                  "soma_bills": soma.get(m)})
+    if not s and recs: _debug("supply", recs)
+    else: _write("supply", {"sample": False, "series": s})
 
 
 
@@ -245,13 +306,10 @@ def fetch_dts_flows():
 
 def fetch_debt_limit_history():
     """限额内债务长序列(2005起), 月末降采样, 供债限双曲线图 (weekly)。"""
-    recs = api_get("/v1/accounting/dts/debt_subject_to_limit",
-                   {"filter": "record_date:gte:2005-06-01,debt_catg:eq:Total Public Debt Subject to Limit",
-                    "sort": "record_date"}, max_pages=12)
-    if not recs:  # eq值历史或有差异, 退化为contains后处理
-        recs = [r for r in api_get("/v1/accounting/dts/debt_subject_to_limit",
-                {"filter": "record_date:gte:2005-06-01", "sort": "record_date"}, max_pages=30)
-                if "Subject to Limit" in (r.get("debt_catg") or "") and "Total" in (r.get("debt_catg") or "")]
+    recs = [r for r in api_get("/v1/accounting/dts/debt_subject_to_limit",
+            {"filter": "record_date:gte:2005-06-01", "sort": "record_date"}, max_pages=40)
+            if "Subject to Limit" in (r.get("debt_catg") or "")
+            and "Not Subject" not in (r.get("debt_catg") or "")]
     bym = {}
     for r in recs:
         v = _pick(r, ["close_today_bal", "total_debt_subj_limit_amt"])
@@ -285,12 +343,23 @@ def _validate_series(pts, lo, hi, min_len, name):
 
 
 def _spx_yahoo():
-    """主源: Yahoo chart接口, ^GSPC日线, 无需鉴权。"""
+    """主源: Yahoo chart接口, ^GSPC日线, 双域名重试。"""
     import requests
-    r = requests.get("https://query1.finance.yahoo.com/v8/finance/chart/%5EGSPC",
-                     params={"range": "max", "interval": "1d"},
-                     headers={"User-Agent": "Mozilla/5.0 fiscal-monitor"}, timeout=90)
-    r.raise_for_status()
+    ua = {"User-Agent": ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+                         "(KHTML, like Gecko) Chrome/126.0 Safari/537.36"),
+          "Accept": "application/json"}
+    r = None
+    for host in ("query1", "query2"):
+        try:
+            r = requests.get(f"https://{host}.finance.yahoo.com/v8/finance/chart/%5EGSPC",
+                             params={"range": "max", "interval": "1d"}, headers=ua, timeout=90)
+            r.raise_for_status()
+            break
+        except Exception as e:
+            print(f"  yahoo {host} 失败: {e}")
+            r = None
+    if r is None:
+        raise ValueError("yahoo双域名均失败")
     res = r.json()["chart"]["result"][0]
     ts = res["timestamp"]
     closes = res["indicators"]["quote"][0]["close"]
@@ -341,14 +410,22 @@ def fetch_annual():
             if d[5:7] != "09":
                 continue
             fy = int(d[:4])
-            fytd = _pick(r, ["fytd_gross_amt", "fytd_net_amt", "fytd_rcpt_outly_amt", "fytd_amt"])
+            fytd = _pick(r, ["fytd_gross_amt", "fytd_net_amt", "fytd_rcpt_outly_amt", "fytd_amt",
+                             "fytd_net_rcpt_amt", "fytd_gross_rcpt_amt",
+                             "fytd_net_outly_amt", "fytd_gross_outly_amt"])
             cls = (r.get("classification_desc") or "").lower()
             if fytd is None or "total" in cls:
                 continue
             cid = next((v for k, v in ANNUAL_MAP.items() if k in cls), f"{side}_other")
             out.setdefault(cid, {})[fy] = out.setdefault(cid, {}).get(fy, 0) + fytd/1e3
     if not out:
-        print("  !! annual无匹配, 待首跑校验")
+        print("  !! annual无匹配, 落debug")
+        try:
+            recs = api_get("/v1/accounting/mts/mts_table_4",
+                           {"filter": f"record_date:gte:{ago(430)}", "sort": "-record_date"}, max_pages=1)
+            _debug("annual_t4", recs)
+        except Exception:
+            pass
         return
     years = sorted({fy for v in out.values() for fy in v})[-10:]
     _write("annual", {"sample": False, "years": years,
@@ -475,8 +552,23 @@ def fetch_market():
             outsp = _validate_series(_spx_stooq(), 1000, 20000, 7000, "SPX(stooq)")
             src = "stooq"
         except Exception as e2:
-            print(f"  !! SPX备源亦失败, 保留旧序列: {e2}")
-            outsp, src = prev.get("spx", []), prev.get("spx_src", "stale")
+            print(f"  SPX备源亦失败({e2}), 尝试FRED近10年拼接")
+            try:
+                fr = []
+                r2 = requests.get("https://fred.stlouisfed.org/graph/fredgraph.csv",
+                                  params={"id": "SP500"}, timeout=60)
+                r2.raise_for_status()
+                for row in csv.DictReader(io.StringIO(r2.text)):
+                    d, v = row.get("DATE") or row.get("observation_date"), row.get("SP500")
+                    if d and v and v != ".":
+                        fr.append([d, round(float(v), 1)])
+                if len(fr) < 2000:
+                    raise ValueError(f"FRED SP500过短 {len(fr)}")
+                old = [p for p in prev.get("spx", []) if p[0] < fr[0][0]]
+                outsp, src = old + fr, f"fred拼接(前段={prev.get('spx_src', 'sample')})"
+            except Exception as e3:
+                print(f"  !! FRED亦失败, 保留旧序列: {e3}")
+                outsp, src = prev.get("spx", []), prev.get("spx_src", "stale")
     # NGDP年度(财年近似=日历年名义GDP均值)
     try:
         gdp = []
@@ -512,23 +604,40 @@ def fetch_auctions_history():
              "high_yield": _pick(r, ["high_yield", "high_investment_rate", "high_discnt_rate"]),
              "btc": _pick(r, ["bid_to_cover_ratio"])} for r in recs]
     _write("auctions_history", {"sample": False, "records": rows})
-    # 推导: 月度coupon尺寸(新发+续发取月内最大) 与 52周bill利率
+
+
+def fetch_coupon_deep():
+    """coupon尺寸2007+与52周bill利率2001+, 独立深抓不入事件库 (weekly)。"""
     TEN = {"2-Year": "2y", "3-Year": "3y", "5-Year": "5y", "7-Year": "7y",
            "10-Year": "10y", "20-Year": "20y", "30-Year": "30y"}
     sizes, b1y = {}, {}
-    for r in rows:
-        m, term, ty = (r.get("auction_date") or "")[:7], r.get("term") or "", r.get("type") or ""
-        if not m: continue
-        if term == "52-Week" and r.get("high_yield") is not None:
-            b1y.setdefault(m, []).append(r["high_yield"])
-        if ty in ("Note", "Bond") and term in TEN and r.get("offering_bn"):
-            key = TEN[term]
-            sizes.setdefault(m, {})[key] = max(sizes.get(m, {}).get(key, 0), r["offering_bn"])
+    for ty in ("Note", "Bond"):
+        recs = api_get("/v1/accounting/od/auctions_query",
+                       {"filter": f"auction_date:gte:2007-01-01,security_type:eq:{ty}",
+                        "sort": "auction_date"}, max_pages=15)
+        for r in recs:
+            m, term = (r.get("auction_date") or "")[:7], r.get("security_term") or ""
+            off = _pick(r, ["offering_amt", "total_accepted"])
+            base = next((k for k in TEN if term.startswith(k)), None)
+            if m and base and off:
+                key = TEN[base]
+                sizes.setdefault(m, {})[key] = max(sizes.get(m, {}).get(key, 0), off/1e9)
+    recs = api_get("/v1/accounting/od/auctions_query",
+                   {"filter": "auction_date:gte:2001-01-01,security_term:eq:52-Week",
+                    "sort": "auction_date"}, max_pages=4)
+    for r in recs:
+        m = (r.get("auction_date") or "")[:7]
+        hy = _pick(r, ["high_discnt_rate", "high_investment_rate", "high_yield"])
+        if m and hy is not None:
+            b1y.setdefault(m, []).append(hy)
     months = sorted(sizes)
-    _write("coupon_sizes", {"sample": False, "months": months,
-        "tenors": {t: [sizes.get(m, {}).get(t) for m in months] for t in TEN.values()}})
-    _write("bill1y", {"sample": False, "series": [
-        {"month": m, "rate": round(sum(v)/len(v), 3)} for m, v in sorted(b1y.items())]})
+    if months:
+        _write("coupon_sizes", {"sample": False, "months": months,
+            "tenors": {t: [round(sizes.get(m, {}).get(t), 0) if sizes.get(m, {}).get(t) else None
+                           for m in months] for t in TEN.values()}})
+    if b1y:
+        _write("bill1y", {"sample": False, "series": [
+            {"month": m, "rate": round(sum(v)/len(v), 3)} for m, v in sorted(b1y.items())]})
 
 
 # ---------------------------------------------------------------- 调度注册表
@@ -540,7 +649,9 @@ FETCHERS = {
     "intraday": [fetch_auctions, fetch_upcoming, fetch_buybacks],
     "weekly":   [fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
                  fetch_debt_limit_history, fetch_market, fetch_approps_status, fetch_annual,
-                 fetch_soma, fetch_debt_long],
+                 fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
+                 fetch_mts, lambda: _fetch_mts_cat(4, "mts_receipts"),
+                 lambda: _fetch_mts_cat(5, "mts_outlays"), fetch_avg_rates, fetch_interest],
     "due:mts":  [fetch_mts, lambda: _fetch_mts_cat(4, "mts_receipts"),
                  lambda: _fetch_mts_cat(5, "mts_outlays"), fetch_avg_rates, fetch_interest,
                  fetch_annual],
