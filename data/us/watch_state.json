@@ -1,8 +1,39 @@
 {
  "bills": {
   "119-hr-8870": {
-   "date": "2026-08-04",
-   "text": "Placed on the Union Calendar. (sample)"
+   "date": "2026-05-22",
+   "text": "Ordered to be Reported (Amended) by the Yeas and Nays: 62 - 2.",
+   "cbo": "2026-07-09T17:44:00Z"
+  },
+  "119-hr-1834": {
+   "date": "2026-02-10",
+   "text": "Read the second time. Placed on Senate Legislative Calendar under General Orders. Calendar No. 319.",
+   "cbo": "2026-01-08T15:06:00Z"
+  },
+  "119-s-3385": {
+   "date": "2025-12-11",
+   "text": "Cloture on the motion to proceed to the measure not invoked in Senate by Yea-Nay Vote. 51 - 48. Record Vote Number: 644. (CR S8654-8655)",
+   "cbo": "2025-12-10T15:03:00Z"
+  },
+  "119-hr-7567": {
+   "date": "2026-05-19",
+   "text": "Received in the Senate.",
+   "cbo": "2026-04-24T17:48:00Z"
+  },
+  "119-hr-9770": {
+   "date": "2026-07-22",
+   "text": "Received in the Senate.",
+   "cbo": null
+  },
+  "119-hconres-113": {
+   "date": "2026-07-23",
+   "text": "Placed on Senate Legislative Calendar under General Orders. Calendar No. 468.",
+   "cbo": null
+  },
+  "119-hr-9105": {
+   "date": "2026-06-23",
+   "text": "Referred to the Subcommittee on Disability Assistance and Memorial Affairs.",
+   "cbo": null
   }
  },
  "pages": {
@@ -27,6 +58,9 @@
   "mandatory_legislation": "2026-08-06",
   "caps_sequestration": "2026-08-10",
   "impoundment": "2026-08-10",
-  "cbo_baseline": "2026-08-10"
+  "cbo_baseline": "2026-08-10",
+  "tax_legislation": "2026-02-10",
+  "appropriations": "2026-07-22",
+  "fiscal_expansion": "2026-07-23"
  }
 }
