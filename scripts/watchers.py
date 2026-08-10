@@ -96,6 +96,10 @@ def watch_legislation(cfg):
     return changes
 
 
+QUIET_BLOCK = {"crs-approps-status", "house-approps-leg", "cbo-data-page"}
+# 以上页面对GitHub runner机房IP封锁, 不可达是常态而非信号, 静默处理;
+# apportionment-db不在列: 其可用性本身是政策信号。
+
 def watch_pages(cfg):
     """页面哈希监听; 不可达本身作为信号(Apportionment库场景)。"""
     pages = _collect(cfg, "watch_pages")
@@ -115,11 +119,13 @@ def watch_pages(cfg):
             ok = False
             print(f"  !! {p['id']} 不可达: {e}")
         if rec.get("ok", True) and not ok:
-            changes.append({"owner": owner, "date": TODAY.isoformat(), "ref": p["id"],
-                            "label": f"{p['name']} 不可达", "summary": "页面无法访问, 可用性本身是信号"})
+            if p["id"] not in QUIET_BLOCK:
+                changes.append({"owner": owner, "date": TODAY.isoformat(), "ref": p["id"],
+                                "label": f"{p['name']} 不可达", "summary": "页面无法访问, 可用性本身是信号"})
         elif ok and not rec.get("ok", True):
-            changes.append({"owner": owner, "date": TODAY.isoformat(), "ref": p["id"],
-                            "label": f"{p['name']} 恢复可达", "summary": ""})
+            if p["id"] not in QUIET_BLOCK:
+                changes.append({"owner": owner, "date": TODAY.isoformat(), "ref": p["id"],
+                                "label": f"{p['name']} 恢复可达", "summary": ""})
         elif ok and rec.get("hash") and rec["hash"] != digest:
             changes.append({"owner": owner, "date": TODAY.isoformat(), "ref": p["id"],
                             "label": f"{p['name']} 内容变化", "summary": "哈希变更, 待人工核对"})
