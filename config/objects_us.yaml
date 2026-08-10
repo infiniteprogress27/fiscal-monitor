@@ -1,0 +1,601 @@
+# 美国财政对象注册表
+# 组织单元 = 财政对象。每个对象是一份活档案: 状态行 / 工作视图 / 档案(折叠)。
+# 日历节点单一归属于对象, 全局时钟条是视图聚合。
+# 本文件为定性层唯一维护点, 定量由 fetch_us.py 落至 data/us/, 渲染由 build_site.py 按 id 绑定。
+
+country: US
+updated: "2026-08-05"
+
+# 人工锚 (卖方/官方预期, 手动维护)
+anchors:
+  cbo_fy2026_deficit_bn: 1850          # CBO基线FY2026赤字, 进度对比的基线路径锚
+  mbr_latest: "7月MBR: 当月赤字估计约240B, 待8/12 MTS核对"
+  qra_borrowing_q3_bn: 671             # 5月QRFE对Q3(7-9月)私人净融资估计
+  qra_borrowing_q3_street: "GS 827 / JPM 731 / BofA 613 / DB 730"
+  tga_target_bn: 1000                  # 7月底指引水位
+  debt_limit_bn: 41100
+  house_topline_fy27_bn: 1856          # 众院12法案基础拨款合计
+  fy2026_enacted_bn: 1639
+  loans_fin_assets_bn: 1780            # 贷款类金融资产(高教为主), CBO口径, 年度人工更新
+
+layers:
+  # ================================================================
+  - id: L1
+    name: 规则与立法
+    time_mode: 状态与节点驱动, 无时间轴
+    objects:
+
+      # ---------------- 重要立法 ----------------
+      - id: tax_legislation
+        name: 税收与收入立法
+        grp: 重要立法
+        view: expiry_table
+        status_line: stage
+        verified: "2026-08-06"
+        laws: [pl119-21]
+        bills:
+          - {ref: 119-hr-1834, name: ACA补贴延长(H.R.1834)}
+          - {ref: 119-s-3385, name: Lower Health Care Costs(S.3385)}
+        qual:
+          state: OBBBA(P.L.119-21)已将TCJA个人条款永久化; 现存到期集中在2028-2029政治性日落条款与已到期的ACA增强补贴
+          base_case: ACA补贴僵持至2026-11开放注册压力点, 中期选举变量; 2028/2029日落届时成为新一轮税改筹码
+          watch: "参院ACA补贴谈判(众院版已过); IEEPA关税最高法判决(收入端最大尾部); 延长全部OBBBA临时条款合计≈$1.5T/10yr(JCT众院版口径), 2028悬崖的总价签"
+        provisions:
+          - {item: TCJA个人所得税条款, vehicle: OBBBA永久化, expiry: 无到期, plan: —, impact: ""}
+          - {item: 100%奖励折旧/研发费用化, vehicle: OBBBA永久化, expiry: 无到期, plan: —, impact: ""}
+          - {item: SALT抵扣上限$40K, vehicle: OBBBA, expiry: 2029年底→回落$10K, plan: 届时博弈, impact: "-$28B/yr (JCT成法$140B/5yr均)"}
+          - {item: 小费/加班费免税, vehicle: OBBBA, expiry: 2028年底, plan: 选举周期筹码, impact: "-$33B/yr (JCT成法$130B/4yr均)"}
+          - {item: 老年人附加扣除, vehicle: OBBBA, expiry: 2028年底, plan: 同上, impact: "-$23B/yr (JCT成法$93B/4yr均)"}
+          - {item: 车贷利息扣除, vehicle: OBBBA, expiry: 2028年底, plan: 同上, impact: "-$8B/yr (JCT成法$31B/4yr均)"}
+          - {item: ACA增强保费补贴(ePTC), vehicle: ARPA/IRA, expiry: 已到期 2025-12-31, plan: "众院3年延长案已过(1/8·230-196), 参院60票僵持; 压力点2026-11开放注册", impact: "-$28B/yr (CBO对S.3385 $82.9B/3yr均; 已到期, 节省已入基线)"}
+          - {item: 关税收入(IEEPA), vehicle: 行政命令, expiry: 最高法判决敞口, plan: 判决若败→退款+收入基线重估, impact: "+$300B/yr量级 (财政部实收口径; 特殊: 败诉另有一次性退款)"}
+        sources:
+          - {name: JCT到期条款清单(JCX), freq: 年度, kind: PDF, link: "https://www.jct.gov/publications/"}
+          - {name: congress.gov 法案追踪, freq: 事件, kind: API}
+
+      - id: mandatory_legislation
+        name: 强制性支出立法
+        grp: 重要立法
+        view: expiry_table
+        status_line: stage
+        verified: "2026-08-05"
+        laws: [pl119-21]
+        bills:
+          - {ref: 119-hr-7567, name: Farm Bill(H.R.7567)}
+          - {ref: 119-hr-8870, name: BUILD America 250(H.R.8870)}
+        qual:
+          state: 三大授权到期堆在2026-09-30前后(Farm Bill/地面交通/财年), 信托基金耗尽在2030年代初构成远期墙
+          base_case: Farm Bill与地面交通在选举年大概率延长或压线通过; 信托基金问题本届无立法动能
+          watch: 参院Farm Bill markup; BUILD America 250 floor排期; OBBBA的Medicaid工作要求执行时间表与州诉讼
+        provisions:
+          - {item: Farm Bill(含SNAP授权), vehicle: 2018法案三度延长, expiry: "2026-09-30(部分程序7/24已到期)", plan: "众院H.R.7567已过(4/30·224-200), 参院6/23讨论稿markup中, 通不过则再延长", impact: "≈0 (BBEDCA§257基线假设延续; 特殊: 商品条款极端回落1938/49永久法)"}
+          - {item: 地面交通授权(IIJA), vehicle: IIJA, expiry: 2026-09-30, plan: "H.R.8870 BUILD America 250($580B/5yr)过T&I 62-2, floor待排; HTF缺口靠一般基金转移", impact: "≈0 (§257假设合同授权按通胀延续)"}
+          - {item: Medicaid(OBBBA修订), vehicle: OBBBA, expiry: "工作要求2026年底起分批生效", plan: "州执行差异与诉讼, 关注豁免", impact: ""}
+          - {item: SNAP州成本分担, vehicle: OBBBA, expiry: FY2028起生效, plan: 州预算博弈, impact: ""}
+          - {item: Social Security(OASDI), vehicle: 社保法, expiry: 信托基金耗尽~2034→自动削减约23%, plan: 无现实立法路径, impact: "≈0 (基线假设足额支付; 特殊: 真实缺口看受托人精算~3.8%应税工资)"}
+          - {item: Medicare HI信托基金, vehicle: 社保法XVIII, expiry: 耗尽~2033, plan: 同上, impact: "≈0 (同上)"}
+          - {item: Medicare医生费率(doc fix), vehicle: 年度载体, expiry: 每年末, plan: 惯例修补, impact: "-$2~4B/yr (CBO逐案)"}
+          - {item: Ex-Im Bank授权, vehicle: 2019重授权, expiry: 2026-12-31, plan: 跛脚鸭会期载体, impact: "≈0 (自负盈亏记分)"}
+        sources:
+          - {name: 社保/Medicare受托人报告, freq: 年(春夏), kind: PDF}
+          - {name: CRS Farm Bill对照(R48918), freq: 事件, kind: HTML, link: "https://www.congress.gov/crs-product/R48918"}
+          - {name: congress.gov 法案追踪, freq: 事件, kind: API}
+
+      # ---------------- 总债务结构与债务上限 ----------------
+      - id: debt_structure
+        name: 总债务结构
+        grp: 总债务结构与债务上限
+        view: debt_tiers
+        status_line: debt_tiers
+        verified: "2026-08-06"
+        qual:
+          state: 各口径量级见下表; 政府间债务90%为GAS(信托基金记账), 限额内≈总债务-FFB等
+          watch: 公众持有/政府间的分解漂移(信托基金由盈转亏会压低政府间份额); 净金融资产口径受学生贷款政策影响
+          mechanism: >
+            口径瀑布: 总债务 = 公众持有 + 政府间(GAS+FFB+少量marketable)。
+            公众持有净金融资产 = 公众持有 - 现金余额(TGA) - 贷款类金融资产(直接贷款为主, 高教占90%+)。
+            限额内债务 = 总债务 - 财政部外机构债务(FFB/TVA等) ± 未摊销调整项。
+            权威源: 日度Debt to the Penny; 月度MSPD含限额对账表; 净口径见CBO年度报告。
+        sources:
+          - {name: Debt to the Penny, freq: 日, kind: API}
+          - {name: MSPD 债限对账, freq: 月, kind: API}
+          - {name: CBO Federal Debt Primer(净口径), freq: 年, kind: PDF}
+
+      - id: debt_limit
+        name: 债务上限
+        grp: 总债务结构与债务上限
+        view: debt_limit
+        status_line: headroom
+        verified: "2026-08-06"
+        laws: [pl119-21]
+        qual:
+          state: 有空间。限额$41.1T (P.L.119-21, 2025-07-04上调$5T), 限额内债务约$39.8T
+          base_case: 按当前赤字节奏, 2027年上半年再次达限; 达限后EM(G-Fund为主, 约$300-400B)可再撑数月
+          watch: DTS限额内债务日度逼近速度; SLGS停售公告(达限前兆); 财长致国会信(X日一手估计)
+          mechanism: >
+            达限后顺序: EM置换腾空间 → 调减Tbills → 减coupon → X日。
+            解决路径: 常规立法(需60票)或和解程序(51票, 每财年一次机会)。
+            X日估计三源: 财长信 / CBO专题 / BPC追踪, 取估计带而非点。
+            图中限额空档=暂停期(suspension, 无限额), 暂停结束按实际发生额重置。法定限额史可回溯1917(统一限额制1939), 实际线2005年前为年度总债务近似(DTS日度自2005/6)。
+        limit_history:
+          - {from: "1990-11", limit: 4145}
+          - {from: "1993-08", limit: 4900}
+          - {from: "1996-03", limit: 5500}
+          - {from: "1997-08", limit: 5950}
+          - {from: "2002-06", limit: 6400}
+          - {from: "2003-05", limit: 7384}
+          - {from: "2004-11", limit: 8184}
+          - {from: "2006-03", limit: 8965}
+          - {from: "2007-09", limit: 9815}
+          - {from: "2008-07", limit: 10615}
+          - {from: "2008-10", limit: 11315}
+          - {from: "2009-02", limit: 12104}
+          - {from: "2009-12", limit: 12394}
+          - {from: "2010-02", limit: 14294}
+          - {from: "2011-08", limit: 16394, note: BCA分步上调}
+          - {from: "2013-02", limit: null, note: 暂停}
+          - {from: "2013-05", limit: 16699}
+          - {from: "2013-10", limit: null, note: 连续两次暂停}
+          - {from: "2015-03", limit: 18113}
+          - {from: "2015-11", limit: null}
+          - {from: "2017-03", limit: 19809}
+          - {from: "2017-09", limit: null}
+          - {from: "2017-12", limit: 20456}
+          - {from: "2018-02", limit: null}
+          - {from: "2019-03", limit: 22030}
+          - {from: "2019-08", limit: null}
+          - {from: "2021-08", limit: 28401}
+          - {from: "2021-10", limit: 28881}
+          - {from: "2021-12", limit: 31381}
+          - {from: "2023-06", limit: null, note: FRA暂停}
+          - {from: "2025-01", limit: 36104}
+          - {from: "2025-07", limit: 41100, note: OBBBA +$5T}
+        sources:
+          - {name: DTS debt_subject_to_limit(日/史), freq: 日, kind: API}
+          - {name: MSPD 债限对账表, freq: 月, kind: API}
+          - {name: 财长致国会信 + EM描述文件, freq: 事件, kind: PDF, link: "https://home.treasury.gov/policy-issues/financial-markets-financial-institutions-and-fiscal-service/debt-limit"}
+          - {name: BPC X日追踪, freq: 事件, kind: 三方, link: "https://bipartisanpolicy.org/debt-limit/"}
+
+      # ---------------- 支出上限与财政规则 ----------------
+      - id: caps_sequestration
+        name: 支出上限与Sequestration
+        grp: 支出上限与财政规则
+        view: caps_view
+        status_line: stage
+        verified: "2026-08-06"
+        laws: [cba, bbedca, fra]
+        watch_pages:
+          - {id: crs-approps-status, url: "https://crsreports.congress.gov/AppropriationsStatusTable", name: CRS拨款状态表}
+          - {id: house-approps-leg, url: "https://appropriations.house.gov/legislation", name: 众院拨款委法案页(302b)}
+        links:
+          - {name: 众院拨款委(法案/302(b)), url: "https://appropriations.house.gov/"}
+          - {name: 参院拨款委, url: "https://www.appropriations.senate.gov/"}
+          - {name: CRS拨款状态表, url: "https://crsreports.congress.gov/AppropriationsStatusTable"}
+        qual:
+          state: FY2027无法定cap(FRA随FY2025到期), 现行约束只剩302(a)/(b)程序性上限
+          base_case: 两院topline谈判决定事实上限; 参院要求国防/非国防同步增长
+          watch: "302(b)分配表更新(链接直达); 是否立法设新cap; cap外渠道(紧急指定/和解注入)规模——见年度财政扩张对象"
+          mechanism: 法定cap超限触发OMB全面削减(15日内); 程序上限靠point of order执行, 众院特别规则可豁免, 参院需60票
+        caps_table:
+          - {fy: FY2027, defense: 无法定cap, nondefense: 无法定cap, note: "众院topline合计$1,856B(+13%), FY2026 enacted $1,639B; 参院未定"}
+          - {fy: FY2025(FRA), defense: "$895.2B", nondefense: "$710.7B", note: "已执行完毕, FRA到期"}
+          - {fy: FY2024(FRA), defense: "$886.3B", nondefense: "$703.7B", note: 另有转移基座类调整在cap外}
+          - {fy: FY2012-21(BCA), defense: 逐年cap, nondefense: 逐年cap, note: "四次BBA两党协议上调, 2013年触发过sequester"}
+        sources:
+          - {name: 两院302(b)分配表, freq: 年度+修订, kind: HTML解析}
+          - {name: OMB Sequestration报告, freq: 年随PB, kind: PDF}
+
+      - id: paygo
+        name: PAYGO记分卡
+        grp: 支出上限与财政规则
+        view: paygo_view
+        status_line: stage
+        verified: "2026-08-06"
+        laws: [paygo2010, bbedca]
+        links:
+          - {name: OMB(检索PAYGO Annual Report), url: "https://www.whitehouse.gov/omb/"}
+          - {name: CBO PAYGO估计, url: "https://www.cbo.gov/topics/budget"}
+        qual:
+          state: 记分卡已于2025年末被整体清零(H.R.5371), OBBBA约$3.4T借记连同4% Medicare sequester一并豁免; 2026年新立法重新累积
+          base_case: 下次结算=第119届国会结束后14日(约2027-01下旬); 历史零触发, 年末照例豁免
+          watch: 2026年内新增记分(ACA延长案若过会显著入账); 豁免条款挂哪个载体
+          mechanism: 5年/10年双记分卡取大者, 借记触发强制性支出sequester(Medicare限4%); 豁免三法= 不记分条款/清零/直接豁免
+        scorecard:
+          - {item: 5年/10年记分卡余额, value: "0 (2025-12清零)", note: H.R.5371随CR清除~$3.4T OBBBA借记}
+          - {item: 被豁免的sequester, value: "4% Medicare + 其他强制性", note: "原定2026-02-01生效, CBO估FY2026 Medicare削减约$45B"}
+          - {item: 2026年新累积, value: 累积中, note: 下次OMB报告 ~2027-01}
+          - {item: 豁免先例, value: TCJA(2018)/ARPA(2021)/OBBBA(2025), note: 零触发纪录延续}
+        sources:
+          - {name: OMB PAYGO Annual Report, freq: 年, kind: PDF}
+          - {name: CBO PAYGO estimates(逐案), freq: 事件, kind: PDF}
+
+      - id: impoundment
+        name: 行政扣款与ICA
+        grp: 支出上限与财政规则
+        view: qual_only
+        status_line: stage
+        verified: "2026-08-06"
+        laws: [ica, ada]
+        watch_pages:
+          - {id: apportionment-db, url: "https://apportionment-public.max.gov/", name: Apportionment库}
+        links:
+          - {name: OMB Apportionment公开库, url: "https://apportionment-public.max.gov/"}
+          - {name: OpenOMB镜像, url: "https://openomb.org/"}
+          - {name: GAO Appropriations Law裁定, url: "https://www.gao.gov/legal/appropriations-law"}
+        qual:
+          state: 活跃博弈。apportionment公开库经诉讼恢复(25/8), 26/1法院进一步令公开spend plans, 政府上诉中(D.C.巡回)
+          base_case: OMB继续以footnote条件、慢分配、pocket rescission测试ICA边界; 库的可用性本身是信号
+          watch: A类footnote附条件的新apportionment; rescission special message(45天窗口); GAO B系列裁定; 上诉裁决
+          mechanism: >
+            冻结资金不需要正式rescission: 附条件footnote或拖延apportionment即可实现事实扣款。
+            ICA程序: rescission需国会45天内批准, deferral仅限三种法定理由。
+            GAO裁定是违法认定的权威来源(先例: 乌克兰援助案)。
+        sources:
+          - {name: OMB Public Apportionments Database, freq: 持续, kind: HTML}
+          - {name: GAO Appropriations Law decisions, freq: 事件, kind: HTML}
+
+  # ================================================================
+  - id: L2
+    name: 预算
+    time_mode: 流程定位, 按财年周期(实例化, 历史归档)
+    objects:
+
+      - id: cbo_baseline
+        name: CBO基线与评分中枢
+        view: baseline_center
+        status_line: stage
+        verified: "2026-08-07"
+        laws: [cba]
+        links:
+          - {name: CBO机读数据页, url: "https://www.cbo.gov/data/budget-economic-data"}
+          - {name: Cost Estimates检索, url: "https://www.cbo.gov/cost-estimates"}
+        watch_pages:
+          - {id: cbo-data-page, url: "https://www.cbo.gov/data/budget-economic-data", name: CBO数据页}
+        qual:
+          state: 现行基线1月版, 夏季更新待发(约8/20); 版本间移动看三因素分解
+          base_case: 夏季版计入年内立法与关税收入重估; 立法评分经监听器自动捕获(congress.gov关联CBO estimates)
+          watch: 三因素分解中立法项的构成; IEEPA判决对关税收入假设的冲击; ACA延长案若成法+$28B/yr入基线
+          mechanism: >
+            基线是全系统的锚工厂: CBR起点、302(a)参照、收支进度对比的路径锚、所有评分的参照系。
+            版本路径与分解为低频人工锚(年2-3次, 页面监听触发提醒); 法案评分发布由立法监听器自动捕获。
+        baseline_changes:
+          - {version: 2026-01版, legislative: -410, economic: 120, technical: 45, note: 计入OBBBA与关税}
+          - {version: 2026-05版, legislative: -15, economic: 40, technical: 25, note: 春季更新·关税收入上调}
+        scores:
+          - {bill: S.3385, name: ACA补贴3年延长, score: "+$82.9B/3yr", status: CBO已评(2025-12), note: 参院僵持}
+          - {bill: H.R.7567, name: Farm Bill, score: 待录入, status: 委员会报告随附, note: 监听器捕获新评分后更新}
+          - {bill: H.R.8870, name: BUILD America 250, score: 待评分, status: floor前, note: "$580B/5yr授权额非评分"}
+        sources:
+          - {name: 10-Year Budget Projections(xlsx), freq: 年2-3次, kind: 机读}
+          - {name: Changes in Baseline(三因素), freq: 随更新, kind: xlsx}
+          - {name: congress.gov API cboCostEstimates字段, freq: 逐案, kind: API·监听}
+
+      - id: budget_cycle
+        name: 预算周期
+        view: cycle_instances
+        status_line: stage
+        verified: "2026-08-07"
+        laws: [cba]
+        qual:
+          state: 周期对象按财年实例化, 当前活跃FY2027; 历史财年归档可回看
+          base_case: FY2027无两院CBR, 302(a)以各院自设/deeming方式确立
+          watch: 参院预算决议动向; MSR(已逾7/15 DDL)发布
+        instances:
+          - fy: 2027
+            active: true
+            threea: "302(a)确立: 无两院一致CBR; 众院经H.Con.Res.113自设topline, 参院未定(deeming待观察)"
+            flow_states:
+              pb1: done
+              pb2: done
+              pb3: done
+              pb4: done
+              pb5: "pending!"        # MSR逾期
+              b0: done
+              b1: done
+              b2: done
+              b3: active             # 众院已过, 参院未投
+              b4: pending
+              b5: pending
+              b6: pending            # deeming替代路径
+              r1: active             # 指令仅众院版
+              r2: pending
+              r3: pending
+              a1: done
+              a2: active             # 302(b)众定参无共识
+              a3: active
+              a4: active             # 众院floor进行中
+              a5: pending
+              a6: pending
+              a7: pending
+              f1: active             # CR生效中
+              f2: "pending!"         # 12/4风险节点
+              f3: pending
+            flow_note: "结构为固定模板, 每年仅状态变化; 勾稽线: 302(a)→302(b)为硬下发(可被deeming虚线替代), 和解指令自共同决议下达(无指令则改税法/强制性支出几乎不可能), 拨款未按期转入资金现实线(CR→到期节点→再CR/omnibus, 失败即关门); 和解产出详情见Reconciliation对象"
+            swimlanes:
+              - {lane: President Budget, stage: "PB已提交(春); MSR逾期未发(DDL 7/15)", next: MSR发布}
+              - {lane: 预算决议(CBR), stage: "众院过H.Con.Res.113(含和解指令); 参院未动", next: 参院决议或deeming}
+              - {lane: 302(a)/(b), stage: "众院4月按党线通过302(b)打包(32-28); 参院国防/非国防分配无共识, 6月底前零markup", next: 参院302(b)共识}
+              - {lane: 和解指令, stage: 含于H.Con.Res.113 → Reconciliation 3.0, next: 参院对应决议}
+          - fy: 2026
+            active: false
+            threea: "302(a): FRA cap已到期年, 以事实topline $1,639B收官"
+            swimlanes:
+              - {lane: 全周期回顾, stage: "三次关门后于2026-04以DHS法案+CR打包完成(Homeland Security and Further Additional Continuing Appropriations Act, 2026)", next: —}
+        sources:
+          - {name: congress.gov(决议与deeming), freq: 事件, kind: API}
+          - {name: CBO Analysis of PB, freq: 春季, kind: 机读}
+
+      - id: appropriations
+        name: 拨款(年度)
+        view: approps_v2
+        status_line: stage
+        verified: "2026-08-07"
+        laws: [cba, ada]
+        bills:
+          - {ref: 119-hr-9770, name: CR(H.R.9770)}
+        links:
+          - {name: CRS拨款状态表, url: "https://crsreports.congress.gov/AppropriationsStatusTable"}
+          - {name: CRFB Appropriations Watch, url: "https://www.crfb.org/blogs/appropriations-watch-fy-2027"}
+          - {name: 众院拨款委, url: "https://appropriations.house.gov/"}
+          - {name: 参院拨款委, url: "https://www.appropriations.senate.gov/"}
+        qual:
+          state: 众院多数法案已过全委(党线), CR至12/4; 参院卡在302(b)分配, 6月底前零markup
+          base_case: 10/1前完不成, CR顺延; 12/4节点关门风险; 中期选举后跛脚鸭会期难度上升
+          watch: "参院302(b)共识; minibus打包组合; policy rider清单; 补充拨款审议进度($87.6B); 基线外扩张全景见年度财政扩张对象"
+          background: FY2026三次关门(10/1-11/12 ACA; 1/31-2/3; DHS 2/14-4/30共76天), 2026-04打包收官, ICE/BSO资金剔除改走和解
+        instances:
+          - fy: 2027
+            active: true
+            supplementals:
+              - {name: FY2027国防补充请求, requested_bn: 87.6, date: "2026-06-24", stage: 众院拨款委审议中, designation: 紧急指定(cap外), note: 弹药与库存补给为主}
+            cr_chain:
+              - {name: H.R.9770, covers: 至2026-12-04, status: 生效中}
+            matrix:
+              - {bill: Defense, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: 全委6/24通过}
+              - {bill: Labor-HHS-Ed, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: 争议最大}
+              - {bill: MilCon-VA, h302b: null, s302b: null, fy26: null, house: floor, senate: 未动, note: ""}
+              - {bill: Agriculture-FDA, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: ""}
+              - {bill: CJS, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: ""}
+              - {bill: Energy-Water, h302b: null, s302b: null, fy26: null, house: floor, senate: 未动, note: ""}
+              - {bill: FSGG, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: ""}
+              - {bill: Homeland, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: ICE/BSO走和解}
+              - {bill: Interior-Env, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: ""}
+              - {bill: Leg Branch, h302b: null, s302b: null, fy26: null, house: floor, senate: 未动, note: ""}
+              - {bill: SFOPS, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: ""}
+              - {bill: THUD, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: ""}
+            toplines: {house_total: 1856, senate_total: null, fy26_enacted: 1639}
+        sources:
+          - {name: Appropriations Status Table, freq: 持续, kind: HTML解析·自动检测}
+          - {name: 302(b)分配表(数额待录入, 链接直达), freq: 年度+修订, kind: HTML}
+          - {name: Congress.gov API(CR与法案), freq: 持续, kind: API·监听}
+
+      - id: fiscal_expansion
+        name: 年度财政扩张
+        view: expansion_view
+        status_line: expansion
+        verified: "2026-08-07"
+        laws: [cba]
+        bills:
+          - {ref: 119-hconres-113, name: FY27预算决议(H.Con.Res.113)}
+        qual:
+          state: "FY2027基线外扩张已提出$437.6B(国防和解$350B+补充$87.6B), 已成法$0; 另有常规topline加码(+28%国防)走12法案在基线内"
+          base_case: "补充拨款年内可成法; $350B和解件中期选举前推进存疑; 常规增量随enacted入基线"
+          watch: "国防$350B是否真走和解(市场敏感度最高的单项); 补充拨款载体法案号; 新扩张项提出即入表"
+          mechanism: >
+            对象追踪的是行为类别(基线外/预算外的年度财政扩张), 载体逐年变: 拨款加码、补充拨款(紧急指定, cap外)、
+            和解(51票通道)、独立授权。和解程序机制: 每财年三类议题各一次, 参院51票+20h辩论,
+            Byrd规则约束无关条款与10年外增赤, vote-a-rama为最后关口; 指令由预算决议下达, 无指令则几乎不可能动税法与强制性支出。
+        instances:
+          - fy: 2027
+            active: true
+            rows:
+              - {item: 国防常规增量, scale: "topline +28%(NDAA授权~$1.14T)", vehicle: 12法案(国防小组), stage: 众院过全委, baseline: 基线内, impact: 随enacted入基线, proposed_bn: null, enacted_bn: null}
+              - {item: 国防和解注入, scale: "$350B", vehicle: 和解(Reconciliation 3.0), stage: 参院未动·前景存疑, baseline: 基线外, impact: CBO评分后入, proposed_bn: 350, enacted_bn: 0}
+              - {item: 国防补充拨款, scale: "$87.6B", vehicle: 补充拨款(紧急指定), stage: 众院拨款委审议中(6/24递交), baseline: cap外, impact: 成法后入, proposed_bn: 87.6, enacted_bn: 0}
+              - {item: ICE/BSO资金, scale: 待指令额度, vehicle: 和解(Reconciliation 3.0), stage: 随和解件, baseline: 基线外, impact: 同上, proposed_bn: null, enacted_bn: 0}
+            directives:
+              - {committee: 军事委员会(拟), instruction: "$350B(FY27请求口径)", product: 国防和解件, byrd: 未审}
+              - {committee: 司法/国土安全, instruction: 待参院决议确认, product: ICE/BSO资金, byrd: 未审}
+          - fy: 2026
+            active: false
+            rows:
+              - {item: OBBBA国防注入, scale: "$156.2B(FY25拨付·5年可用)", vehicle: 和解(P.L.119-21 Title II), stage: 已成法, baseline: 基线外→已入基线, impact: "DOD计$113B入FY26", proposed_bn: 156.2, enacted_bn: 156.2}
+              - {item: OBBBA减税与边境, scale: "净增赤~$3.4T/10yr", vehicle: 和解(P.L.119-21), stage: 已成法, baseline: 已入基线, impact: 记分卡2025-12清零, proposed_bn: null, enacted_bn: null}
+        sources:
+          - {name: congress.gov(决议/和解件/补充案), freq: 事件, kind: API·监听}
+          - {name: CBO/JCT评分, freq: 逐案, kind: 机读·监听}
+
+  # ================================================================
+  - id: L3
+    name: 收支
+    time_mode: 年度结构 + 财年进度对比
+    objects:
+
+      - id: annual_progress
+        name: 年度收支进度
+        view: annual_widget
+        status_line: fytd
+        verified: "2026-08-08"
+        qual:
+          state: 上图下表联动; 默认六线=收/支/赤绝对额+各自/NGDP; 点击表行切换为该科目双轴视图
+          watch: 关税与净利息是结构变化最快的两个科目; Mandatory/Discretionary比价长期漂移
+          mechanism: >
+            年度序列=历年9月MTS的FYTD值(即全年实际); 当年为FYTD截至最新月。
+            NGDP为财年均值(FRED, 日历年近似)。占比列: 收入科目/收入合计, 支出科目/支出合计。
+            5年走势列为yoy%迷你线。层级: 收入(5科目) / 支出(强制性4+自由裁量2+净利息) / 赤字与初级赤字。
+        sources:
+          - {name: MTS table 4/5 (历年9月+当年FYTD), freq: 月, kind: API}
+          - {name: FRED GDP (NGDP财年均值), freq: 季, kind: API}
+          - {name: CBO Historical Budget Data (校验源), freq: 年, kind: 机读}
+
+      - id: mts_progress
+        name: 月度收支进度
+        view: fytd_progress
+        status_line: fytd
+        verified: "2026-08-08"
+        qual:
+          state: FYTD四类线=当年+近6财年+CBO基线路径+DTS预测点; FY2026累计略高于可比带上沿
+          base_case: 全年落在CBO锚附近, 关税收入与利息支出是两侧主要变量
+          watch: MBR先行估计与MTS落地偏差及归因; DTS预测点与随后MTS的偏差(校准楔子用); 4/6/9/1缴税大月
+          mechanism: >
+            锚链条 DTS(日)→DTS预测点(本系统)→MBR(月初,±5bn)→MTS(实际)。
+            DTS预测: 月内已实现现金赤字(存取款剔除国债发行/赎回) + 近3年同月MTS均值×未过日比例。
+            现金vs权责口径楔子未校正, 定位为MTS前方向性锚, 精度弱于MBR; 预测点用空心菱形+虚线, 与实际严格区分。
+        sources:
+          - {name: MTS table 1 (8财年窗口), freq: 月8-12号, kind: API}
+          - {name: DTS deposits_withdrawals (剔债务流), freq: 日, kind: API}
+          - {name: CBO Monthly Budget Review, freq: 月初, kind: PDF}
+
+
+  # ================================================================
+  - id: L4
+    name: 发行
+    time_mode: QRA季度周期
+    objects:
+
+      - id: qra_cycle
+        name: QRA周期
+        view: qra_view
+        status_line: stage
+        verified: "2026-08-10"
+        qual:
+          state: "8/5 Statement: coupon结构维持不变; 前瞻指引延续; QRFE历史与coupon结构见下"
+          base_case: coupon尺寸维持至FY27中, 增量融资靠Tbills; 卖方共识增coupon窗口在2027年8月起
+          watch: QRFE三指标vs卖方锚; 前瞻指引措辞diff; TBAC专题
+          mechanism: >
+            周一QRFE(融资估计)→周三Statement+TBAC文件包。QRFE表纵向为季度(近3年),
+            横向为两指标: 私人持有净融资、期末TGA假设。coupon结构表为月度各期限拍卖规模,
+            下图为2007年以来长历史(含QRA后的已公告路径)。
+        sources:
+          - {name: QRA文件包(数值每季人工录入qra_history), freq: 季, kind: HTML, link: "https://home.treasury.gov/policy-issues/financing-the-government/quarterly-refunding"}
+          - {name: auctions_query(coupon尺寸推导), freq: 逐场, kind: API}
+          - {name: 卖方preview, freq: 季, kind: 人工锚}
+
+      - id: funding_forecast
+        name: 财年融资预测
+        view: funding_widget
+        status_line: stage
+        verified: "2026-08-10"
+        qual:
+          state: FY2026-2028三年联动模型; 基线赤字自动取CBO现行版, 八项假设可编辑, 全表实时重算
+          base_case: bills为残差调节阀; coupon不加码则bills占比持续上行穿越区间
+          watch: 预测的bills占比路径vs TBAC 15-20%建议区间; 与卖方Exhibit式测算对照
+          mechanism: >
+            勾稽链: 赤字+其他调整=融资需求; ΔTGA(期末假设-期初, 跨年链式)加总得borrowing need;
+            净coupon=总拍卖-公众到期(总到期-Fed rollover)-回购; 净bills=需求-净coupon(残差);
+            期末存量=期初+净供给, 跨年滚动; bills%=期末bills/期末marketable;
+            私人bills%=(期末bills-SOMA bills)/(marketable-SOMA总持仓)。编辑存本机, 清除即回官方默认。
+        sources:
+          - {name: CBO基线(赤字默认值), freq: 年2-3次, kind: 联动}
+          - {name: MSPD/供给(期初存量), freq: 月, kind: API}
+          - {name: 其余假设, freq: 每QRA后校准, kind: 手动输入}
+
+      - id: cash_buyback
+        name: TGA与回购管理
+        view: cash_buyback
+        status_line: tga
+        verified: "2026-08-10"
+        qual:
+          state: TGA目标水位附近; 回购双轨常规运行(流动性支持每季envelope约$30B+现金管理季节性)
+          base_case: TGA维持$850B-1T区间; 回购envelope随QRA微调
+          watch: TGA vs 目标偏离; offer-to-max(需求侧压力); envelope是否扩容或引入switch
+          mechanism: >
+            回购二分: 流动性支持回购=周度常规操作, 买入off-the-run老券缓解做市商资产负债表,
+            每季度按bucket设上限(envelope); 现金管理回购=围绕缴税日的季节性操作,
+            用现金高峰赎回短端、削融资波动。两者都不改变久期政策含义, 与QT方向无关。
+        sources:
+          - {name: DTS operating_cash_balance, freq: 日, kind: API}
+          - {name: FiscalData Buybacks(逐CUSIP), freq: 逐场, kind: API}
+          - {name: 回购schedule(每QRA后录入), freq: 季, kind: 手动}
+
+  # ================================================================
+  - id: L5
+    name: 债务管理
+    time_mode: 长窗口(50年+)
+    objects:
+
+      - id: debt_stock
+        name: 债务存量
+        view: debt_long
+        status_line: debt_total
+        verified: "2026-08-10"
+        qual:
+          state: 总债务约$39.9T, 约128%NGDP; 50年尺度下两次台阶=GFC与COVID
+          watch: /NGDP的斜率变化(名义增长与赤字的赛跑); 公众持有/政府间分解漂移
+        sources:
+          - {name: Historical Debt Outstanding(1790+年度), freq: 年, kind: API}
+          - {name: Debt to the Penny(近端日度), freq: 日, kind: API}
+          - {name: FRED GDP(NGDP), freq: 季, kind: API}
+
+      - id: structure_maturity
+        name: 存量结构·到期墙·WAM
+        view: structure_view
+        status_line: none
+        verified: "2026-08-10"
+        qual:
+          state: WAM约71个月, 历史高位区间上沿; 均值线61.7, ±1σ带54-70
+          watch: bills供给挤压WAM回落速度; 到期墙对再融资分布
+          mechanism: WAM序列为TBAC图表口径(季度, 每QRA后人工校准data/us/wam.json); 均值与σ带由全史计算
+        sources:
+          - {name: MSPD 逐CUSIP(结构与到期), freq: 月, kind: API}
+          - {name: TBAC discussion charts(WAM), freq: 季, kind: 手动校准}
+
+      - id: supply_structure
+        name: 供给结构
+        view: supply_share
+        status_line: tbills_share
+        verified: "2026-08-10"
+        qual:
+          state: Tbills份额约22.3%, 区间上方; SOMA增持bills降低私人吸收压力
+          base_case: 增coupon前bills份额缓升; SOMA bills持仓是私人口径的关键调节项
+          watch: 份额突破23%; SOMA bills增持节奏; 私人持有bills占比(融资预测联动)
+        sources:
+          - {name: MSPD(bills存量与份额), freq: 月, kind: API}
+          - {name: NY Fed SOMA summary(bills持仓), freq: 周四, kind: API}
+
+      - id: holders
+        name: 持有人结构
+        view: holders_table
+        status_line: none
+        verified: "2026-08-10"
+        qual:
+          state: 需求基础向价格敏感型迁移(HF/MMF), 海外与银行低迷为既有趋势
+          watch: TIC国别月度; SOMA rollover/增持; Z.1季度全景
+        sources:
+          - {name: TIC MFH表, freq: 月(滞后6周), kind: 机读}
+          - {name: NY Fed SOMA holdings (CUSIP级), freq: 周四, kind: Fed接口}
+          - {name: Z.1 L.210, freq: 季, kind: Fed接口}
+          - {name: NY Fed PD statistics, freq: 周, kind: Fed接口}
+
+      - id: interest_cost
+        name: 利息成本
+        view: interest_view
+        status_line: avg_rate
+        verified: "2026-08-10"
+        qual:
+          state: 存量加权利率缓升(到期低息券置换); 1Y bill发行利率为边际成本参照
+          watch: 加权利率与1Y bill的裂口(置换压力方向); 月度利息支出vs CBO预测进度
+          mechanism: 加权利率(存量平均)对1Y bill(边际新发)的追赶是利息支出的核心动力学; 裂口收窄=置换压力衰减
+        sources:
+          - {name: Average Interest Rates(2001+), freq: 月, kind: API}
+          - {name: 52周bill拍卖利率(边际参照), freq: 月, kind: API推导}
+          - {name: Interest Expense, freq: 月, kind: API}
+
+
+framework_laws:
+  - {id: cba, name: CBA 1974 (国会预算法), note: 预算决议/和解/CBO设立, 302条款体系, status: 现行, last_change: 多次修订}
+  - {id: bbedca, name: BBEDCA 1985 (Gramm-Rudman), note: sequestration机制与强制/自由裁量定义; BCA 2011的Joint Committee sequester按其执行, 强制性支出机械削减延续至2031(Medicare至2033), 不响应当前行为, status: 现行·JC条款机械执行中, last_change: FRA 2023延长JC条款}
+  - {id: ica, name: ICA 1974 (扣押控制法), note: rescission(45天窗口)/deferral(三类法定理由)程序, status: 现行·合宪性受本届政府挑战, last_change: 2026诉讼进行中}
+  - {id: ada, name: Antideficiency Act, note: apportionment法律基础, 超拨款义务为违法, status: 现行, last_change: —}
+  - {id: paygo2010, name: Statutory PAYGO 2010, note: 赤字中性记分卡, 会期结束后14日结算, status: 现行·历史零触发(年年豁免), last_change: —}
+  - {id: fra, name: FRA 2023, note: FY24-25 discretionary caps + 债限暂停至2025/1, status: caps已到期·无后继, last_change: 2025/9到期}
+  - {id: pl119-21, name: P.L.119-21 (OBBBA 2025), note: 债限+$5T至$41.1T, TCJA永久化等, status: 现行, last_change: 2025-07-04颁布}
+
+reference:
+  pipeline_notes:
+    - "spendout机制备忘: 预算授权(BA)→实际支出(outlay)按科目转换率分年释放, 国防采购慢(首年~15-20%)、人员快(~100%); 拨款过关对当年赤字的影响要经此换算"
+    - MTS表含total/subtotal层级行, 聚合前剔除
+    - MSPD与Schedules of Federal Debt的intragov口径差一个FFB
+    - OMB apportionment库有再下线风险, 可用性本身入档
+    - Appropriations Status Table与302(b)靠HTML解析, 改版会破
+    - FiscalData拍卖入库慢于TreasuryDirect原始接口

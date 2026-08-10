@@ -1,0 +1,112 @@
+# 人工/立法事件种子 — 幂等合并入 data/us/events.jsonl
+# 维护方式: 对话内更新或直接编辑。日期为估计值的标 dtype: 估计, 修正历史由账本自动记录。
+events:
+  - id: leg-fy26-end
+    group: 重要到期日
+    date: "2026-09-30"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: FY2026财年结束
+    checklist: [未过法案清单, CR覆盖确认]
+  - id: leg-fy27-start
+    date: "2026-10-01"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: FY2027开始 (CR已覆盖)
+  - id: pol-midterm
+    date: "2026-11-03"
+    cat: 政治
+    owner: appropriations
+    dtype: 法定
+    label: 中期选举
+    checklist: [两院控制权情景 → 跛脚鸭议程]
+  - id: leg-cr-expiry
+    group: 重要到期日
+    date: "2026-12-04"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: CR到期 · 关门风险节点
+    checklist: [后续CR或omnibus路径, policy rider清单, 两院投票排期]
+  - id: man-sine-die
+    date: "2026-12-18"
+    cat: 人工
+    owner: paygo
+    dtype: 估计
+    label: sine die预估 · PAYGO豁免观察窗
+    checklist: [豁免条款载体, 记分卡年末余额, 未完成立法届末清零风险]
+  - id: man-cbo-summer
+    group: 重要文件
+    date: "2026-08-20"
+    cat: 人工
+    owner: cbo_baseline
+    dtype: 估计
+    label: CBO夏季基线更新 (估计)
+    checklist: [FY26/27赤字修订, 三因素分解, 关税假设]
+  - id: leg-119-end
+    group: 重要到期日
+    date: "2027-01-03"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: 第119届国会终结 · 未完成立法清零
+  - id: man-house-return
+    date: "2026-09-02"
+    cat: 立法
+    owner: appropriations
+    dtype: 估计
+    label: 众院8月休会结束复会
+    checklist: [9月floor排期, 拨款打包路径]
+  - id: man-senate-return
+    date: "2026-09-08"
+    cat: 立法
+    owner: appropriations
+    dtype: 估计
+    label: 参院复会 · 拨款markup窗口
+    checklist: [topline是否松动, minibus组合]
+  - id: man-ndaa-floor
+    date: "2026-09-21"
+    cat: 立法
+    owner: appropriations
+    dtype: 估计
+    label: NDAA FY2027 floor窗口 (估)
+  - id: leg-farmbill-expiry
+    date: "2026-09-30"
+    cat: 立法
+    group: 重要到期日
+    owner: mandatory_legislation
+    dtype: 法定
+    label: Farm Bill延长到期 (SNAP等授权)
+    checklist: [参院版进度, 再延长vs成法, SNAP授权空窗风险]
+  - id: leg-iija-expiry
+    date: "2026-09-30"
+    cat: 立法
+    group: 重要到期日
+    owner: mandatory_legislation
+    dtype: 法定
+    label: 地面交通授权(IIJA)到期
+    checklist: [BUILD America 250 floor排期, HTF转移条款]
+  - id: leg-exim-expiry
+    date: "2026-12-31"
+    cat: 立法
+    group: 重要到期日
+    owner: mandatory_legislation
+    dtype: 法定
+    label: Ex-Im Bank授权到期
+  - id: man-aca-enrollment
+    date: "2026-11-01"
+    cat: 人工
+    group: 立法时间
+    owner: tax_legislation
+    dtype: 惯例
+    label: 2027开放注册开始 · ACA补贴博弈压力点
+    checklist: [参院谈判状态, 2027保费公布冲击]
+  - id: leg-def-supp-request
+    date: "2026-06-24"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: 白宫递交FY2027国防补充请求 $87.6B
+    checklist: [载体法案号确认后挂监听锚, 紧急指定范围]

@@ -1,0 +1,116 @@
+{
+ "sample": true,
+ "series": [
+  {
+   "date": "2026-07-10",
+   "deposits": 35.3,
+   "withdrawals": 44.3
+  },
+  {
+   "date": "2026-07-13",
+   "deposits": 30.1,
+   "withdrawals": 45.9
+  },
+  {
+   "date": "2026-07-14",
+   "deposits": 42.4,
+   "withdrawals": 44.1
+  },
+  {
+   "date": "2026-07-15",
+   "deposits": 95.4,
+   "withdrawals": 34.7
+  },
+  {
+   "date": "2026-07-16",
+   "deposits": 99.0,
+   "withdrawals": 51.6
+  },
+  {
+   "date": "2026-07-17",
+   "deposits": 45.5,
+   "withdrawals": 41.8
+  },
+  {
+   "date": "2026-07-20",
+   "deposits": 41.8,
+   "withdrawals": 37.0
+  },
+  {
+   "date": "2026-07-21",
+   "deposits": 44.2,
+   "withdrawals": 48.8
+  },
+  {
+   "date": "2026-07-22",
+   "deposits": 33.0,
+   "withdrawals": 31.8
+  },
+  {
+   "date": "2026-07-23",
+   "deposits": 34.8,
+   "withdrawals": 42.1
+  },
+  {
+   "date": "2026-07-24",
+   "deposits": 41.4,
+   "withdrawals": 40.7
+  },
+  {
+   "date": "2026-07-27",
+   "deposits": 26.6,
+   "withdrawals": 47.8
+  },
+  {
+   "date": "2026-07-28",
+   "deposits": 27.3,
+   "withdrawals": 47.6
+  },
+  {
+   "date": "2026-07-29",
+   "deposits": 29.5,
+   "withdrawals": 37.4
+  },
+  {
+   "date": "2026-07-30",
+   "deposits": 41.8,
+   "withdrawals": 33.1
+  },
+  {
+   "date": "2026-07-31",
+   "deposits": 29.0,
+   "withdrawals": 41.4
+  },
+  {
+   "date": "2026-08-03",
+   "deposits": 40.5,
+   "withdrawals": 96.5
+  },
+  {
+   "date": "2026-08-04",
+   "deposits": 39.8,
+   "withdrawals": 50.8
+  },
+  {
+   "date": "2026-08-05",
+   "deposits": 35.9,
+   "withdrawals": 50.9
+  },
+  {
+   "date": "2026-08-06",
+   "deposits": 27.7,
+   "withdrawals": 34.9
+  },
+  {
+   "date": "2026-08-07",
+   "deposits": 36.5,
+   "withdrawals": 36.4
+  },
+  {
+   "date": "2026-08-10",
+   "deposits": 40.6,
+   "withdrawals": 44.1
+  }
+ ],
+ "fetched_at": "2026-08-10T03:33:15.124573Z"
+}

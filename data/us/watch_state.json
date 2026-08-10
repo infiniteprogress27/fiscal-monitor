@@ -1,0 +1,32 @@
+{
+ "bills": {
+  "119-hr-8870": {
+   "date": "2026-08-04",
+   "text": "Placed on the Union Calendar. (sample)"
+  }
+ },
+ "pages": {
+  "crs-approps-status": {
+   "hash": null,
+   "ok": false
+  },
+  "house-approps-leg": {
+   "hash": null,
+   "ok": false
+  },
+  "apportionment-db": {
+   "hash": null,
+   "ok": false
+  },
+  "cbo-data-page": {
+   "hash": null,
+   "ok": false
+  }
+ },
+ "obj_last_change": {
+  "mandatory_legislation": "2026-08-06",
+  "caps_sequestration": "2026-08-10",
+  "impoundment": "2026-08-10",
+  "cbo_baseline": "2026-08-10"
+ }
+}

@@ -1,0 +1,14 @@
+# 回购操作计划 — 数据源: QRA随发的tentative buyback schedule (无API)
+# 更新规则: 每季度Refunding Statement(周三)后, 把新schedule表录入此处 (对话内或手动)。
+# 结果回填由intraday自动完成, 本文件只管前瞻。
+quarter: 2026Q3 (8-10月)
+envelopes: {liquidity_bn: 30, cashmgmt_bn: 22.5}
+cum_since_2024_bn: 239   # 至25Q4累计, 每季度末更新
+ops:
+  - {date: 2026-08-12, type: 流动性支持, bucket: Nominal 2Y-3Y, max_bn: 4.0}
+  - {date: 2026-08-19, type: 流动性支持, bucket: Nominal 10Y-20Y, max_bn: 2.0}
+  - {date: 2026-08-26, type: 流动性支持, bucket: Nominal 3Y-5Y, max_bn: 4.0}
+  - {date: 2026-09-02, type: 流动性支持, bucket: TIPS 1Y-7.5Y, max_bn: 0.5}
+  - {date: 2026-09-09, type: 流动性支持, bucket: Nominal 5Y-7Y, max_bn: 4.0}
+  - {date: 2026-09-16, type: 流动性支持, bucket: Nominal 20Y-30Y, max_bn: 2.0}
+  - {date: 2026-09-23, type: 现金管理, bucket: Nominal 0Y-2Y, max_bn: 4.0}

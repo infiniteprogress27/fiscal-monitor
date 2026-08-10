@@ -1,0 +1,34 @@
+{
+ "sample": true,
+ "records": [
+  {
+   "op_date": "2026-07-29",
+   "bucket": "TIPS 7.5Y-30Y",
+   "max_bn": 0.5,
+   "accepted_bn": 0.5,
+   "offer_to_max": 2.8
+  },
+  {
+   "op_date": "2026-07-22",
+   "bucket": "Nominal 20Y-30Y",
+   "max_bn": 2.0,
+   "accepted_bn": 1.6,
+   "offer_to_max": 1.2
+  },
+  {
+   "op_date": "2026-07-15",
+   "bucket": "Nominal 2Y-3Y",
+   "max_bn": 4.0,
+   "accepted_bn": 4.0,
+   "offer_to_max": 2.1
+  },
+  {
+   "op_date": "2026-07-08",
+   "bucket": "Nominal 10Y-20Y",
+   "max_bn": 2.0,
+   "accepted_bn": 2.0,
+   "offer_to_max": 3.4
+  }
+ ],
+ "fetched_at": "2026-08-10T03:33:15.125368Z"
+}

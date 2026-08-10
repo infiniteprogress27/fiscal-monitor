@@ -1,0 +1,33 @@
+{
+ "sample": true,
+ "header": [
+  "Bill",
+  "House Sub",
+  "House Cmte",
+  "House Floor",
+  "Senate Cmte",
+  "Senate Floor",
+  "Law"
+ ],
+ "rows": [
+  {
+   "bill": "Defense",
+   "latest_col": "House Cmte",
+   "latest_val": "6/24/26 (35-27)",
+   "refs": [
+    "119-hr-9105"
+   ]
+  },
+  {
+   "bill": "MilCon",
+   "latest_col": "House Floor",
+   "latest_val": "7/22/26 (219-207)"
+  },
+  {
+   "bill": "Energy",
+   "latest_col": "House Floor",
+   "latest_val": "7/29/26 (214-209)"
+  }
+ ],
+ "fetched_at": "2026-08-10T03:33:15.362236Z"
+}

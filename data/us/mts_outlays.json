@@ -1,0 +1,55 @@
+{
+ "sample": true,
+ "as_of": "2026-06",
+ "rows": [
+  {
+   "id": "out_ss",
+   "cat": "社会保障",
+   "fytd": 1180,
+   "fytd_prior": 1105
+  },
+  {
+   "id": "out_med",
+   "cat": "Medicare",
+   "fytd": 830,
+   "fytd_prior": 770
+  },
+  {
+   "id": "out_mcd",
+   "cat": "Medicaid",
+   "fytd": 500,
+   "fytd_prior": 470
+  },
+  {
+   "id": "out_incsec",
+   "cat": "收入保障",
+   "fytd": 520,
+   "fytd_prior": 505
+  },
+  {
+   "id": "out_othm",
+   "cat": "其他强制性",
+   "fytd": 490,
+   "fytd_prior": 460
+  },
+  {
+   "id": "out_def",
+   "cat": "国防(裁量)",
+   "fytd": 660,
+   "fytd_prior": 630
+  },
+  {
+   "id": "out_ndd",
+   "cat": "非国防裁量",
+   "fytd": 560,
+   "fytd_prior": 540
+  },
+  {
+   "id": "out_int",
+   "cat": "净利息",
+   "fytd": 720,
+   "fytd_prior": 670
+  }
+ ],
+ "fetched_at": "2026-08-10T03:33:15.123969Z"
+}

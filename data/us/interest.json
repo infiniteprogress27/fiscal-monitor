@@ -1,0 +1,54 @@
+{
+ "sample": true,
+ "series": [
+  {
+   "month": "2025-07",
+   "expense_bn": 99.5
+  },
+  {
+   "month": "2025-08",
+   "expense_bn": 100.8
+  },
+  {
+   "month": "2025-09",
+   "expense_bn": 104.1
+  },
+  {
+   "month": "2025-10",
+   "expense_bn": 117.9
+  },
+  {
+   "month": "2025-11",
+   "expense_bn": 111.6
+  },
+  {
+   "month": "2025-12",
+   "expense_bn": 95.0
+  },
+  {
+   "month": "2026-01",
+   "expense_bn": 94.8
+  },
+  {
+   "month": "2026-02",
+   "expense_bn": 104.9
+  },
+  {
+   "month": "2026-03",
+   "expense_bn": 99.7
+  },
+  {
+   "month": "2026-04",
+   "expense_bn": 95.2
+  },
+  {
+   "month": "2026-05",
+   "expense_bn": 97.5
+  },
+  {
+   "month": "2026-06",
+   "expense_bn": 102.4
+  }
+ ],
+ "fetched_at": "2026-08-10T03:33:15.375979Z"
+}

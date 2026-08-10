@@ -1,0 +1,18 @@
+{
+ "maintained_at": "2026-08-10 15:31",
+ "counts": {
+  "文件": 85,
+  "税期": 6,
+  "立法": 12,
+  "回购": 11,
+  "发行": 120,
+  "人工": 7,
+  "政治": 1
+ },
+ "rules": {
+  "发行": "暂定=规则推算(日滚), 公告覆盖(daily), 结果回填(intraday)",
+  "回购": "计划表=每QRA后更新(buyback_schedule.yaml), 结果回填(intraday)",
+  "文件": "节奏规则自动展开(daily滚动/weekly全量)",
+  "立法/到期日": "events_seed.yaml, 每周核对(weekly提醒)"
+ }
+}

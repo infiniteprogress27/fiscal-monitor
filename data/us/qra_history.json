@@ -1,0 +1,72 @@
+{
+ "sample": true,
+ "rows": [
+  {
+   "q": "2023Q4",
+   "borrowing": 776,
+   "tga_end": 750
+  },
+  {
+   "q": "2024Q1",
+   "borrowing": 760,
+   "tga_end": 750
+  },
+  {
+   "q": "2024Q2",
+   "borrowing": 243,
+   "tga_end": 750
+  },
+  {
+   "q": "2024Q3",
+   "borrowing": 740,
+   "tga_end": 850
+  },
+  {
+   "q": "2024Q4",
+   "borrowing": 546,
+   "tga_end": 700
+  },
+  {
+   "q": "2025Q1",
+   "borrowing": 815,
+   "tga_end": 850
+  },
+  {
+   "q": "2025Q2",
+   "borrowing": 514,
+   "tga_end": 850
+  },
+  {
+   "q": "2025Q3",
+   "borrowing": 590,
+   "tga_end": 850
+  },
+  {
+   "q": "2025Q4",
+   "borrowing": 569,
+   "tga_end": 850
+  },
+  {
+   "q": "2026Q1",
+   "borrowing": 823,
+   "tga_end": 900
+  },
+  {
+   "q": "2026Q2",
+   "borrowing": 466,
+   "tga_end": 900
+  },
+  {
+   "q": "2026Q3",
+   "borrowing": 671,
+   "tga_end": 1000
+  },
+  {
+   "q": "2026Q4",
+   "borrowing": null,
+   "tga_end": null,
+   "note": "11/2 QRFE公布"
+  }
+ ],
+ "fetched_at": "2026-08-10T03:33:15.366113Z"
+}
