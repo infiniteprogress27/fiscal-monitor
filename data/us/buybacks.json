@@ -1,34 +1,286 @@
 {
- "sample": true,
+ "sample": false,
  "records": [
   {
-   "op_date": "2026-07-29",
-   "bucket": "TIPS 7.5Y-30Y",
-   "max_bn": 0.5,
-   "accepted_bn": 0.5,
-   "offer_to_max": 2.8
+   "op_date": "2026-08-11",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": null,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-08-06",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 4.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-07-28",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-07-23",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
   },
   {
    "op_date": "2026-07-22",
-   "bucket": "Nominal 20Y-30Y",
-   "max_bn": 2.0,
-   "accepted_bn": 1.6,
-   "offer_to_max": 1.2
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.41,
+   "offer_to_max": null
   },
   {
-   "op_date": "2026-07-15",
-   "bucket": "Nominal 2Y-3Y",
-   "max_bn": 4.0,
-   "accepted_bn": 4.0,
-   "offer_to_max": 2.1
-  },
-  {
-   "op_date": "2026-07-08",
-   "bucket": "Nominal 10Y-20Y",
-   "max_bn": 2.0,
+   "op_date": "2026-07-16",
+   "bucket": null,
+   "max_bn": null,
    "accepted_bn": 2.0,
-   "offer_to_max": 3.4
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-07-09",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.29,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-07-01",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-06-25",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-06-24",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.75,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-06-16",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.57,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-06-11",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 12.08,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-06-09",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-06-04",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 12.5,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-06-03",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-05-28",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.09,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-05-21",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.3,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-05-19",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 1.67,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-05-13",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.73,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-05-07",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 4.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-05-06",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-04-28",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-04-23",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.36,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-04-22",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 15.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-04-16",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 15.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-04-15",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-04-09",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-04-01",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 15.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-26",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-25",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.11,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-19",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.2,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-17",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 15.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-12",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.06,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-10",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 14.7,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-05",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-04",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.46,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-03-02",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.03,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-02-25",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 0.74,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-02-24",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 2.0,
+   "offer_to_max": null
+  },
+  {
+   "op_date": "2026-02-19",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": 1.56,
+   "offer_to_max": null
   }
  ],
- "fetched_at": "2026-08-10T03:33:15.125368Z"
+ "fetched_at": "2026-08-10T16:37:07.373776Z"
 }
