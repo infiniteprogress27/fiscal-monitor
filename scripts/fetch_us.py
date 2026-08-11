@@ -621,7 +621,7 @@ def fetch_approps_status():
 LOCAL_SERIES = {  # FRED/NIPA候选id, 首个命中生效
     "fed_rev": ["FGRECPT"], "fed_exp": ["FGEXPND"],
     "sl_rev": ["W077RC1Q027SBEA"], "sl_exp": ["W079RCQ027SBEA", "SLEXPND"],
-    "grants": ["B087RC1Q027SBEA", "TRP6001A027NBEA"],
+    "grants": ["FGSL"],
 }
 
 def _fred_annual(sid):
@@ -641,16 +641,19 @@ def _fred_annual(sid):
 QTAX_MAP = {"T01": "t_prop", "T09": "t_sales", "T40": "t_ind", "T41": "t_corp"}
 
 def _fetch_qtax():
-    """Census QTAX: 州地方四大税种季度, 按日历年加总→及时年度分项(滞后约一季)。"""
-    import requests
+    """Census QTAX: 需CENSUS_API_KEY(免费); 大写字段+for=us:*为官方规范。"""
+    import requests, os
+    key = os.environ.get("CENSUS_API_KEY", "")
+    if not key:
+        print("  QTAX跳过: 未配置CENSUS_API_KEY(Secrets添加后自动启用)")
+        return {}
     r = requests.get("https://api.census.gov/data/timeseries/eits/qtax",
-                     params={"get": "cell_value,data_type_code,category_code",
-                             "time": "from 2014"}, timeout=60)
+                     params={"get": "CELL_VALUE,DATA_TYPE_CODE,CATEGORY_CODE",
+                             "for": "us:*", "time": "from 2014", "key": key}, timeout=60)
     r.raise_for_status()
     rows = r.json()
-    hdr = rows[0]
+    hdr = [h.lower() for h in rows[0]]
     ci = {k: hdr.index(k) for k in ("cell_value", "data_type_code", "category_code", "time")}
-    # 自适应类目: 优先合并类目(…CAT1), 无则州+地方两类相加, 再无则取任一类
     cats = {row[ci["category_code"]] for row in rows[1:] if row[ci["data_type_code"]] in QTAX_MAP}
     if any(c.endswith("1") for c in cats):
         use = {c for c in cats if c.endswith("1")}
@@ -673,13 +676,13 @@ def _fetch_qtax():
     for k, ys in byy.items():
         ann = {}
         for y, vs in ys.items():
-            if len(vs) < 3: continue     # 不足3季不出年值
-            s = sum(vs)/1e3              # 百万→bn
-            ann[y] = round(s/4 if s > 1800 else s, 0)   # 若源为4Q滚动和则取均值
+            if len(vs) < 3: continue
+            s = sum(vs)/1e3
+            ann[y] = round(s/4 if s > 1800 else s, 0)
         if len(ann) >= 6:
             out[k] = ann
-    if not out:
-        _debug("qtax", [dict(zip(hdr, r)) for r in rows[1:40]])
+    if not out and len(rows) > 1:
+        _debug("qtax", [dict(zip(rows[0], r2)) for r2 in rows[1:40]])
         print("  !! QTAX解析为空, 样本落debug")
     return out
 
@@ -897,6 +900,8 @@ def fetch_coupon_deep():
                        {"filter": f"auction_date:gte:2007-01-01,security_type:eq:{ty}",
                         "sort": "auction_date"}, max_pages=15)
         for r in recs:
+            if str(r.get("tips") or "").lower().startswith("y"):
+                continue                     # TIPS的type也是Note/Bond, 按tips标志排除
             m, term = (r.get("auction_date") or "")[:7], r.get("security_term") or ""
             off = _pick(r, ["offering_amt", "total_accepted"])
             base = next((k for k in sorted(TEN, key=len, reverse=True)
