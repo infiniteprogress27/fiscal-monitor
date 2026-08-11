@@ -429,6 +429,33 @@ layers:
           - {name: FRED GDP (NGDP财年均值), freq: 季, kind: API}
           - {name: CBO Historical Budget Data (校验源), freq: 年, kind: 机读}
 
+      - id: local_fiscal
+        name: 地方收支
+        view: local_widget
+        status_line: text
+        text_status: "州地方年度收支与央地划分; 转移支付为勾稽线"
+        verified: "2026-08-11"
+        qual:
+          state: 联邦/州地方四线对照+联邦转移支付; 点击表行切换分项双轴视图
+          watch: 联邦转移占州地方收入比(依赖度); 州地方自有收入增速vs支出刚性
+          mechanism: >
+            总量五序列走NIPA口径(FRED镜像, 季度年化取年均); 州地方自有收入=总收入-联邦转移。
+            四大税种分项走Census QTAX季度调查(自动, 滞后约一季, 日历年加总);
+            支出功能分项(教育/公共福利等)暂无同时效公开源, 保持Census年度人工锚。
+            NIPA/QTAX/Census三口径并存, 表内不跨源相减。
+        sources:
+          - {name: FRED/NIPA(总量五序列), freq: 季, kind: API}
+          - {name: Census QTAX(四大税种), freq: 季·滞后一季, kind: API}
+          - {name: Census州地方财政年度调查(分项), freq: 年·滞后2年, kind: 人工锚}
+        anchors_census:
+          as_of: FY2022
+          spending:
+            - {item: 教育(K12+高教), bn: 1090}
+            - {item: 公共福利(含Medicaid州付), bn: 940}
+            - {item: 公路交通, bn: 210}
+            - {item: 公共安全, bn: 260}
+            - {item: 其他, bn: 1300}
+
       - id: mts_progress
         name: 月度收支进度
         view: fytd_progress
@@ -556,14 +583,21 @@ layers:
 
       - id: holders
         name: 持有人结构
-        view: holders_table
+        view: holders_v2
         status_line: none
         verified: "2026-08-10"
         qual:
-          state: 需求基础向价格敏感型迁移(HF/MMF), 海外与银行低迷为既有趋势
+          state: "海外(TIC月度)与SOMA自动接入; 货基/银行/家庭为Z.1季度人工锚"
           watch: TIC国别月度; SOMA rollover/增持; Z.1季度全景
+        anchors_z1:
+          as_of: 2026Q1
+          rows:
+            - {holder: 货币市场基金, bn: 4400}
+            - {holder: 商业银行, bn: 1750}
+            - {holder: 家庭与对冲基金, bn: 3400}
+            - {holder: 养老与保险, bn: 1500}
         sources:
-          - {name: TIC MFH表, freq: 月(滞后6周), kind: 机读}
+          - {name: TIC MFH表(自动解析), freq: 月(滞后6周), kind: 机读}
           - {name: NY Fed SOMA holdings (CUSIP级), freq: 周四, kind: Fed接口}
           - {name: Z.1 L.210, freq: 季, kind: Fed接口}
           - {name: NY Fed PD statistics, freq: 周, kind: Fed接口}
