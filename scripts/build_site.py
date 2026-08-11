@@ -368,12 +368,6 @@ def v_local_widget(obj, ctx):
   <div class="blx-bar"><span class="blx-hint">默认: 联邦/州地方收支四线+转移支付 · 点击行切换该序列(绝对额+/NGDP双轴)</span></div>
   <div class="blx-tbl" id="lxTable"></div>
 </div>"""
-    ac = obj.get("anchors_census") or {}
-    if ac:
-        h += f'<h4>支出功能分项 · Census {esc(ac.get("as_of", ""))} (人工锚·年度)</h4>'
-        h += table(["功能", "#$bn"], [(r["item"], fmt(r["bn"])) for r in ac.get("spending", [])])
-        h += ('<div class="anchor-note">税种分项已升级为QTAX自动(上表, 滞后约一季); '
-              '支出功能分项暂无同时效公开源(Census年度), 人工锚逐年校准 · NIPA与Census口径不跨源相减</div>')
     return h + qual_card(obj["qual"])
 
 
@@ -829,7 +823,14 @@ def main():
            "fytd": {r["id"]: r for r in (ctx["mts_receipts"].get("rows") or []) + (ctx["mts_outlays"].get("rows") or []) if r.get("id")},
            "as_of": ctx["mts_receipts"].get("as_of")}
     page_anx = json.dumps(anx, ensure_ascii=False)
-    page_lx = json.dumps(ctx.get("local_fiscal") or {}, ensure_ascii=False)
+    lx_payload = dict(ctx.get("local_fiscal") or {})
+    for l_ in cfg["layers"]:
+        for o_ in l_["objects"]:
+            parts_ = o_.get("parts") or [o_]
+            for p_ in parts_:
+                if p_.get("id") == "local_fiscal":
+                    lx_payload["census"] = p_.get("anchors_census") or {}
+    page_lx = json.dumps(lx_payload, ensure_ascii=False)
     mx = DATA / "cbo_matrix.json"
     page = page.replace("__ANNUAL__", page_anx)
     page = page.replace("__LOCAL__", page_lx)
@@ -1163,11 +1164,13 @@ if(LX && LX.years && LX.years.length && document.getElementById('lxTable')){
     {id:'t_ind',l:'州个人所得税',lv:2},
     {id:'t_corp',l:'州企业所得税',lv:2},
     {id:'sl_exp',l:'州地方总支出',lv:0},
+    ...(((LX.census||{}).spending)||[]).map((r,i)=>({id:'cx'+i,l:'支出·'+r.item+' (Census '+((LX.census||{}).as_of||'')+'锚)',lv:1,fixed:r.bn})),
     {id:'fed_rev',l:'联邦总收入 (NIPA口径)',lv:0},
     {id:'fed_exp',l:'联邦总支出 (NIPA口径)',lv:0},
     {id:'dep',l:'联邦转移/州地方收入 %',lv:0,pct:true},
   ];
   const ser = id => {
+    if(id.startsWith('cx')) return Y.map(()=>null);
     if(id==='sl_own') return Y.map((_,t)=>(S.sl_rev&&S.grants&&S.sl_rev[t]!=null&&S.grants[t]!=null)?S.sl_rev[t]-S.grants[t]:null);
     if(id==='dep') return Y.map((_,t)=>(S.grants&&S.sl_rev&&S.grants[t]&&S.sl_rev[t])?100*S.grants[t]/S.sl_rev[t]:null);
     return (S[id]||Y.map(()=>null));
@@ -1188,6 +1191,12 @@ if(LX && LX.years && LX.years.length && document.getElementById('lxTable')){
   function drawT(){
     let h=`<table class="anx"><tr><th class="c-lbl">科目 (bn · CY${Y[N-1]})</th><th class="c-spk">5年yoy走势</th><th class="num">最新</th><th class="num">上年</th><th class="num">yoy</th></tr>`;
     ROWS.forEach(r=>{
+      if(r.fixed!=null){
+        h+=`<tr class="l${r.lv}"><td class="lbl c-lbl" style="padding-left:${8+r.lv*16}px">${r.l}</td>`
+          +`<td class="c-spk"></td><td class="num">${Math.round(r.fixed).toLocaleString()}</td>`
+          +`<td class="num">—</td><td class="num">—</td></tr>`;
+        return;
+      }
       const s=ser(r.id), a=s[N-1], b0=s[N-2];
       const yoy=(a!=null&&b0)?100*(a/b0-1):null;
       const val = r.pct? (a==null?'—':a.toFixed(1)+'%') : fmtc(a);
@@ -1225,12 +1234,13 @@ if(LX && LX.years && LX.years.length && document.getElementById('lxTable')){
       }
     }
     ds.forEach(d=>{d.pointRadius=0;d.tension=.15;});
+    const pctOnly = !!(SEL && (ROWS.find(x=>x.id===SEL)||{}).pct);
     if(CH) CH.destroy();
     CH=new Chart(document.getElementById('ch_local'),{type:'line',
       data:{labels:lbls,datasets:ds},
       options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
         plugins:{title:{display:true,text:title,font:{size:12}}},
-        scales:{y:{grid:{color:'#EDEFEA'},ticks:{callback:v=>Math.abs(v)>=1000?Math.round(v/1000)+'T':v},afterFit:a=>{a.width=60}},
+        scales:{y:{display:!pctOnly,grid:{color:'#EDEFEA'},ticks:{callback:v=>Math.abs(v)>=1000?Math.round(v/1000)+'T':v},afterFit:a=>{a.width=60}},
                 y2:{position:'right',grid:{display:false},ticks:{callback:v=>(Math.round(v*100)/100)+'%'},afterFit:a=>{a.width=52}},
                 x:{grid:{display:false}}}}});
   }
