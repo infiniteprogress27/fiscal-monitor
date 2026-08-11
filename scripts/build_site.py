@@ -632,9 +632,9 @@ def render_object(obj, ctx):
 <section class="obj" id="obj-{obj['id']}">
   <div class="srow">
     <span class="oname">{esc(obj['name'])}</span>
+    <span class="osum">{status_metric(obj, ctx)}</span>
     <span class="ostat">{freshness_marks(obj)}{next_node(obj)}</span>
   </div>
-  <div class="osum">{status_metric(obj, ctx)}</div>
   <div style="display:none">
   </div>
   <div class="work">{view_html}</div>
@@ -814,7 +814,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans','Noto Sans SC',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.5}
-.wrap{max-width:none;margin:0;padding:18px 30px 60px}
+.wrap{max-width:1560px;margin:0 auto;padding:18px 28px 60px}
 a{color:var(--blue)}
 header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;
 border-bottom:2px solid var(--ink);padding-bottom:10px}
@@ -906,9 +906,10 @@ background:#FBFCFA;flex-wrap:wrap}
 .oname{font-weight:600;font-size:13.5px;min-width:120px}
 .ometric{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 .ometric b{color:var(--ink);font-size:14px}
-.ostat{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:right;white-space:nowrap}
-.osum{font-size:12px;color:var(--muted);line-height:1.55;margin:2px 0 8px;text-align:left}
-.osum b{color:var(--ink);font-size:13px}
+.ostat{flex:0 0 auto;margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:right;white-space:nowrap;padding-left:16px}
+.osum{flex:1 1 auto;min-width:0;font-size:12px;color:var(--muted);line-height:1.5;text-align:left}
+.osum b{color:var(--muted);font-weight:600;font-size:12px}
+.srow .oname{flex:0 0 168px}
 .ptitle{font-size:13.5px;font-weight:600;margin:16px 0 6px;padding-left:8px;border-left:3px solid var(--ink)}
 .onode{margin-left:auto;font-size:12px;color:var(--muted)}
 .nn{font-family:var(--mono);font-weight:600;color:var(--red)}
