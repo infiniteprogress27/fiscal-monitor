@@ -69,7 +69,7 @@ layers:
           watch: 参院Farm Bill markup; BUILD America 250 floor排期; OBBBA的Medicaid工作要求执行时间表与州诉讼
         provisions:
           - {item: Farm Bill(含SNAP授权), vehicle: 2018法案三度延长, expiry: "2026-09-30(部分程序7/24已到期)", plan: "众院H.R.7567已过(4/30·224-200), 参院6/23讨论稿markup中, 通不过则再延长", impact: "≈0 (BBEDCA§257基线假设延续; 特殊: 商品条款极端回落1938/49永久法)"}
-          - {item: 地面交通授权(IIJA), vehicle: IIJA, expiry: 2026-09-30, plan: "H.R.8870 BUILD America 250($580B/5yr)过T&I 62-2, floor待排; HTF缺口靠一般基金转移", impact: "≈0 (§257假设合同授权按通胀延续)"}
+          - {item: 地面交通授权(IIJA), vehicle: IIJA, expiry: 2026-09-30, plan: "H.R.8870 BUILD America 250($580B/5yr)过T&I 62-2, floor待排; 参院版CR含授权短期延长(过渡桥); HTF缺口靠一般基金转移", impact: "≈0 (§257假设合同授权按通胀延续)"}
           - {item: Medicaid(OBBBA修订), vehicle: OBBBA, expiry: "工作要求2026年底起分批生效", plan: "州执行差异与诉讼, 关注豁免", impact: ""}
           - {item: SNAP州成本分担, vehicle: OBBBA, expiry: FY2028起生效, plan: 州预算博弈, impact: ""}
           - {item: Social Security(OASDI), vehicle: 社保法, expiry: 信托基金耗尽~2034→自动削减约23%, plan: 无现实立法路径, impact: "≈0 (基线假设足额支付; 特殊: 真实缺口看受托人精算~3.8%应税工资)"}
@@ -329,7 +329,7 @@ layers:
         name: 拨款(年度)
         view: approps_v2
         status_line: stage
-        verified: "2026-08-07"
+        verified: "2026-08-11"
         laws: [cba, ada]
         bills:
           - {ref: 119-hr-9770, name: CR(H.R.9770)}
@@ -339,9 +339,9 @@ layers:
           - {name: 众院拨款委, url: "https://appropriations.house.gov/"}
           - {name: 参院拨款委, url: "https://www.appropriations.senate.gov/"}
         qual:
-          state: 众院多数法案已过全委(党线), CR至12/4; 参院卡在302(b)分配, 6月底前零markup
-          base_case: 10/1前完不成, CR顺延; 12/4节点关门风险; 中期选举后跛脚鸭会期难度上升
-          watch: "参院302(b)共识; minibus打包组合; policy rider清单; 补充拨款审议进度($87.6B); 基线外扩张全景见年度财政扩张对象"
+          state: "参院8/8以90-6过CR至12/11回传众院(9月表决); shutdown风险在轨解除未落地; 参院12法案仍零markup"
+          base_case: "众院9月接受参院版(修正风险存在但低); 12/11成为新到期节点; 全年案压到选举后, 国防/非国防topline是12月主战场"
+          watch: "众院是否修正参院版CR; 12/11节点; 国防topline谈判(Murray已点名); 补充拨款($87.6B); 扩张全景见年度财政扩张对象"
           background: FY2026三次关门(10/1-11/12 ACA; 1/31-2/3; DHS 2/14-4/30共76天), 2026-04打包收官, ICE/BSO资金剔除改走和解
         instances:
           - fy: 2027
@@ -349,7 +349,8 @@ layers:
             supplementals:
               - {name: FY2027国防补充请求, requested_bn: 87.6, date: "2026-06-24", stage: 众院拨款委审议中, designation: 紧急指定(cap外), note: 弹药与库存补给为主}
             cr_chain:
-              - {name: H.R.9770, covers: 至2026-12-04, status: 生效中}
+              - {name: H.R.9770(众院版), covers: 至2026-12-04, status: "众院7月已过(无anomalies), 参院未采纳"}
+              - {name: 参院版CR(替代文本), covers: 至2026-12-11, status: "8/8参院90-6通过(含anomalies·冻结OMB拨款审批新规·地面交通授权延长); 回传众院9月首周表决"}
             matrix:
               - {bill: Defense, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: 全委6/24通过}
               - {bill: Labor-HHS-Ed, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: 争议最大}
@@ -380,7 +381,7 @@ layers:
         qual:
           state: "FY2027基线外扩张已提出$437.6B(国防和解$350B+补充$87.6B), 已成法$0; 另有常规topline加码(+28%国防)走12法案在基线内"
           base_case: "补充拨款年内可成法; $350B和解件中期选举前推进存疑; 常规增量随enacted入基线"
-          watch: "国防$350B是否真走和解(市场敏感度最高的单项); 补充拨款载体法案号; 新扩张项提出即入表"
+          watch: "国防$350B是否真走和解——8/8参院搁置的党线budget bill载荷含伊朗战争资金, 意图新证据; 补充拨款载体法案号; 新扩张项提出即入表"
           mechanism: >
             对象追踪的是行为类别(基线外/预算外的年度财政扩张), 载体逐年变: 拨款加码、补充拨款(紧急指定, cap外)、
             和解(51票通道)、独立授权。和解程序机制: 每财年三类议题各一次, 参院51票+20h辩论,
