@@ -120,6 +120,8 @@ def _status_metric(obj, ctx):
         dsl = (ctx["debt_limit"].get("series") or [{}])[-1]
         hr = a["debt_limit_bn"] - dsl.get("subj_limit", 0) if dsl.get("subj_limit") else None
         return f"headroom <b>{bn(hr)}</b> · 限额内 {bn(dsl.get('subj_limit'))}"
+    if t == "text":
+        return esc(obj.get("text_status", ""))
     if t == "fytd":
         paths = ctx["fy_paths"]; fy = max(paths)
         cur = paths[fy][-1] if paths[fy] else None
@@ -148,7 +150,7 @@ def _status_metric(obj, ctx):
         r = (ctx["avg_rates"].get("series") or [{}])[-1]
         return f"加权利率 <b>{fmt(r.get('rate'), 2)}%</b> · {esc(r.get('month', ''))}"
     st = (obj.get("qual") or {}).get("state", "")
-    return esc(st[:64] + ("…" if len(st) > 64 else ""))
+    return esc(st)
 
 
 EVENTS = []      # main()载入账本
@@ -161,7 +163,7 @@ STALE_DAYS = 45
 def freshness_marks(obj):
     marks = []
     v = obj.get("verified")
-    lc = (WATCH.get("obj_last_change") or {}).get(obj["id"])
+    lc = (WATCH.get("obj_last_change") or {}).get(obj.get("part_ids", [obj["id"]])[0] if obj.get("part_ids") else obj["id"])
     if lc and (not v or v < lc):
         marks.append('<span class="mk hot">有未消化更新</span>')
     if v:
@@ -171,7 +173,8 @@ def freshness_marks(obj):
     return "".join(marks)
 
 def next_node(obj):
-    fut = sorted([e for e in EVENTS if e.get("owner") == obj["id"]
+    ids = set(obj.get("part_ids") or []) | {obj["id"]}
+    fut = sorted([e for e in EVENTS if e.get("owner") in ids
                   and e["date"] >= TODAY.isoformat() and e["status"] != "cancelled"],
                  key=lambda e: e["date"])
     if not fut: return "—"
@@ -384,7 +387,8 @@ def v_dts_flows(obj, ctx):
 
 def v_supply_share(obj, ctx):
     s = ctx["supply"].get("series") or []
-    soma_share = [round(100*r["soma_bills"]/r["bills_bn"], 1) if r.get("bills_bn") else None for r in s]
+    soma_share = [round(100*r["soma_bills"]/r["bills_bn"], 1)
+                  if (r.get("bills_bn") and r.get("soma_bills") is not None) else None for r in s]
     h = chart("ch_share", "line", [r["month"][2:] for r in s],
               [{"label": "Tbills份额 %marketable", "data": [r["tbills_share"] for r in s], "color": "ink", "w": 2},
                {"label": "SOMA bills/bills存量 %", "data": soma_share, "color": "green", "w": 1.5, "dash": [5, 3]},
@@ -569,7 +573,20 @@ def v_interest_view(obj, ctx):
     return h + qual_card(obj["qual"])
 
 
-VIEWS = {
+def v_combo(obj, ctx):
+    h = ""
+    for p in obj.get("parts", []):
+        h += f'<div class="ptitle">{esc(p["name"])}</div>'
+        try:
+            h += VIEWS[p["view"]](p, ctx)
+        except Exception as e:
+            h += f'<div class="anchor-note">子模块降级 ({type(e).__name__})</div>'
+    if obj.get("include_laws"):
+        h += '<div class="ptitle">框架法档案</div>' + ctx.get("laws_html", "")
+    return h
+
+
+VIEWS = {"combo": v_combo, 
     "debt_limit": v_debt_limit, "qual_only": v_qual_only,
     "expiry_table": v_expiry_table, "debt_tiers": v_debt_tiers,
     "caps_view": v_caps_view, "paygo_view": v_paygo_view,
@@ -615,8 +632,10 @@ def render_object(obj, ctx):
 <section class="obj" id="obj-{obj['id']}">
   <div class="srow">
     <span class="oname">{esc(obj['name'])}</span>
-    <span class="ometric">{status_metric(obj, ctx)}</span>
-    <span class="onode">{freshness_marks(obj)}{next_node(obj)}</span>
+    <span class="ostat">{freshness_marks(obj)}{next_node(obj)}</span>
+  </div>
+  <div class="osum">{status_metric(obj, ctx)}</div>
+  <div style="display:none">
   </div>
   <div class="work">{view_html}</div>
   <details class="dossier"><summary>档案 · 机制与来源</summary>{dossier}</details>
@@ -663,6 +682,10 @@ def main():
     global EVENTS, OBJ_NAMES, LAWS
     EVENTS = load_events()
     OBJ_NAMES = {o["id"]: o["name"] for l in cfg["layers"] for o in l["objects"]}
+    OBJ_NAMES.update({"tax_legislation": "立法", "mandatory_legislation": "立法",
+                      "debt_structure": "债务限制", "debt_limit": "债务限制",
+                      "caps_sequestration": "支出限制", "paygo": "支出限制",
+                      "impoundment": "支出限制"})
     LAWS = cfg.get("framework_laws", [])
     global WATCH
     wp = DATA / "watch_state.json"
@@ -679,25 +702,40 @@ def main():
 <details class="dossier" open><summary>展开档案</summary>
 {table(["框架法", "要点", "现行状态", "最近变化"], laws_rows)}
 </details></section>"""
+    ctx["laws_html"] = laws_card
+    L1G = [("legislation", "立法", ["tax_legislation", "mandatory_legislation"], True,
+            "到期结点×赤字影响一表尽览; 官方评分口径见表注"),
+           ("debt_limits", "债务限制", ["debt_structure", "debt_limit"], False,
+            "口径瀑布(总→公众→限额内) + 1993年至今债限双曲线"),
+           ("spending_limits", "支出限制", ["caps_sequestration", "paygo", "impoundment"], False,
+            "法定caps · PAYGO记分卡 · 行政扣款三道闸")]
+    for layer in cfg["layers"]:
+        if layer["id"] == "L1":
+            by_id = {o["id"]: o for o in layer["objects"]}
+            merged = []
+            for gid, gname, pids, laws, summ in L1G:
+                parts = [by_id[p] for p in pids if p in by_id]
+                m0 = {"id": gid, "name": gname, "view": "combo", "parts": parts,
+                      "part_ids": pids, "include_laws": laws,
+                      "status_line": "text", "text_status": summ,
+                      "verified": min(p.get("verified", "") for p in parts)}
+                merged.append(m0)
+            layer["objects"] = merged
     layers_html = ""
     for layer in cfg["layers"]:
         objs = ""
         for o in layer["objects"]:
             objs += render_object(o, ctx)
-            if layer["id"] == "L1" and o["id"] == "mandatory_legislation":
-                objs += laws_card   # 框架法档案归入"重要立法"组
         layers_html += f"""
 <div class="layer" id="{layer['id']}">
   <div class="lhead">
     <h2>{layer['id']} · {esc(layer['name'])}</h2>
-    <span class="ltime">{esc(layer.get('time_mode', ''))}</span>
     <button class="ltoggle" data-layer="{layer['id']}">收起工作视图</button>
   </div>
   {objs}
 </div>"""
 
     # 日历 (账本视图聚合)
-    strip = render_strip(EVENTS)
 
     # 近7日变化流水: 新入账(created_at)与新发生(date)取并集
     lo7 = (TODAY - timedelta(days=7)).isoformat()
@@ -719,7 +757,6 @@ def main():
 
     page = TEMPLATE
     page = page.replace("__NAV__", nav)
-    page = page.replace("__STRIP__", strip)
     page = page.replace("__FLUX__", flux)
     lm = J("../us/ledger_meta") if False else (json.loads((DATA / "ledger_meta.json").read_text(encoding="utf-8"))
           if (DATA / "ledger_meta.json").exists() else {})
@@ -777,7 +814,7 @@ TEMPLATE = r"""<!DOCTYPE html>
 --mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans','Noto Sans SC',system-ui,sans-serif}
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.5}
-.wrap{max-width:1180px;margin:0 auto;padding:18px 20px 60px}
+.wrap{max-width:none;margin:0;padding:18px 30px 60px}
 a{color:var(--blue)}
 header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;
 border-bottom:2px solid var(--ink);padding-bottom:10px}
@@ -831,10 +868,11 @@ cursor:pointer;background:var(--card);overflow:hidden}
 .day.today .dn{color:var(--ink);font-weight:600}
 .pill{font-size:10.5px;border-radius:3px;padding:0 4px;margin-top:2px;white-space:nowrap;
 overflow:hidden;text-overflow:ellipsis;border-left:3px solid transparent;background:transparent}
-.pill.g-发行回购{border-left-color:var(--green);color:var(--green)}
-.pill.g-重要文件{border-left-color:var(--blue);color:var(--blue)}
-.pill.g-立法时间{border-left-color:var(--red);color:var(--red)}
-.pill.g-重要到期日{border-left-color:var(--amber);color:var(--amber)}
+.pill{color:var(--ink)}
+.pill.g-发行回购{border-left-color:var(--green);background:#E7F0EA}
+.pill.g-重要文件{border-left-color:var(--blue);background:#E4ECF4}
+.pill.g-立法时间{border-left-color:var(--red);background:#F5E6E4}
+.pill.g-重要到期日{border-left-color:var(--amber);background:#F6EEDC}
 .pill.done{opacity:.55}
 .pill.more{color:var(--blue);border-left-color:transparent;opacity:1}
 .caldetail{border-top:1px solid var(--line);margin-top:10px;padding-top:8px;font-size:12.5px}
@@ -868,6 +906,10 @@ background:#FBFCFA;flex-wrap:wrap}
 .oname{font-weight:600;font-size:13.5px;min-width:120px}
 .ometric{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
 .ometric b{color:var(--ink);font-size:14px}
+.ostat{margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:right;white-space:nowrap}
+.osum{font-size:12px;color:var(--muted);line-height:1.55;margin:2px 0 8px;text-align:left}
+.osum b{color:var(--ink);font-size:13px}
+.ptitle{font-size:13.5px;font-weight:600;margin:16px 0 6px;padding-left:8px;border-left:3px solid var(--ink)}
 .onode{margin-left:auto;font-size:12px;color:var(--muted)}
 .nn{font-family:var(--mono);font-weight:600;color:var(--red)}
 .work{padding:12px 16px}
@@ -959,11 +1001,14 @@ font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-c
 </style></head>
 <body><div class="wrap">
 <header><h1>FISCAL MONITOR <span>/ US 美国</span>__SAMPLE__</h1><div class="meta">__META__</div></header>
-<nav class="top">__NAV__<a href="#ref">参考层</a></nav>
+<nav class="top"><a href="#L0">L0 Timeline</a>__NAV__<a href="#ref">参考层</a></nav>
 
-<div class="sec">财政时钟 · 未来90天 (节点归属各对象)</div>
-<div class="clock">__STRIP__</div>
-<div class="sec">财政日历 · 事件数据库 (历史可回溯)</div>
+<div class="layer" id="L0">
+<div class="lhead"><h2>L0 · Timeline</h2>
+<button class="ltoggle" data-layer="L0">收起工作视图</button></div>
+<section class="obj"><div class="srow"><span class="oname">财政日历</span>
+<span class="ostat">事件数据库 · 历史可回溯</span></div>
+<div class="work">
 <div class="calbox">
   <div class="calbar">
     <button class="cbtn" id="calPrev">‹</button>
@@ -977,14 +1022,16 @@ font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-c
   <div class="caldetail" id="calDetail"><span class="hint">点击日期查看事件明细、核对清单与结果</span></div>
   <div class="calrules">__CALRULES__</div>
 </div>
-
-<div class="sec">近7日变化流水 · 数据落地与监听命中</div>
-<div class="flux">__FLUX__</div>
+</div></section>
+<section class="obj"><div class="srow"><span class="oname">近7日变化流水</span>
+<span class="ostat">数据落地与监听命中</span></div>
+<div class="work"><div class="flux">__FLUX__</div></div></section>
+</div>
 
 __LAYERS__
 
 <div class="layer" id="ref">
-<div class="lhead"><h2>R · 参考层</h2><span class="ltime">静态档案, 按需查阅</span></div>
+<div class="lhead"><h2>R · 参考层</h2></div>
 <section class="obj"><div class="srow"><span class="oname">管线注记</span></div>
 <div class="work"><ul style="padding-left:18px;font-size:12.5px">__NOTES__</ul>
 <div class="qcard" style="margin-top:10px">完整数据源清单与勾稽关系另见 us_fiscal_data_sources.md (仓库内)。</div></div></section>
@@ -1004,7 +1051,7 @@ CHARTS.forEach(c=>{
   if(c.kind==='line'){
     const fmtT=v=>Math.abs(v)>=1000?Math.round(v/1000)+'T':Math.round(v).toLocaleString();
     const scales={y:{grid:{color:'#EDEFEA'},
-      ticks:c.y_unit==='bn'?{callback:fmtT}:(c.y_unit==='%'?{callback:v=>v+'%'}:{})},
+      ticks:c.y_unit==='bn'?{callback:fmtT}:(c.y_unit==='%'?{callback:v=>(Math.round(v*100)/100)+'%'}:{})},
       x:(c.opts&&c.opts.time)
         ?{type:'time',grid:{display:false},ticks:{maxTicksLimit:12}}
         :{grid:{display:false},ticks:{maxTicksLimit:c.opts&&c.opts.zoom?14:10}}};
