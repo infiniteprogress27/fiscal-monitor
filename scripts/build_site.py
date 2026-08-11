@@ -529,6 +529,18 @@ def v_qra_view(obj, ctx):
         h += table(["月份"] + [f"#{t}" for t in order], rows)
         cols = ["ink", "blue", "green", "amber", "red", "#6B4E8C", "muted"]
         newt = cs.get("tenors_new") or {}
+        import statistics as _st
+        QTR_ONLY, REF_M = {"10y", "20y", "30y"}, {"02", "05", "08", "11"}
+        def _clean(t, arr):
+            out, acc = [], []
+            for m0, v in zip(months, arr):
+                if v is None: out.append(None); continue
+                if t in QTR_ONLY and m0[5:7] not in REF_M:      # 季度券新发仅在refunding月, 其余为TIPS
+                    out.append(None); continue
+                if len(acc) >= 3 and v < 0.6 * _st.median(acc[-3:]):  # 异类场次护栏
+                    out.append(None); continue
+                acc.append(v); out.append(v)
+            return out
         def _ffill(arr):
             out, last = [], None
             for v in arr:
@@ -536,7 +548,7 @@ def v_qra_view(obj, ctx):
                 out.append(last)
             return out
         h += chart("ch_coupon", "line", [m[2:] for m in months],
-                   [{"label": t, "data": _ffill(newt.get(t) or tenors.get(t, [])), "color": cols[i], "w": 1.5}
+                   [{"label": t, "data": _ffill(_clean(t, newt.get(t) or tenors.get(t, []))), "color": cols[i], "w": 1.5}
                     for i, t in enumerate(order)], "bn",
                    opts={"tall": True, "zoom": True})
         h += '<div class="anchor-note">图为新发场次规模(阶梯态, 前向填充); 表为月度实况(新发与续发并存, 42/39交替为发行节奏本身)</div>' 
