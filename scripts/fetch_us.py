@@ -900,8 +900,12 @@ def fetch_coupon_deep():
                        {"filter": f"auction_date:gte:2007-01-01,security_type:eq:{ty}",
                         "sort": "auction_date"}, max_pages=15)
         for r in recs:
-            if str(r.get("tips") or "").lower().startswith("y"):
-                continue                     # TIPS的type也是Note/Bond, 按tips标志排除
+            skip = False
+            for fk in ("inflation_index_security", "tips", "floating_rate", "frn"):
+                if str(r.get(fk) or "").strip().lower() in ("yes", "y", "true"):
+                    skip = True; break
+            if skip:
+                continue                     # TIPS/FRN的type也是Note/Bond, 按标志列排除
             m, term = (r.get("auction_date") or "")[:7], r.get("security_term") or ""
             off = _pick(r, ["offering_amt", "total_accepted"])
             base = next((k for k in sorted(TEN, key=len, reverse=True)
