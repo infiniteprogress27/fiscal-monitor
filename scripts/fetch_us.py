@@ -294,7 +294,7 @@ def fetch_avg_rates():
 
 def fetch_interest():
     recs = api_get("/v2/accounting/od/interest_expense",
-                   {"filter": f"record_date:gte:{ago(430)}", "sort": "record_date"})
+                   {"filter": f"record_date:gte:{ago(3700)}", "sort": "record_date"}, max_pages=12)
     bym = {}
     for r in recs:
         v = _pick(r, ["month_expense_amt", "intr_exp_amt", "expense_amt"])
@@ -615,6 +615,134 @@ def fetch_approps_status():
     _write("approps_status", {"sample": False, "header": header, "rows": out})
 
 
+LOCAL_SERIES = {  # FRED/NIPA候选id, 首个命中生效
+    "fed_rev": ["FGRECPT"], "fed_exp": ["FGEXPND"],
+    "sl_rev": ["SLRECPT", "ASLGFRPT"], "sl_exp": ["SLEXPND"],
+    "grants": ["B087RC1Q027SBEA", "TRP6001A027NBEA"],
+}
+
+def _fred_annual(sid):
+    import requests, csv, io
+    r = requests.get("https://fred.stlouisfed.org/graph/fredgraph.csv",
+                     params={"id": sid}, timeout=60)
+    r.raise_for_status()
+    byy = {}
+    for row in csv.DictReader(io.StringIO(r.text)):
+        d = row.get("DATE") or row.get("observation_date")
+        v = row.get(sid)
+        if d and v and v != ".":
+            byy.setdefault(int(d[:4]), []).append(float(v))
+    return {y: round(sum(vs)/len(vs), 0) for y, vs in byy.items()}
+
+
+QTAX_MAP = {"T01": "t_prop", "T09": "t_sales", "T40": "t_ind", "T41": "t_corp"}
+
+def _fetch_qtax():
+    """Census QTAX: 州地方四大税种季度, 按日历年加总→及时年度分项(滞后约一季)。"""
+    import requests
+    r = requests.get("https://api.census.gov/data/timeseries/eits/qtax",
+                     params={"get": "cell_value,data_type_code,category_code",
+                             "time": "from 2014"}, timeout=60)
+    r.raise_for_status()
+    rows = r.json()
+    hdr = rows[0]
+    ci = {k: hdr.index(k) for k in ("cell_value", "data_type_code", "category_code", "time")}
+    byy = {}
+    for row in rows[1:]:
+        dt = row[ci["data_type_code"]]
+        if dt not in QTAX_MAP: continue
+        cat = row[ci["category_code"]] or ""
+        if not cat.endswith("1"):        # 全国州地方合并类目
+            continue
+        t = row[ci["time"]]              # 形如 2024-Q1
+        try:
+            y, v = int(t[:4]), float(row[ci["cell_value"]])
+        except (ValueError, TypeError):
+            continue
+        byy.setdefault(QTAX_MAP[dt], {}).setdefault(y, []).append(v)
+    out = {}
+    for k, ys in byy.items():
+        ann = {}
+        for y, vs in ys.items():
+            if len(vs) < 3: continue     # 不足3季不出年值
+            s = sum(vs)/1e3              # 百万→bn
+            ann[y] = round(s/4 if s > 1800 else s, 0)   # 若源为4Q滚动和则取均值
+        if len(ann) >= 6:
+            out[k] = ann
+    return out
+
+
+def fetch_local():
+    """央地收支: NIPA总量五序列 + QTAX税种分项 + NGDP (weekly)。"""
+    series, src = {}, {}
+    for key, cands in LOCAL_SERIES.items():
+        for sid in cands:
+            try:
+                d = _fred_annual(sid)
+                if len(d) >= 8:
+                    series[key], src[key] = d, sid
+                    break
+            except Exception as e:
+                print(f"  local {sid} 失败: {e}")
+    if len(series) < 3:
+        print("  !! local序列不足, 保留上一版")
+        return
+    ngdp = {}
+    try:
+        ngdp = _fred_annual("GDP")
+    except Exception:
+        pass
+    try:
+        qt = _fetch_qtax()
+        for k, d in qt.items():
+            series[k], src[k] = d, "QTAX"
+    except Exception as e:
+        print(f"  QTAX失败(分项保留上一版): {e}")
+        try:
+            import requests
+            r = requests.get("https://api.census.gov/data/timeseries/eits/qtax",
+                             params={"get": "cell_value,data_type_code,category_code", "time": "2024"},
+                             timeout=60)
+            _debug("qtax", r.json()[:20])
+        except Exception:
+            pass
+    years = sorted(set.union(*[set(v) for v in series.values()]))
+    years = [y for y in years if y >= 2015][-11:]
+    _write("local_fiscal", {"sample": False, "src": src, "years": years,
+                            "series": {k: [v.get(y) for y in years] for k, v in series.items()},
+                            "ngdp": [ngdp.get(y) for y in years]})
+
+
+def fetch_tic():
+    """TIC MFH: 海外持有美债总量与前列国别 (weekly)。文本表防御解析。"""
+    import requests
+    r = requests.get("https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/mfh.txt",
+                     headers={"User-Agent": "Mozilla/5.0"}, timeout=60)
+    r.raise_for_status()
+    rows, total = [], None
+    for line in r.text.splitlines():
+        parts = line.split()
+        if not parts: continue
+        idx = next((i for i, p in enumerate(parts)
+                    if p.replace(",", "").replace(".", "").isdigit()), None)
+        if idx is None or idx == 0: continue
+        name = " ".join(parts[:idx]).strip().rstrip(".")
+        try:
+            val = float(parts[idx].replace(",", ""))
+        except ValueError:
+            continue
+        if name.lower().startswith("grand total"):
+            total = val
+        elif name and val > 30 and not name.lower().startswith(("of which", "memo", "for", "the")):
+            rows.append({"name": name, "bn": val})
+    if total is None and not rows:
+        (OUT / "_debug_tic.txt").write_text(r.text[:8000], encoding="utf-8")
+        print("  !! TIC解析为空, 原文落盘")
+        return
+    rows = sorted(rows, key=lambda x: -x["bn"])[:12]
+    _write("tic_holders", {"sample": False, "foreign_total": total, "top": rows})
+
+
 def fetch_soma():
     """NY Fed SOMA汇总: bills持仓与总量, 月末降采样 (weekly)。"""
     import requests
@@ -793,7 +921,7 @@ FETCHERS = {
                  fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
                  fetch_debt_limit_history, fetch_market, fetch_approps_status,
                  fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
-                 fetch_annual],
+                 fetch_local, fetch_tic, fetch_annual],
     "due:mts":  [fetch_mts, fetch_avg_rates, fetch_interest,
                  fetch_annual],
     "due:mspd": [fetch_mspd],
@@ -1054,6 +1182,25 @@ def write_sample():
         {"month": m, "rate": round(v, 2)} for m, v in _interp(b1_k)]})
 
     # QRA历史(每季人工录入): 私人净融资 / 期末TGA假设
+    _write("local_fiscal", {"sample": True, "years": list(range(2015, 2025)),
+        "series": {
+            "fed_rev": [3249,3268,3316,3409,3490,3420,4046,4900,4440,4520],
+            "fed_exp": [3688,3853,3982,4109,4447,6552,6818,6262,6371,6750],
+            "sl_rev":  [2510,2560,2660,2770,2900,3140,3480,3610,3700,3860],
+            "sl_exp":  [2510,2570,2670,2780,2900,3050,3230,3460,3660,3840],
+            "grants":  [610,640,660,700,750,940,1240,1080,1060,1090],
+            "t_prop":  [488,503,526,547,577,600,630,675,730,762],
+            "t_sales": [380,389,400,420,433,428,495,545,560,575],
+            "t_ind":   [338,344,371,387,406,393,504,558,505,540],
+            "t_corp":  [50,47,48,55,60,64,95,120,105,98]},
+        "ngdp": [18206,18695,19477,20533,21381,21060,22996,25744,27360,28781]})
+    _write("tic_holders", {"sample": True, "foreign_total": 9120, "top": [
+        {"name": "Japan", "bn": 1125}, {"name": "United Kingdom", "bn": 815},
+        {"name": "China, Mainland", "bn": 758}, {"name": "Cayman Islands", "bn": 432},
+        {"name": "Luxembourg", "bn": 424}, {"name": "Canada", "bn": 402},
+        {"name": "Belgium", "bn": 352}, {"name": "Ireland", "bn": 340},
+        {"name": "France", "bn": 312}, {"name": "Switzerland", "bn": 300}]})
+
     _write("qra_history", {"sample": True, "rows": [
         {"q": "2023Q4", "borrowing": 776, "tga_end": 750}, {"q": "2024Q1", "borrowing": 760, "tga_end": 750},
         {"q": "2024Q2", "borrowing": 243, "tga_end": 750}, {"q": "2024Q3", "borrowing": 740, "tga_end": 850},
@@ -1097,9 +1244,11 @@ def write_sample():
     _write("debt_long", {"sample": True, "years": yrs,
                          "total": [round(dl[f"{y}-01"], 0) for y in yrs],
                          "ngdp": [round(ng[f"{y}-01"], 0) for y in yrs]})
+    ie_k = [("2016-07", 20), ("2019-07", 32), ("2021-07", 33), ("2022-12", 55),
+            ("2023-12", 80), ("2024-12", 95), ("2026-07", 92)]
     _write("interest", {"sample": True, "series": [
-        {"month": m2, "expense_bn": round(92+random.uniform(0, 26), 1)}
-        for m2 in [f"2025-{m:02d}" for m in range(7, 13)] + [f"2026-{m:02d}" for m in range(1, 7)]]})
+        {"month": m, "expense_bn": round(v * (1.55 if m[5:7] in ("06", "12") else 1.0), 0)}
+        for m, v in _interp(ie_k)]})
     print("示例完成。真实抓取: python scripts/fetch_us.py")
 
 
