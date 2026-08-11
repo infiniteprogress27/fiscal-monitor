@@ -110,3 +110,24 @@ events:
     dtype: 法定
     label: 白宫递交FY2027国防补充请求 $87.6B
     checklist: [载体法案号确认后挂监听锚, 紧急指定范围]
+  - id: leg-cr-senate-pass
+    date: "2026-08-08"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: 参院90-6通过CR至12/11(替代文本, 回传众院)
+    checklist: [众院是否修正, OMB审批新规冻结条款]
+  - id: node-house-cr-vote
+    date: "2026-09-02"
+    cat: 立法
+    owner: appropriations
+    dtype: 估
+    label: 众院复会表决参院版CR(9月首周, 估)
+    checklist: [通过即12/11生效, 修正则回参院]
+  - id: node-cr-1211
+    date: "2026-12-11"
+    cat: 到期
+    owner: appropriations
+    dtype: 估
+    label: CR到期节点(参院版, 待成法确认)
+    checklist: [omnibus或再CR, 国防topline谈判结果]
