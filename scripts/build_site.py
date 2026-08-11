@@ -534,10 +534,18 @@ def v_qra_view(obj, ctx):
             rows.append((months[i],) + tuple(fmt(tenors.get(t, [None]*len(months))[i]) for t in order))
         h += table(["月份"] + [f"#{t}" for t in order], rows)
         cols = ["ink", "blue", "green", "amber", "red", "#6B4E8C", "muted"]
+        newt = cs.get("tenors_new") or {}
+        def _ffill(arr):
+            out, last = [], None
+            for v in arr:
+                if v is not None: last = v
+                out.append(last)
+            return out
         h += chart("ch_coupon", "line", [m[2:] for m in months],
-                   [{"label": t, "data": tenors.get(t, []), "color": cols[i], "w": 1.5}
+                   [{"label": t, "data": _ffill(newt.get(t) or tenors.get(t, [])), "color": cols[i], "w": 1.5}
                     for i, t in enumerate(order)], "bn",
                    opts={"tall": True, "zoom": True})
+        h += '<div class="anchor-note">图为新发场次规模(阶梯态, 前向填充); 表为月度实况(新发与续发并存, 42/39交替为发行节奏本身)</div>' 
     return h + links_chips(obj) + qual_card(obj["qual"])
 
 
@@ -1139,7 +1147,11 @@ CHARTS.forEach(c=>{
 });
 // ---- 地方收支 (央地对照, 图表联动)
 const LX = __LOCAL__;
-if(LX && LX.years && document.getElementById('lxTable')){
+if(document.getElementById('lxTable') && !(LX && LX.years && LX.years.length)){
+  document.getElementById('lxTable').innerHTML =
+    '<div class="anchor-note">数据文件待weekly首跑生成(NIPA/QTAX), 生成后自动填充</div>';
+}
+if(LX && LX.years && LX.years.length && document.getElementById('lxTable')){
 (function(){
   const Y = LX.years, N = Y.length, S = LX.series, G = LX.ngdp || [];
   const ROWS = [
