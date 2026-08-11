@@ -423,6 +423,18 @@ def fetch_debt_limit_history():
                 bym.setdefault(f"{y}-09", round(v/1e9, 1))
     except Exception as e:
         print(f"  年度近似段失败(不阻塞): {e}")
+    try:
+        dtp = api_get("/v2/accounting/od/debt_to_penny",
+                      {"filter": "record_date:gte:2005-06-01",
+                       "fields": "record_date,tot_pub_debt_out_amt",
+                       "sort": "record_date"}, max_pages=8)
+        for r in dtp:
+            m = (r.get("record_date") or "")[:7]
+            v = _pick(r, ["tot_pub_debt_out_amt"])
+            if m and v:
+                bym.setdefault(m, round(v/1e9, 1))
+    except Exception as e:
+        print(f"  DTP近似段失败(不阻塞): {e}")
     s2 = [{"month": m, "actual": v} for m, v in sorted(bym.items())]
     if not s2:
         if recs: _debug("debt_limit_history", recs)
@@ -509,9 +521,22 @@ ANNUAL_MAP = {  # classification_desc 关键词 → 科目id (首跑校验候选
 def fetch_annual():
     """年度分科目: 历年9月MTS current_fytd=全年 (weekly/due:mts)。"""
     out = {}
+    latest_rows = {}
     for table, mapping, rest in ((4, REV_MAP, None), (9, OUT_MAP, None)):
         recs = api_get(f"/v1/accounting/mts/mts_table_{table}",
                        {"filter": "record_date:gte:2015-08-01", "sort": "record_date"}, max_pages=25)
+        latest = max((r["record_date"] for r in recs), default=None)
+        agg = {}
+        for r in recs:
+            if r["record_date"] == latest and (r.get("data_type_cd") or "") in ("D", "T"):
+                cid2 = _cls_match(r.get("classification_desc"), mapping)
+                if cid2:
+                    cur2, py2 = _fytd(r)
+                    if cur2 is not None:
+                        a = agg.setdefault(cid2, [0.0, 0.0])
+                        a[0] += cur2/1e9
+                        a[1] += (py2 or 0)/1e9
+        latest_rows[table] = (latest, agg)
         for r in recs:
             d = r.get("record_date") or ""
             if d[5:7] != "09": continue
@@ -539,6 +564,13 @@ def fetch_annual():
                       "series": {cid: [round(v.get(fy, 0), 1) or None for fy in years]
                                  for cid, v in out.items()},
                       "ngdp": []})
+    for table, name, labels in ((4, "mts_receipts", REV_LABEL), (9, "mts_outlays", OUT_LABEL)):
+        latest, agg = latest_rows.get(table, (None, {}))
+        if agg:
+            rows = [{"id": c, "cat": labels.get(c, c), "fytd": round(v[0], 0),
+                     "fytd_prior": round(v[1], 0)} for c, v in agg.items()]
+            rows.sort(key=lambda x: -x["fytd"])
+            _write(name, {"sample": False, "as_of": latest[:7] if latest else None, "rows": rows})
 
 
 def fetch_approps_status():
@@ -755,15 +787,12 @@ FETCHERS = {
                  fetch_approps_status],
     "intraday": [fetch_auctions, fetch_upcoming, fetch_buybacks],
     "weekly":   [fetch_mts,
-                 lambda: _fetch_cat(4, "mts_receipts", REV_MAP, REV_LABEL),
-                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL),
                  fetch_avg_rates, fetch_interest,
                  fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
                  fetch_debt_limit_history, fetch_market, fetch_approps_status,
                  fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
                  fetch_annual],
-    "due:mts":  [fetch_mts, lambda: _fetch_cat(4, "mts_receipts", REV_MAP, REV_LABEL),
-                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL), fetch_avg_rates, fetch_interest,
+    "due:mts":  [fetch_mts, fetch_avg_rates, fetch_interest,
                  fetch_annual],
     "due:mspd": [fetch_mspd],
     "due:tic":  [],   # 接口空置: TIC接入后挂此处
