@@ -1,0 +1,55 @@
+{
+ "sample": false,
+ "foreign_total": 7402.5,
+ "top": [
+  {
+   "name": "T-Bonds & Notes",
+   "bn": 3464.3
+  },
+  {
+   "name": "Country",
+   "bn": 2023.0
+  },
+  {
+   "name": "Japan",
+   "bn": 1104.4
+  },
+  {
+   "name": "China, Mainland",
+   "bn": 859.4
+  },
+  {
+   "name": "United Kingdom",
+   "bn": 668.3
+  },
+  {
+   "name": "All Other",
+   "bn": 437.2
+  },
+  {
+   "name": "Belgium",
+   "bn": 331.1
+  },
+  {
+   "name": "Luxembourg",
+   "bn": 318.2
+  },
+  {
+   "name": "Switzerland",
+   "bn": 290.5
+  },
+  {
+   "name": "Cayman Islands",
+   "bn": 285.3
+  },
+  {
+   "name": "Canada",
+   "bn": 254.1
+  },
+  {
+   "name": "Ireland",
+   "bn": 253.4
+  }
+ ],
+ "fetched_at": "2026-08-11T14:35:55.880529Z"
+}

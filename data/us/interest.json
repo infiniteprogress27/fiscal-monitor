@@ -2,6 +2,438 @@
  "sample": false,
  "series": [
   {
+   "month": "2016-06",
+   "expense_bn": 95.7
+  },
+  {
+   "month": "2016-07",
+   "expense_bn": 32.5
+  },
+  {
+   "month": "2016-08",
+   "expense_bn": 32.6
+  },
+  {
+   "month": "2016-09",
+   "expense_bn": 19.1
+  },
+  {
+   "month": "2016-10",
+   "expense_bn": 23.0
+  },
+  {
+   "month": "2016-11",
+   "expense_bn": 28.7
+  },
+  {
+   "month": "2016-12",
+   "expense_bn": 87.4
+  },
+  {
+   "month": "2017-01",
+   "expense_bn": 23.3
+  },
+  {
+   "month": "2017-02",
+   "expense_bn": 25.7
+  },
+  {
+   "month": "2017-03",
+   "expense_bn": 34.8
+  },
+  {
+   "month": "2017-04",
+   "expense_bn": 34.4
+  },
+  {
+   "month": "2017-05",
+   "expense_bn": 27.8
+  },
+  {
+   "month": "2017-06",
+   "expense_bn": 90.4
+  },
+  {
+   "month": "2017-07",
+   "expense_bn": 28.7
+  },
+  {
+   "month": "2017-08",
+   "expense_bn": 30.3
+  },
+  {
+   "month": "2017-09",
+   "expense_bn": 23.9
+  },
+  {
+   "month": "2017-10",
+   "expense_bn": 24.4
+  },
+  {
+   "month": "2017-11",
+   "expense_bn": 38.0
+  },
+  {
+   "month": "2017-12",
+   "expense_bn": 84.6
+  },
+  {
+   "month": "2018-01",
+   "expense_bn": 27.8
+  },
+  {
+   "month": "2018-02",
+   "expense_bn": 28.4
+  },
+  {
+   "month": "2018-03",
+   "expense_bn": 38.5
+  },
+  {
+   "month": "2018-04",
+   "expense_bn": 41.9
+  },
+  {
+   "month": "2018-05",
+   "expense_bn": 35.6
+  },
+  {
+   "month": "2018-06",
+   "expense_bn": 95.8
+  },
+  {
+   "month": "2018-07",
+   "expense_bn": 40.6
+  },
+  {
+   "month": "2018-08",
+   "expense_bn": 38.4
+  },
+  {
+   "month": "2018-09",
+   "expense_bn": 29.0
+  },
+  {
+   "month": "2018-10",
+   "expense_bn": 31.6
+  },
+  {
+   "month": "2018-11",
+   "expense_bn": 35.4
+  },
+  {
+   "month": "2018-12",
+   "expense_bn": 97.2
+  },
+  {
+   "month": "2019-01",
+   "expense_bn": 27.8
+  },
+  {
+   "month": "2019-02",
+   "expense_bn": 28.7
+  },
+  {
+   "month": "2019-03",
+   "expense_bn": 38.9
+  },
+  {
+   "month": "2019-04",
+   "expense_bn": 46.6
+  },
+  {
+   "month": "2019-05",
+   "expense_bn": 47.8
+  },
+  {
+   "month": "2019-06",
+   "expense_bn": 102.8
+  },
+  {
+   "month": "2019-07",
+   "expense_bn": 40.3
+  },
+  {
+   "month": "2019-08",
+   "expense_bn": 41.4
+  },
+  {
+   "month": "2019-09",
+   "expense_bn": 36.0
+  },
+  {
+   "month": "2019-10",
+   "expense_bn": 30.3
+  },
+  {
+   "month": "2019-11",
+   "expense_bn": 35.6
+  },
+  {
+   "month": "2019-12",
+   "expense_bn": 94.3
+  },
+  {
+   "month": "2020-01",
+   "expense_bn": 33.9
+  },
+  {
+   "month": "2020-02",
+   "expense_bn": 34.9
+  },
+  {
+   "month": "2020-03",
+   "expense_bn": 40.5
+  },
+  {
+   "month": "2020-04",
+   "expense_bn": 41.0
+  },
+  {
+   "month": "2020-05",
+   "expense_bn": 26.5
+  },
+  {
+   "month": "2020-06",
+   "expense_bn": 68.5
+  },
+  {
+   "month": "2020-07",
+   "expense_bn": 31.3
+  },
+  {
+   "month": "2020-08",
+   "expense_bn": 47.2
+  },
+  {
+   "month": "2020-09",
+   "expense_bn": 38.8
+  },
+  {
+   "month": "2020-10",
+   "expense_bn": 20.1
+  },
+  {
+   "month": "2020-11",
+   "expense_bn": 32.7
+  },
+  {
+   "month": "2020-12",
+   "expense_bn": 79.6
+  },
+  {
+   "month": "2021-01",
+   "expense_bn": 27.3
+  },
+  {
+   "month": "2021-02",
+   "expense_bn": 32.3
+  },
+  {
+   "month": "2021-03",
+   "expense_bn": 36.6
+  },
+  {
+   "month": "2021-04",
+   "expense_bn": 45.5
+  },
+  {
+   "month": "2021-05",
+   "expense_bn": 45.7
+  },
+  {
+   "month": "2021-06",
+   "expense_bn": 99.3
+  },
+  {
+   "month": "2021-07",
+   "expense_bn": 47.8
+  },
+  {
+   "month": "2021-08",
+   "expense_bn": 57.7
+  },
+  {
+   "month": "2021-09",
+   "expense_bn": 37.7
+  },
+  {
+   "month": "2021-10",
+   "expense_bn": 18.9
+  },
+  {
+   "month": "2021-11",
+   "expense_bn": 36.0
+  },
+  {
+   "month": "2021-12",
+   "expense_bn": 99.1
+  },
+  {
+   "month": "2022-01",
+   "expense_bn": 43.2
+  },
+  {
+   "month": "2022-02",
+   "expense_bn": 41.4
+  },
+  {
+   "month": "2022-03",
+   "expense_bn": 52.8
+  },
+  {
+   "month": "2022-04",
+   "expense_bn": 60.1
+  },
+  {
+   "month": "2022-05",
+   "expense_bn": 72.8
+  },
+  {
+   "month": "2022-06",
+   "expense_bn": 97.9
+  },
+  {
+   "month": "2022-07",
+   "expense_bn": 68.5
+  },
+  {
+   "month": "2022-08",
+   "expense_bn": 88.1
+  },
+  {
+   "month": "2022-09",
+   "expense_bn": 40.0
+  },
+  {
+   "month": "2022-10",
+   "expense_bn": 47.6
+  },
+  {
+   "month": "2022-11",
+   "expense_bn": 55.0
+  },
+  {
+   "month": "2022-12",
+   "expense_bn": 107.4
+  },
+  {
+   "month": "2023-01",
+   "expense_bn": 51.1
+  },
+  {
+   "month": "2023-02",
+   "expense_bn": 45.6
+  },
+  {
+   "month": "2023-03",
+   "expense_bn": 77.6
+  },
+  {
+   "month": "2023-04",
+   "expense_bn": 76.0
+  },
+  {
+   "month": "2023-05",
+   "expense_bn": 69.6
+  },
+  {
+   "month": "2023-06",
+   "expense_bn": 125.8
+  },
+  {
+   "month": "2023-07",
+   "expense_bn": 73.3
+  },
+  {
+   "month": "2023-08",
+   "expense_bn": 82.1
+  },
+  {
+   "month": "2023-09",
+   "expense_bn": 71.5
+  },
+  {
+   "month": "2023-10",
+   "expense_bn": 88.9
+  },
+  {
+   "month": "2023-11",
+   "expense_bn": 79.9
+  },
+  {
+   "month": "2023-12",
+   "expense_bn": 119.2
+  },
+  {
+   "month": "2024-01",
+   "expense_bn": 69.2
+  },
+  {
+   "month": "2024-02",
+   "expense_bn": 76.2
+  },
+  {
+   "month": "2024-03",
+   "expense_bn": 88.7
+  },
+  {
+   "month": "2024-04",
+   "expense_bn": 102.4
+  },
+  {
+   "month": "2024-05",
+   "expense_bn": 103.0
+  },
+  {
+   "month": "2024-06",
+   "expense_bn": 140.2
+  },
+  {
+   "month": "2024-07",
+   "expense_bn": 88.5
+  },
+  {
+   "month": "2024-08",
+   "expense_bn": 92.3
+  },
+  {
+   "month": "2024-09",
+   "expense_bn": 84.4
+  },
+  {
+   "month": "2024-10",
+   "expense_bn": 82.0
+  },
+  {
+   "month": "2024-11",
+   "expense_bn": 86.6
+  },
+  {
+   "month": "2024-12",
+   "expense_bn": 139.8
+  },
+  {
+   "month": "2025-01",
+   "expense_bn": 83.8
+  },
+  {
+   "month": "2025-02",
+   "expense_bn": 85.9
+  },
+  {
+   "month": "2025-03",
+   "expense_bn": 104.4
+  },
+  {
+   "month": "2025-04",
+   "expense_bn": 101.7
+  },
+  {
+   "month": "2025-05",
+   "expense_bn": 92.2
+  },
+  {
    "month": "2025-06",
    "expense_bn": 144.6
   },
@@ -58,5 +490,5 @@
    "expense_bn": 117.6
   }
  ],
- "fetched_at": "2026-08-11T05:27:29.295295Z"
+ "fetched_at": "2026-08-11T14:34:26.614347Z"
 }
