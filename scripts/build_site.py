@@ -223,7 +223,7 @@ def v_debt_limit(obj, ctx):
                 "axis": "y2", "xy": mk.get("us10y", [])}],
               "bn", opts={"tall": True, "zoom": True, "time": True,
                           "axes": {"y1": {"log": True}, "y2": {"unit": "%"}}})
-    note = ('<div class="anchor-note">1993年至今 · 限额台阶为法定事件(config维护), 实际线2005/6起为DTS月末值、'
+    note = ('<div class="anchor-note">1993年至今 · 限额台阶为法定事件(config维护), 实际线2022/10起为DTS精确值、2005-2022为月末总债务近似(差<0.5%)、'
             '之前为年度总债务近似 · 空档=暂停期 · 滚轮/拖拽双轴缩放, 双击复位</div>')
     return h + note + links_chips(obj) + qual_card(obj["qual"])
 
