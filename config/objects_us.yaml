@@ -429,6 +429,24 @@ layers:
           - {name: FRED GDP (NGDP财年均值), freq: 季, kind: API}
           - {name: CBO Historical Budget Data (校验源), freq: 年, kind: 机读}
 
+      - id: mts_progress
+        name: 月度收支进度
+        view: fytd_progress
+        status_line: fytd
+        verified: "2026-08-08"
+        qual:
+          state: FYTD四类线=当年+近6财年+CBO基线路径+DTS预测点; FY2026累计略高于可比带上沿
+          base_case: 全年落在CBO锚附近, 关税收入与利息支出是两侧主要变量
+          watch: MBR先行估计与MTS落地偏差及归因; DTS预测点与随后MTS的偏差(校准楔子用); 4/6/9/1缴税大月
+          mechanism: >
+            锚链条 DTS(日)→DTS预测点(本系统)→MBR(月初,±5bn)→MTS(实际)。
+            DTS预测: 月内已实现现金赤字(存取款剔除国债发行/赎回) + 近3年同月MTS均值×未过日比例。
+            现金vs权责口径楔子未校正, 定位为MTS前方向性锚, 精度弱于MBR; 预测点用空心菱形+虚线, 与实际严格区分。
+        sources:
+          - {name: MTS table 1 (8财年窗口), freq: 月8-12号, kind: API}
+          - {name: DTS deposits_withdrawals (剔债务流), freq: 日, kind: API}
+          - {name: CBO Monthly Budget Review, freq: 月初, kind: PDF}
+
       - id: local_fiscal
         name: 地方收支
         view: local_widget
@@ -455,24 +473,6 @@ layers:
             - {item: 公路交通, bn: 210}
             - {item: 公共安全, bn: 260}
             - {item: 其他, bn: 1300}
-
-      - id: mts_progress
-        name: 月度收支进度
-        view: fytd_progress
-        status_line: fytd
-        verified: "2026-08-08"
-        qual:
-          state: FYTD四类线=当年+近6财年+CBO基线路径+DTS预测点; FY2026累计略高于可比带上沿
-          base_case: 全年落在CBO锚附近, 关税收入与利息支出是两侧主要变量
-          watch: MBR先行估计与MTS落地偏差及归因; DTS预测点与随后MTS的偏差(校准楔子用); 4/6/9/1缴税大月
-          mechanism: >
-            锚链条 DTS(日)→DTS预测点(本系统)→MBR(月初,±5bn)→MTS(实际)。
-            DTS预测: 月内已实现现金赤字(存取款剔除国债发行/赎回) + 近3年同月MTS均值×未过日比例。
-            现金vs权责口径楔子未校正, 定位为MTS前方向性锚, 精度弱于MBR; 预测点用空心菱形+虚线, 与实际严格区分。
-        sources:
-          - {name: MTS table 1 (8财年窗口), freq: 月8-12号, kind: API}
-          - {name: DTS deposits_withdrawals (剔债务流), freq: 日, kind: API}
-          - {name: CBO Monthly Budget Review, freq: 月初, kind: PDF}
 
 
   # ================================================================
