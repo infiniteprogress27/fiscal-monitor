@@ -361,6 +361,44 @@ def v_fytd_progress(obj, ctx):
     return h + mbr + qual_card(obj["qual"])
 
 
+def v_local_widget(obj, ctx):
+    h = """
+<div class="blx">
+  <div class="chart tall" style="height:320px;max-height:320px"><canvas id="ch_local"></canvas></div>
+  <div class="blx-bar"><span class="blx-hint">默认: 联邦/州地方收支四线+转移支付 · 点击行切换该序列(绝对额+/NGDP双轴)</span></div>
+  <div class="blx-tbl" id="lxTable"></div>
+</div>"""
+    ac = obj.get("anchors_census") or {}
+    if ac:
+        h += f'<h4>支出功能分项 · Census {esc(ac.get("as_of", ""))} (人工锚·年度)</h4>'
+        h += table(["功能", "#$bn"], [(r["item"], fmt(r["bn"])) for r in ac.get("spending", [])])
+        h += ('<div class="anchor-note">税种分项已升级为QTAX自动(上表, 滞后约一季); '
+              '支出功能分项暂无同时效公开源(Census年度), 人工锚逐年校准 · NIPA与Census口径不跨源相减</div>')
+    return h + qual_card(obj["qual"])
+
+
+def v_holders_v2(obj, ctx):
+    tic = ctx.get("tic_holders") or {}
+    soma = (ctx.get("soma") or {}).get("series") or []
+    sup = (ctx["supply"].get("series") or [{}])[-1]
+    mkt = sup.get("bills_bn", 0) / (sup.get("tbills_share", 1) or 1) * 100 if sup.get("bills_bn") else None
+    soma_tot = soma[-1].get("soma_total") if soma else None
+    ft = tic.get("foreign_total")
+    pct = lambda v: f"{100*v/mkt:.1f}%" if (v and mkt) else "—"
+    rows = [("海外合计 (TIC)", fmt(ft), pct(ft), "自动·月度(滞后6周)"),
+            ("美联储SOMA", fmt(soma_tot), pct(soma_tot), "自动·周度")]
+    for r in (obj.get("anchors_z1") or {}).get("rows", []):
+        rows.append((r["holder"] + " (Z.1)", fmt(r["bn"]), pct(r["bn"]),
+                     f"人工锚·{(obj.get('anchors_z1') or {}).get('as_of', '')}"))
+    h = "<h4>持有人总览 · 占marketable比</h4>"
+    h += table(["持有人", "#$bn", "#占比", "更新方式"], rows)
+    top = tic.get("top") or []
+    if top:
+        h += "<h4>海外持有前列国别/地区 (TIC MFH)</h4>"
+        h += table(["国别/地区", "#$bn"], [(t["name"], fmt(t["bn"])) for t in top])
+    return h + qual_card(obj["qual"])
+
+
 def v_annual_widget(obj, ctx):
     h = """
 <div class="blx">
@@ -592,7 +630,7 @@ VIEWS = {"combo": v_combo,
     "caps_view": v_caps_view, "paygo_view": v_paygo_view,
     "baseline_center": v_baseline_center, "cycle_instances": v_cycle_instances,
     "approps_v2": v_approps_v2, "expansion_view": v_expansion_view, "fytd_progress": v_fytd_progress,
-    "annual_widget": v_annual_widget, "dts_flows": v_dts_flows,
+    "annual_widget": v_annual_widget, "local_widget": v_local_widget, "holders_v2": v_holders_v2, "dts_flows": v_dts_flows,
     "qra_view": v_qra_view, "funding_widget": v_funding_widget,
     "cash_buyback": v_cash_buyback, "debt_long": v_debt_long,
     "supply_share": v_supply_share,
@@ -675,7 +713,7 @@ def main():
     ctx = {"anchors": cfg["anchors"]}
     for name in ["debt", "debt_limit", "debt_limit_history", "market", "tga", "mts", "mts_receipts", "mts_outlays",
                  "dts_flows", "auctions", "upcoming", "buybacks", "supply", "approps_status",
-                 "qra_history", "coupon_sizes", "wam", "debt_long", "bill1y",
+                 "qra_history", "coupon_sizes", "wam", "debt_long", "bill1y", "local_fiscal", "tic_holders", "soma",
                  "mspd_structure", "avg_rates", "interest"]:
         ctx[name] = J(name)
     ctx["fy_paths"] = fy_paths(ctx["mts"].get("series") or [])
@@ -783,8 +821,10 @@ def main():
            "fytd": {r["id"]: r for r in (ctx["mts_receipts"].get("rows") or []) + (ctx["mts_outlays"].get("rows") or []) if r.get("id")},
            "as_of": ctx["mts_receipts"].get("as_of")}
     page_anx = json.dumps(anx, ensure_ascii=False)
+    page_lx = json.dumps(ctx.get("local_fiscal") or {}, ensure_ascii=False)
     mx = DATA / "cbo_matrix.json"
     page = page.replace("__ANNUAL__", page_anx)
+    page = page.replace("__LOCAL__", page_lx)
     page = page.replace("__FNXDEF__", page_fnx)
     page = page.replace("__CBOMATRIX__", mx.read_text(encoding="utf-8") if mx.exists() else "null")
     page = page.replace("__EVENTS__", json.dumps(EVENTS, ensure_ascii=False))
@@ -1097,6 +1137,95 @@ CHARTS.forEach(c=>{
       scales:{x:{grid:{color:'#EDEFEA'}},y:{grid:{display:false}}}}});
   }
 });
+// ---- 地方收支 (央地对照, 图表联动)
+const LX = __LOCAL__;
+if(LX && LX.years && document.getElementById('lxTable')){
+(function(){
+  const Y = LX.years, N = Y.length, S = LX.series, G = LX.ngdp || [];
+  const ROWS = [
+    {id:'sl_rev',l:'州地方总收入',lv:0},
+    {id:'grants',l:'其中: 联邦转移(Grants)',lv:1},
+    {id:'sl_own',l:'其中: 自有收入',lv:1},
+    {id:'t_prop',l:'财产税 (QTAX·滞后一季)',lv:2},
+    {id:'t_sales',l:'一般销售税',lv:2},
+    {id:'t_ind',l:'州个人所得税',lv:2},
+    {id:'t_corp',l:'州企业所得税',lv:2},
+    {id:'sl_exp',l:'州地方总支出',lv:0},
+    {id:'fed_rev',l:'联邦总收入 (NIPA口径)',lv:0},
+    {id:'fed_exp',l:'联邦总支出 (NIPA口径)',lv:0},
+    {id:'dep',l:'联邦转移/州地方收入 %',lv:0,pct:true},
+  ];
+  const ser = id => {
+    if(id==='sl_own') return Y.map((_,t)=>(S.sl_rev&&S.grants&&S.sl_rev[t]!=null&&S.grants[t]!=null)?S.sl_rev[t]-S.grants[t]:null);
+    if(id==='dep') return Y.map((_,t)=>(S.grants&&S.sl_rev&&S.grants[t]&&S.sl_rev[t])?100*S.grants[t]/S.sl_rev[t]:null);
+    return (S[id]||Y.map(()=>null));
+  };
+  const fmtc=v=>v==null?'—':Math.round(v).toLocaleString();
+  function spark(id){
+    const s=ser(id), yy=[];
+    for(let t=N-5;t<N;t++){ if(s[t]!=null&&s[t-1]) yy.push({fy:Y[t],v:100*(s[t]/s[t-1]-1)}); }
+    if(yy.length<2) return '';
+    const vs=yy.map(p=>p.v), mn=Math.min(...vs,0), mx=Math.max(...vs,0), rg=(mx-mn)||1;
+    const XY=yy.map((p,i)=>[6+i*(56/(yy.length-1)), 18-3-(p.v-mn)/rg*12]);
+    const zy=18-3-(0-mn)/rg*12, col=vs[vs.length-1]>=0?'#0E5A45':'#B03A2E';
+    let g=`<svg width="70" height="20" style="display:block;margin:0 auto"><line x1="6" y1="${zy}" x2="62" y2="${zy}" stroke="#E2E6E2"/><polyline points="${XY.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="1.4"/>`;
+    XY.forEach((p,i)=>{g+=`<circle cx="${p[0]}" cy="${p[1]}" r="2" fill="${col}"><title>${yy[i].fy}: ${yy[i].v>=0?'+':''}${yy[i].v.toFixed(1)}%</title></circle>`;});
+    return g+'</svg>';
+  }
+  let SEL=null, CH=null;
+  function drawT(){
+    let h=`<table class="anx"><tr><th class="c-lbl">科目 (bn · CY${Y[N-1]})</th><th class="c-spk">5年yoy走势</th><th class="num">最新</th><th class="num">上年</th><th class="num">yoy</th></tr>`;
+    ROWS.forEach(r=>{
+      const s=ser(r.id), a=s[N-1], b0=s[N-2];
+      const yoy=(a!=null&&b0)?100*(a/b0-1):null;
+      const val = r.pct? (a==null?'—':a.toFixed(1)+'%') : fmtc(a);
+      const pv = r.pct? (b0==null?'—':b0.toFixed(1)+'%') : fmtc(b0);
+      h+=`<tr class="clickable l${r.lv}${SEL===r.id?' sel':''}" data-id="${r.id}">`
+        +`<td class="lbl c-lbl" style="padding-left:${8+r.lv*16}px">${r.l}</td><td class="c-spk">${spark(r.id)}</td>`
+        +`<td class="num">${val}</td><td class="num">${pv}</td>`
+        +`<td class="num ${yoy>=0?'pos':'neg'}">${yoy==null?'—':yoy.toFixed(1)+'%'}</td></tr>`;
+    });
+    document.getElementById('lxTable').innerHTML=h+'</table>';
+    document.querySelectorAll('#lxTable tr.clickable').forEach(tr=>tr.onclick=()=>{
+      SEL=(SEL===tr.dataset.id)?null:tr.dataset.id; drawT(); drawC();
+    });
+  }
+  function drawC(){
+    const lbls=Y.map(String);
+    let ds,title;
+    if(!SEL){
+      title='联邦 vs 州地方 · 收支与转移 (bn)';
+      ds=[
+        {label:'联邦收入',data:ser('fed_rev'),borderColor:PAL.green,borderWidth:2},
+        {label:'联邦支出',data:ser('fed_exp'),borderColor:PAL.red,borderWidth:2},
+        {label:'州地方收入',data:ser('sl_rev'),borderColor:PAL.green+'88',borderDash:[6,4],borderWidth:1.6},
+        {label:'州地方支出',data:ser('sl_exp'),borderColor:PAL.red+'88',borderDash:[6,4],borderWidth:1.6},
+        {label:'联邦转移(勾稽线)',data:ser('grants'),borderColor:PAL.blue,borderWidth:1.6}];
+      ds.forEach(d=>{d.yAxisID='y';});
+    } else {
+      const r=ROWS.find(x=>x.id===SEL); title=r.l;
+      if(r.pct){
+        ds=[{label:r.l,data:ser(SEL),borderColor:PAL.blue,borderWidth:2,yAxisID:'y2'}];
+      } else {
+        ds=[{label:r.l,data:ser(SEL),borderColor:PAL.red,borderWidth:2.2,yAxisID:'y'},
+            {label:'/NGDP %',data:ser(SEL).map((v,t)=>v!=null&&G[t]?100*v/G[t]:null),
+             borderColor:PAL.blue,borderDash:[5,4],borderWidth:1.6,yAxisID:'y2'}];
+      }
+    }
+    ds.forEach(d=>{d.pointRadius=0;d.tension=.15;});
+    if(CH) CH.destroy();
+    CH=new Chart(document.getElementById('ch_local'),{type:'line',
+      data:{labels:lbls,datasets:ds},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{title:{display:true,text:title,font:{size:12}}},
+        scales:{y:{grid:{color:'#EDEFEA'},ticks:{callback:v=>Math.abs(v)>=1000?Math.round(v/1000)+'T':v},afterFit:a=>{a.width=60}},
+                y2:{position:'right',grid:{display:false},ticks:{callback:v=>(Math.round(v*100)/100)+'%'},afterFit:a=>{a.width=52}},
+                x:{grid:{display:false}}}}});
+  }
+  drawT(); drawC();
+})();
+}
+
 // ---- 财年融资预测 (Exhibit式三年联动)
 const FNXD = __FNXDEF__;
 if(document.getElementById('fnxTable')){
