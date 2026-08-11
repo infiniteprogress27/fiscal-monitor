@@ -285,7 +285,10 @@ def fetch_buybacks():
 
 def fetch_avg_rates():
     recs = api_get("/v2/accounting/od/avg_interest_rates",
-                   {"filter": f"record_date:gte:{ago(430)}", "sort": "record_date"})
+                   {"filter": f"record_date:gte:{ago(3700)}", "sort": "record_date"}, max_pages=12)
+    tm = [r for r in recs if "total marketable" in (r.get("security_desc") or "").lower()
+          or "total marketable" in (r.get("security_type_desc") or "").lower()]
+    if tm: recs = tm
     s = [{"month": r["record_date"][:7], "rate": round(_pick(r, ["avg_interest_rate_amt"]), 3)}
          for r in recs if (r.get("security_desc") or "").strip() == "Total Marketable"
          and _pick(r, ["avg_interest_rate_amt"]) is not None]
@@ -617,7 +620,7 @@ def fetch_approps_status():
 
 LOCAL_SERIES = {  # FRED/NIPA候选id, 首个命中生效
     "fed_rev": ["FGRECPT"], "fed_exp": ["FGEXPND"],
-    "sl_rev": ["SLRECPT", "ASLGFRPT"], "sl_exp": ["SLEXPND"],
+    "sl_rev": ["W077RC1Q027SBEA"], "sl_exp": ["W079RCQ027SBEA", "SLEXPND"],
     "grants": ["B087RC1Q027SBEA", "TRP6001A027NBEA"],
 }
 
@@ -647,14 +650,20 @@ def _fetch_qtax():
     rows = r.json()
     hdr = rows[0]
     ci = {k: hdr.index(k) for k in ("cell_value", "data_type_code", "category_code", "time")}
+    # 自适应类目: 优先合并类目(…CAT1), 无则州+地方两类相加, 再无则取任一类
+    cats = {row[ci["category_code"]] for row in rows[1:] if row[ci["data_type_code"]] in QTAX_MAP}
+    if any(c.endswith("1") for c in cats):
+        use = {c for c in cats if c.endswith("1")}
+    elif any(c.endswith("2") for c in cats) and any(c.endswith("3") for c in cats):
+        use = {c for c in cats if c.endswith("2") or c.endswith("3")}
+    else:
+        use = set(sorted(cats)[:1])
     byy = {}
     for row in rows[1:]:
         dt = row[ci["data_type_code"]]
         if dt not in QTAX_MAP: continue
-        cat = row[ci["category_code"]] or ""
-        if not cat.endswith("1"):        # 全国州地方合并类目
-            continue
-        t = row[ci["time"]]              # 形如 2024-Q1
+        if (row[ci["category_code"]] or "") not in use: continue
+        t = row[ci["time"]]
         try:
             y, v = int(t[:4]), float(row[ci["cell_value"]])
         except (ValueError, TypeError):
@@ -669,6 +678,9 @@ def _fetch_qtax():
             ann[y] = round(s/4 if s > 1800 else s, 0)   # 若源为4Q滚动和则取均值
         if len(ann) >= 6:
             out[k] = ann
+    if not out:
+        _debug("qtax", [dict(zip(hdr, r)) for r in rows[1:40]])
+        print("  !! QTAX解析为空, 样本落debug")
     return out
 
 
@@ -878,7 +890,8 @@ def fetch_coupon_deep():
     TEN = {"2-Year": "2y", "3-Year": "3y", "5-Year": "5y", "4-Year": "5y",
            "7-Year": "7y", "6-Year": "7y", "10-Year": "10y", "9-Year": "10y",
            "20-Year": "20y", "19-Year": "20y", "30-Year": "30y", "29-Year": "30y"}
-    sizes, b1y = {}, {}
+    NEW_TERMS = {"2-Year", "3-Year", "5-Year", "7-Year", "10-Year", "20-Year", "30-Year"}
+    sizes, news, b1y = {}, {}, {}
     for ty in ("Note", "Bond"):
         recs = api_get("/v1/accounting/od/auctions_query",
                        {"filter": f"auction_date:gte:2007-01-01,security_type:eq:{ty}",
@@ -891,6 +904,8 @@ def fetch_coupon_deep():
             if m and base and off:
                 key = TEN[base]
                 sizes.setdefault(m, {})[key] = max(sizes.get(m, {}).get(key, 0), off/1e9)
+                if term in NEW_TERMS:      # 新发场次单列(图用, 阶梯态)
+                    news.setdefault(m, {})[key] = max(news.get(m, {}).get(key, 0), off/1e9)
     recs = api_get("/v1/accounting/od/auctions_query",
                    {"filter": "auction_date:gte:2001-01-01,security_term:eq:52-Week",
                     "sort": "auction_date"}, max_pages=4)
@@ -903,7 +918,9 @@ def fetch_coupon_deep():
     if months:
         _write("coupon_sizes", {"sample": False, "months": months,
             "tenors": {t: [round(sizes.get(m, {}).get(t), 0) if sizes.get(m, {}).get(t) else None
-                           for m in months] for t in TEN.values()}})
+                           for m in months] for t in set(TEN.values())},
+            "tenors_new": {t: [round(news.get(m, {}).get(t), 0) if news.get(m, {}).get(t) else None
+                               for m in months] for t in set(TEN.values())}})
     if b1y:
         _write("bill1y", {"sample": False, "series": [
             {"month": m, "rate": round(sum(v)/len(v), 3)} for m, v in sorted(b1y.items())]})
