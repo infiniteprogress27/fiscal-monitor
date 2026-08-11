@@ -41,6 +41,7 @@ jobs:
       - run: python scripts/run.py --mode ${{ steps.m.outputs.mode }}
         env:
           CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
+          CENSUS_API_KEY: ${{ secrets.CENSUS_API_KEY }}
       - name: Commit if changed
         run: |
           git config user.name fiscal-bot
