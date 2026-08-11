@@ -747,8 +747,9 @@ def fetch_auctions_history():
 
 def fetch_coupon_deep():
     """coupon尺寸2007+与52周bill利率2001+, 独立深抓不入事件库 (weekly)。"""
-    TEN = {"2-Year": "2y", "3-Year": "3y", "5-Year": "5y", "7-Year": "7y",
-           "10-Year": "10y", "20-Year": "20y", "30-Year": "30y"}
+    TEN = {"2-Year": "2y", "3-Year": "3y", "5-Year": "5y", "4-Year": "5y",
+           "7-Year": "7y", "6-Year": "7y", "10-Year": "10y", "9-Year": "10y",
+           "20-Year": "20y", "19-Year": "20y", "30-Year": "30y", "29-Year": "30y"}
     sizes, b1y = {}, {}
     for ty in ("Note", "Bond"):
         recs = api_get("/v1/accounting/od/auctions_query",
@@ -757,7 +758,8 @@ def fetch_coupon_deep():
         for r in recs:
             m, term = (r.get("auction_date") or "")[:7], r.get("security_term") or ""
             off = _pick(r, ["offering_amt", "total_accepted"])
-            base = next((k for k in TEN if term.startswith(k)), None)
+            base = next((k for k in sorted(TEN, key=len, reverse=True)
+                         if term.startswith(k)), None)
             if m and base and off:
                 key = TEN[base]
                 sizes.setdefault(m, {})[key] = max(sizes.get(m, {}).get(key, 0), off/1e9)
