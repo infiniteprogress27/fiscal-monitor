@@ -77,7 +77,9 @@ def fetch_debt():
 
 REV_MAP = {
     "individual income taxes": "rev_ind",
+    "total -- individual income taxes": "rev_ind",
     "corporation income taxes": "rev_corp",
+    "total -- corporation income taxes": "rev_corp",
     "total -- social insurance and retirement receipts": "rev_pay",
     "customs duties": "rev_tariff",
     "total -- excise taxes": "rev_other",
@@ -91,6 +93,14 @@ OUT_MAP = {
     "income security": "out_incsec",
     "national defense": "out_def",
     "net interest": "out_int",
+    # 其余支出职能 → out_ndd (t9收支同表, 不可用兜底)
+    "international affairs": "out_ndd", "general science": "out_ndd",
+    "energy": "out_ndd", "natural resources": "out_ndd", "agriculture": "out_ndd",
+    "commerce and housing": "out_ndd", "transportation": "out_ndd",
+    "community and regional": "out_ndd", "education": "out_ndd",
+    "veterans benefits": "out_ndd", "administration of justice": "out_ndd",
+    "general government": "out_ndd", "allowances": "out_ndd",
+    "undistributed offsetting": "out_ndd",
 }
 REV_LABEL = {"rev_ind": "个人所得税", "rev_pay": "Payroll(社保税)", "rev_corp": "企业所得税",
              "rev_tariff": "关税", "rev_other": "其他收入"}
@@ -111,10 +121,10 @@ def _cls_match(cls, mapping):
 def _fytd(r):
     return (_pick(r, ["current_fytd_net_rcpt_amt", "current_fytd_gross_rcpt_amt",
                       "current_fytd_net_outly_amt", "current_fytd_gross_outly_amt",
-                      "current_fytd_outly_amt"]),
+                      "current_fytd_outly_amt", "current_fytd_rcpt_outly_amt"]),
             _pick(r, ["prior_fytd_net_rcpt_amt", "prior_fytd_gross_rcpt_amt",
                       "prior_fytd_net_outly_amt", "prior_fytd_gross_outly_amt",
-                      "prior_fytd_outly_amt"]))
+                      "prior_fytd_outly_amt", "prior_fytd_rcpt_outly_amt"]))
 
 
 def fetch_debt_limit():
@@ -373,7 +383,11 @@ def fetch_debt_limit_history():
     NEED = ("Debt Held by the Public", "Intragovernmental Holdings", "Debt Not Subject to Limit")
     for d in sorted(byd):
         c = byd[d]
-        if all(k in c for k in NEED):
+        direct = next((v for k, v in c.items()
+                       if "Subject to Limit" in k and "Total" in k and "Not" not in k), None)
+        if direct is not None:                     # 老格式(约2022年前)有直取合计行
+            bym[d[:7]] = round(direct, 1)
+        elif all(k in c for k in NEED):
             bym[d[:7]] = round(c[NEED[0]] + c[NEED[1]] - c[NEED[2]]
                                + c.get("Other Debt Subject to Limit", 0), 1)
     try:
@@ -471,7 +485,7 @@ ANNUAL_MAP = {  # classification_desc 关键词 → 科目id (首跑校验候选
 def fetch_annual():
     """年度分科目: 历年9月MTS current_fytd=全年 (weekly/due:mts)。"""
     out = {}
-    for table, mapping, rest in ((4, REV_MAP, None), (9, OUT_MAP, "out_ndd")):
+    for table, mapping, rest in ((4, REV_MAP, None), (9, OUT_MAP, None)):
         recs = api_get(f"/v1/accounting/mts/mts_table_{table}",
                        {"filter": "record_date:gte:2015-08-01", "sort": "record_date"}, max_pages=25)
         for r in recs:
@@ -720,9 +734,9 @@ FETCHERS = {
                  fetch_debt_limit_history, fetch_market, fetch_approps_status, fetch_annual,
                  fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
                  fetch_mts, lambda: _fetch_cat(4, "mts_receipts", REV_MAP, REV_LABEL),
-                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL, rest_id="out_ndd"), fetch_avg_rates, fetch_interest],
+                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL), fetch_avg_rates, fetch_interest],
     "due:mts":  [fetch_mts, lambda: _fetch_cat(4, "mts_receipts", REV_MAP, REV_LABEL),
-                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL, rest_id="out_ndd"), fetch_avg_rates, fetch_interest,
+                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL), fetch_avg_rates, fetch_interest,
                  fetch_annual],
     "due:mspd": [fetch_mspd],
     "due:tic":  [],   # 接口空置: TIC接入后挂此处
