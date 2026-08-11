@@ -46,12 +46,23 @@ def api_get(endpoint, params, max_pages=6):
     out, page = [], 1
     while page <= max_pages:
         q = dict(params); q["page[number]"] = page; q.setdefault("page[size]", 1000)
-        r = requests.get(BASE + endpoint, params=q, timeout=60)
-        r.raise_for_status()
-        body = r.json(); out.extend(body.get("data", []))
+        body = None
+        for attempt in range(3):
+            try:
+                r = requests.get(BASE + endpoint, params=q, timeout=60)
+                r.raise_for_status()
+                body = r.json()
+                break
+            except Exception as e:
+                if attempt == 2:
+                    raise
+                wait = 3 * (attempt + 1)
+                print(f"    重试{attempt+1} {endpoint} p{page}: {e} (等{wait}s)")
+                time.sleep(wait)
+        out.extend(body.get("data", []))
         if page >= int(body.get("meta", {}).get("total-pages", 1)):
             break
-        page += 1; time.sleep(0.4)
+        page += 1; time.sleep(0.5)
     return out
 
 
@@ -330,7 +341,10 @@ def fetch_supply():
         v = _pick(r, ["total_mil_amt"])
         if v is None: continue
         slot = bym.setdefault(m, {})
-        if ty == "Total Marketable":
+        tyl = ty.lower()
+        if "subject to limit" in tyl and "not" not in tyl and "statutory" not in tyl:
+            slot["subj_limit"] = v/1e3
+        elif ty == "Total Marketable":
             slot["mkt"] = v/1e3
         elif ty == "Marketable" and (r.get("security_class_desc") or "") == "Bills":
             slot["bills"] = v/1e3
@@ -346,6 +360,16 @@ def fetch_supply():
                   "soma_bills": soma.get(m)})
     if not s and recs: _debug("supply", recs)
     else: _write("supply", {"sample": False, "series": s})
+    lim = {m: bym[m]["subj_limit"] for m in bym if "subj_limit" in bym[m]}
+    ph = OUT / "debt_limit_history.json"
+    if lim and ph.exists():
+        dh = json.loads(ph.read_text(encoding="utf-8"))
+        have = {r["month"] for r in dh.get("series", [])}
+        added = [{"month": m, "actual": round(v, 1)} for m, v in sorted(lim.items()) if m not in have]
+        if added:
+            dh["series"] = sorted(dh["series"] + added, key=lambda r: r["month"])
+            ph.write_text(json.dumps(dh, ensure_ascii=False), encoding="utf-8")
+            print(f"  债限历史自愈: MSPD补{len(added)}个月")
 
 
 
@@ -730,11 +754,14 @@ FETCHERS = {
     "daily":    [fetch_debt, fetch_debt_limit, fetch_tga, fetch_dts_flows, fetch_upcoming,
                  fetch_approps_status],
     "intraday": [fetch_auctions, fetch_upcoming, fetch_buybacks],
-    "weekly":   [fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
-                 fetch_debt_limit_history, fetch_market, fetch_approps_status, fetch_annual,
+    "weekly":   [fetch_mts,
+                 lambda: _fetch_cat(4, "mts_receipts", REV_MAP, REV_LABEL),
+                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL),
+                 fetch_avg_rates, fetch_interest,
+                 fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
+                 fetch_debt_limit_history, fetch_market, fetch_approps_status,
                  fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
-                 fetch_mts, lambda: _fetch_cat(4, "mts_receipts", REV_MAP, REV_LABEL),
-                 lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL), fetch_avg_rates, fetch_interest],
+                 fetch_annual],
     "due:mts":  [fetch_mts, lambda: _fetch_cat(4, "mts_receipts", REV_MAP, REV_LABEL),
                  lambda: _fetch_cat(9, "mts_outlays", OUT_MAP, OUT_LABEL), fetch_avg_rates, fetch_interest,
                  fetch_annual],
