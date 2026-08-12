@@ -576,7 +576,13 @@
    "receipts": 344.3,
    "outlays": 689.1,
    "balance": -344.8
+  },
+  {
+   "month": "2026-07",
+   "receipts": 335.5,
+   "outlays": 628.2,
+   "balance": -292.6
   }
  ],
- "fetched_at": "2026-08-11T16:16:25.238765Z"
+ "fetched_at": "2026-08-12T23:12:02.580901Z"
 }
