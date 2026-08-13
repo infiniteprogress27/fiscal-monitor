@@ -2,13 +2,73 @@
  "sample": false,
  "records": [
   {
+   "auction_date": "2026-08-20",
+   "type": "Bond",
+   "term": "29-Year 6-Month",
+   "cusip": "912810US5",
+   "offering_bn": 8.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-08-19",
+   "type": "Bond",
+   "term": "20-Year",
+   "cusip": "912810UX4",
+   "offering_bn": 16.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-08-18",
+   "type": "Bill",
+   "term": "6-Week",
+   "cusip": "912797SA6",
+   "offering_bn": 95.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-08-17",
+   "type": "Bill",
+   "term": "26-Week",
+   "cusip": "912797TV9",
+   "offering_bn": 79.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-08-17",
+   "type": "Bill",
+   "term": "13-Week",
+   "cusip": "912797UZ8",
+   "offering_bn": 92.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
    "auction_date": "2026-08-13",
    "type": "Bond",
    "term": "30-Year",
    "cusip": "912810UW6",
    "offering_bn": 25.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 5.216,
+   "btc": 2.39,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -19,8 +79,8 @@
    "term": "8-Week",
    "cusip": "912797VL8",
    "offering_bn": 100.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 3.737,
+   "btc": 2.85,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -31,8 +91,8 @@
    "term": "4-Week",
    "cusip": "912797VC8",
    "offering_bn": 110.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 3.686,
+   "btc": 2.77,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -1430,5 +1490,5 @@
    "tail_bp": null
   }
  ],
- "fetched_at": "2026-08-12T21:32:14.196740Z"
+ "fetched_at": "2026-08-13T18:35:42.634661Z"
 }
