@@ -714,13 +714,93 @@
    "offering_bn": 16.0
   },
   {
+   "announce": "2026-08-18",
+   "auction_date": "2026-08-19",
+   "issue_date": "2026-08-25",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": null
+  },
+  {
    "announce": "2026-08-13",
    "auction_date": "2026-08-20",
    "issue_date": "2026-08-31",
    "type": "Bond",
    "term": "29-Year 6-Month",
    "offering_bn": 8.0
+  },
+  {
+   "announce": "2026-08-18",
+   "auction_date": "2026-08-20",
+   "issue_date": "2026-08-25",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-18",
+   "auction_date": "2026-08-20",
+   "issue_date": "2026-08-25",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-20",
+   "auction_date": "2026-08-24",
+   "issue_date": "2026-08-27",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-20",
+   "auction_date": "2026-08-24",
+   "issue_date": "2026-08-27",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-20",
+   "auction_date": "2026-08-25",
+   "issue_date": "2026-08-31",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-20",
+   "auction_date": "2026-08-25",
+   "issue_date": "2026-08-27",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-20",
+   "auction_date": "2026-08-26",
+   "issue_date": "2026-08-28",
+   "type": "Note",
+   "term": "1-Year 11-Month",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-20",
+   "auction_date": "2026-08-26",
+   "issue_date": "2026-08-31",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-08-20",
+   "auction_date": "2026-08-27",
+   "issue_date": "2026-08-31",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": null
   }
  ],
- "fetched_at": "2026-08-13T23:13:14.914037Z"
+ "fetched_at": "2026-08-14T22:51:54.978742Z"
 }
