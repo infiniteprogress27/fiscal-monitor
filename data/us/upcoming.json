@@ -683,22 +683,6 @@
   },
   {
    "announce": "2026-08-13",
-   "auction_date": "2026-08-17",
-   "issue_date": "2026-08-20",
-   "type": "Bill",
-   "term": "26-Week",
-   "offering_bn": 79.0
-  },
-  {
-   "announce": "2026-08-13",
-   "auction_date": "2026-08-17",
-   "issue_date": "2026-08-20",
-   "type": "Bill",
-   "term": "13-Week",
-   "offering_bn": 92.0
-  },
-  {
-   "announce": "2026-08-13",
    "auction_date": "2026-08-18",
    "issue_date": "2026-08-20",
    "type": "Bill",
@@ -802,5 +786,5 @@
    "offering_bn": null
   }
  ],
- "fetched_at": "2026-08-15T22:49:53.491024Z"
+ "fetched_at": "2026-08-17T18:02:18.042981Z"
 }
