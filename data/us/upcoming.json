@@ -683,22 +683,6 @@
   },
   {
    "announce": "2026-08-13",
-   "auction_date": "2026-08-19",
-   "issue_date": "2026-08-31",
-   "type": "Bond",
-   "term": "20-Year",
-   "offering_bn": 16.0
-  },
-  {
-   "announce": "2026-08-18",
-   "auction_date": "2026-08-19",
-   "issue_date": "2026-08-25",
-   "type": "Bill",
-   "term": "17-Week",
-   "offering_bn": 72.0
-  },
-  {
-   "announce": "2026-08-13",
    "auction_date": "2026-08-20",
    "issue_date": "2026-08-31",
    "type": "Bond",
@@ -778,5 +762,5 @@
    "offering_bn": null
   }
  ],
- "fetched_at": "2026-08-18T22:52:39.107082Z"
+ "fetched_at": "2026-08-19T17:57:47.138259Z"
 }
