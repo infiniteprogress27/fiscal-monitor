@@ -200,7 +200,7 @@ font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-c
 @media (max-width:720px){.onode{margin-left:0;width:100%}}
 </style></head>
 <body><div class="wrap">
-<header><h1>FISCAL MONITOR <span>/ US 美国</span></h1><div class="meta">生成 2026-08-20 05:58 UTC · 对象注册表 2026-08-05</div></header>
+<header><h1>FISCAL MONITOR <span>/ US 美国</span></h1><div class="meta">生成 2026-08-20 06:08 UTC · 对象注册表 2026-08-05</div></header>
 <nav class="top"><a href="#L0">L0 Timeline</a><a href="#L1">L1 规则与立法</a><a href="#L2">L2 预算</a><a href="#L3">L3 收支</a><a href="#L4">L4 发行</a><a href="#L5">L5 债务管理</a><a href="#ref">参考层</a></nav>
 
 <div class="layer" id="L0">
@@ -220,7 +220,7 @@ font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-c
   <div class="calhead" id="calHead"></div>
   <div class="calgrid" id="calGrid"></div>
   <div class="caldetail" id="calDetail"><span class="hint">点击日期查看事件明细、核对清单与结果</span></div>
-  <div class="calrules">账本维护 2026-08-20 05:58 · 暂定事件带估标, 公告后自动作废覆盖<br>更新规则 — 发行: 暂定=规则推算(日滚), 公告覆盖(daily), 结果回填(intraday) · 回购: 计划表=每QRA后更新(buyback_schedule.yaml), 结果回填(intraday) · 文件: 节奏规则自动展开(daily滚动/weekly全量) · 立法/到期日: events_seed.yaml, 每周核对(weekly提醒)</div>
+  <div class="calrules">账本维护 2026-08-20 06:08 · 暂定事件带估标, 公告后自动作废覆盖<br>更新规则 — 发行: 暂定=规则推算(日滚), 公告覆盖(daily), 结果回填(intraday) · 回购: 计划表=每QRA后更新(buyback_schedule.yaml), 结果回填(intraday) · 文件: 节奏规则自动展开(daily滚动/weekly全量) · 立法/到期日: events_seed.yaml, 每周核对(weekly提醒)</div>
 </div>
 </div></section>
 <section class="obj"><div class="srow"><span class="oname">近7日变化流水</span>
@@ -649,7 +649,7 @@ if(HX && HX.months && document.getElementById('hxStart')){
 }
 
 // ---- 地方收支 (央地对照, 图表联动)
-const LX = {"sample": false, "src": {"fed_rev": "FGRECPT", "fed_exp": "FGEXPND", "sl_rev": "W077RC1Q027SBEA", "sl_exp": "W079RCQ027SBEA", "grants": "FGSL"}, "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], "series": {"fed_rev": [3461.0, 3504.0, 3583.0, 3704.0, 3767.0, 4429.0, 5116.0, 4821.0, 5179.0, 5672.0, 5872.0], "fed_exp": [4128.0, 4241.0, 4489.0, 4748.0, 6715.0, 7284.0, 6145.0, 6538.0, 7053.0, 7493.0, 7722.0], "sl_rev": [2498.0, 2587.0, 2716.0, 2863.0, 3167.0, 3661.0, 3922.0, 3741.0, 3922.0, 4071.0, 4188.0], "sl_exp": [2796.0, 2878.0, 2993.0, 3153.0, 3292.0, 3478.0, 3729.0, 3946.0, 4182.0, 4385.0, 4599.0], "grants": [557.0, 560.0, 583.0, 609.0, 879.0, 1110.0, 948.0, 952.0, 961.0, 981.0, 1018.0]}, "ngdp": [18805.0, 19612.0, 20657.0, 21540.0, 21375.0, 23726.0, 26055.0, 27812.0, 29298.0, 30762.0, 32170.0], "fetched_at": "2026-08-20T05:57:54.302497Z", "census": {"as_of": "FY2022", "spending": [{"item": "教育(K12+高教)", "bn": 1090}, {"item": "公共福利(含Medicaid州付)", "bn": 940}, {"item": "公路交通", "bn": 210}, {"item": "公共安全", "bn": 260}, {"item": "其他", "bn": 1300}]}};
+const LX = {"sample": false, "src": {"fed_rev": "FGRECPT", "fed_exp": "FGEXPND", "sl_rev": "W077RC1Q027SBEA", "sl_exp": "W079RCQ027SBEA", "grants": "FGSL"}, "years": [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026], "series": {"fed_rev": [3461.0, 3504.0, 3583.0, 3704.0, 3767.0, 4429.0, 5116.0, 4821.0, 5179.0, 5672.0, 5872.0], "fed_exp": [4128.0, 4241.0, 4489.0, 4748.0, 6715.0, 7284.0, 6145.0, 6538.0, 7053.0, 7493.0, 7722.0], "sl_rev": [2498.0, 2587.0, 2716.0, 2863.0, 3167.0, 3661.0, 3922.0, 3741.0, 3922.0, 4071.0, 4188.0], "sl_exp": [2796.0, 2878.0, 2993.0, 3153.0, 3292.0, 3478.0, 3729.0, 3946.0, 4182.0, 4385.0, 4599.0], "grants": [557.0, 560.0, 583.0, 609.0, 879.0, 1110.0, 948.0, 952.0, 961.0, 981.0, 1018.0]}, "ngdp": [18805.0, 19612.0, 20657.0, 21540.0, 21375.0, 23726.0, 26055.0, 27812.0, 29298.0, 30762.0, 32170.0], "fetched_at": "2026-08-20T06:08:03.420048Z", "census": {"as_of": "FY2022", "spending": [{"item": "教育(K12+高教)", "bn": 1090}, {"item": "公共福利(含Medicaid州付)", "bn": 940}, {"item": "公路交通", "bn": 210}, {"item": "公共安全", "bn": 260}, {"item": "其他", "bn": 1300}]}};
 if(document.getElementById('lxTable') && !(LX && LX.years && LX.years.length)){
   document.getElementById('lxTable').innerHTML =
     '<div class="anchor-note">数据文件待weekly首跑生成(NIPA/QTAX), 生成后自动填充</div>';
