@@ -3,14 +3,6 @@
  "foreign_total": 7402.5,
  "top": [
   {
-   "name": "T-Bonds & Notes",
-   "bn": 3464.3
-  },
-  {
-   "name": "Country",
-   "bn": 2023.0
-  },
-  {
    "name": "Japan",
    "bn": 1104.4
   },
@@ -21,10 +13,6 @@
   {
    "name": "United Kingdom",
    "bn": 668.3
-  },
-  {
-   "name": "All Other",
-   "bn": 437.2
   },
   {
    "name": "Belgium",
@@ -49,7 +37,19 @@
   {
    "name": "Ireland",
    "bn": 253.4
+  },
+  {
+   "name": "Taiwan",
+   "bn": 234.6
+  },
+  {
+   "name": "India",
+   "bn": 232.0
+  },
+  {
+   "name": "Hong Kong",
+   "bn": 226.8
   }
  ],
- "fetched_at": "2026-08-17T12:30:40.516439Z"
+ "fetched_at": "2026-08-20T05:57:54.432246Z"
 }

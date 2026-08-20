@@ -2,10 +2,6 @@
  "sample": false,
  "series": [
   {
-   "month": "2016-06",
-   "expense_bn": 95.7
-  },
-  {
    "month": "2016-07",
    "expense_bn": 32.5
   },
@@ -490,5 +486,5 @@
    "expense_bn": 117.6
   }
  ],
- "fetched_at": "2026-08-17T12:29:08.296952Z"
+ "fetched_at": "2026-08-20T05:56:09.238694Z"
 }
