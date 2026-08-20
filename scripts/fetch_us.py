@@ -728,34 +728,245 @@ def fetch_local():
                             "ngdp": [ngdp.get(y) for y in years]})
 
 
+TIC_COUNTRIES = ["Japan", "China, Mainland", "United Kingdom", "Belgium", "Luxembourg",
+                 "Cayman Islands", "Canada", "France", "Ireland", "Switzerland", "Taiwan",
+                 "Hong Kong", "Singapore", "India", "Brazil", "Korea, South", "Norway",
+                 "Saudi Arabia", "United Arab Emirates", "Mexico"]
+
 def fetch_tic():
-    """TIC MFH: 海外持有美债总量与前列国别 (weekly)。文本表防御解析。"""
+    """TIC MFH: 白名单国别×近13个月矩阵; 解析后并入tic_series累积档 (weekly)。"""
     import requests
     r = requests.get("https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/mfh.txt",
                      headers={"User-Agent": "Mozilla/5.0"}, timeout=60)
     r.raise_for_status()
-    rows, total = [], None
-    for line in r.text.splitlines():
-        parts = line.split()
+    lines = r.text.splitlines()
+    # 表头月份行: 含多个形如 Jun May Apr ... 或日期; MFH列序=最新在左
+    import re as _re
+    MONTHS = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+              "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+    header_months = []
+    for ln in lines[:30]:
+        toks = ln.split()
+        cand = []
+        yr = None
+        for t in toks:
+            tl = t.strip(".").lower()
+            if tl[:3] in MONTHS and len(tl) <= 4:
+                cand.append(MONTHS[tl[:3]])
+            elif _re.fullmatch(r"20\d\d", tl):
+                yr = int(tl)
+        if len(cand) >= 10:
+            header_months = cand
+            hdr_year = yr
+            break
+    rows, total = {}, None
+    wl_low = {c.lower(): c for c in TIC_COUNTRIES}
+    for ln in lines:
+        parts = ln.split()
         if not parts: continue
         idx = next((i for i, p in enumerate(parts)
-                    if p.replace(",", "").replace(".", "").isdigit()), None)
-        if idx is None or idx == 0: continue
-        name = " ".join(parts[:idx]).strip().rstrip(".")
-        try:
-            val = float(parts[idx].replace(",", ""))
-        except ValueError:
-            continue
+                    if p.replace(",", "").replace(".", "").replace("-", "").isdigit() and i > 0), None)
+        if idx is None: continue
+        name = " ".join(parts[:idx]).strip().rstrip(".,")
+        vals = []
+        for p in parts[idx:]:
+            try: vals.append(float(p.replace(",", "")))
+            except ValueError: break
+        if not vals: continue
         if name.lower().startswith("grand total"):
-            total = val
-        elif name and val > 30 and not name.lower().startswith(("of which", "memo", "for", "the")):
-            rows.append({"name": name, "bn": val})
-    if total is None and not rows:
+            total = vals
+        elif name.lower() in wl_low:
+            rows[wl_low[name.lower()]] = vals
+    if not rows:
         (OUT / "_debug_tic.txt").write_text(r.text[:8000], encoding="utf-8")
         print("  !! TIC解析为空, 原文落盘")
         return
-    rows = sorted(rows, key=lambda x: -x["bn"])[:12]
-    _write("tic_holders", {"sample": False, "foreign_total": total, "top": rows})
+    # 月份序列: 最新在左; 用表头月份数+当年推月字符串(跨年递减)
+    n = max(len(v) for v in rows.values())
+    from datetime import date
+    ms = []
+    y, mo = None, None
+    if header_months and hdr_year:
+        y, mo = hdr_year, header_months[0]
+    else:
+        t0 = date.today(); y, mo = t0.year, t0.month - 2 or 12
+    for i in range(n):
+        ms.append(f"{y}-{mo:02d}")
+        mo -= 1
+        if mo == 0: mo, y = 12, y - 1
+    # 现值表(卡片用)
+    latest_rows = sorted([{"name": k, "bn": v[0]} for k, v in rows.items()], key=lambda x: -x["bn"])
+    _write("tic_holders", {"sample": False, "foreign_total": total[0] if total else None,
+                           "top": latest_rows[:12]})
+    # 累积档合并
+    p = OUT / "tic_series.json"
+    arch = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {"months": [], "series": {}, "total": {}}
+    bym = {m2: i for i, m2 in enumerate(arch.get("months", []))}
+    sers = arch.setdefault("series", {})
+    tot = arch.setdefault("total", {})
+    for i, m2 in enumerate(ms):
+        for c, v in rows.items():
+            if i < len(v):
+                sers.setdefault(c, {})
+                if isinstance(sers[c], list):   # 旧格式兼容
+                    sers[c] = {arch["months"][j]: sers[c][j] for j in range(len(arch["months"]))}
+                sers[c][m2] = v[i]
+        if total and i < len(total):
+            tot[m2] = total[i]
+    allm = sorted({m3 for c in sers.values() for m3 in c} | set(tot))
+    arch2 = {"sample": arch.get("sample", False), "months": allm,
+             "series": {c: [d.get(m3) for m3 in allm] for c, d in
+                        ((c2, (v2 if isinstance(v2, dict) else {})) for c2, v2 in sers.items())},
+             "total": [tot.get(m3) for m3 in allm]}
+    _write("tic_series", arch2)
+
+
+def _parse_tic_table(text):
+    import re as _re
+    MONTHS = {"jan": 1, "feb": 2, "mar": 3, "apr": 4, "may": 5, "jun": 6,
+              "jul": 7, "aug": 8, "sep": 9, "oct": 10, "nov": 11, "dec": 12}
+    wl_low = {c.lower(): c for c in TIC_COUNTRIES}
+    out, tot, cur_ms = {}, {}, []
+    for ln in text.splitlines():
+        toks = ln.split()
+        if not toks: continue
+        mcand, years = [], []
+        for t in toks:
+            tl = t.strip(".,").lower()
+            if tl[:3] in MONTHS and len(tl) <= 5:
+                mcand.append(MONTHS[tl[:3]])
+            m2 = _re.fullmatch(r"(20\d\d)", tl)
+            if m2: years.append(int(m2.group(1)))
+        if len(mcand) >= 6:
+            if not years:
+                cur_pending = mcand      # 月行与年行分离的表式: 暂存
+                continue
+            yr = years[0]
+            cur_ms, y, prev = [], yr, None
+            for mm in mcand:
+                if prev is not None and mm > prev:
+                    y -= 1
+                cur_ms.append(f"{y}-{mm:02d}")
+                prev = mm
+            continue
+        if len(years) >= 6 and 'cur_pending' in dir():
+            pass
+        # 纯年份行(承接上一月份行)
+        if len(years) >= 6 and len(mcand) == 0 and 'cur_pending' in locals() and cur_pending:
+            cur_ms = [f"{y2}-{mm:02d}" for y2, mm in zip(years, cur_pending)]
+            cur_pending = []
+            continue
+        if not cur_ms: continue
+        idx = next((i for i, p in enumerate(toks)
+                    if p.replace(",", "").replace(".", "").replace("-", "").isdigit() and i > 0), None)
+        if idx is None: continue
+        name = " ".join(toks[:idx]).strip().rstrip(".,")
+        vals = []
+        for p in toks[idx:]:
+            try: vals.append(float(p.replace(",", "")))
+            except ValueError: break
+        if not vals: continue
+        nl = name.lower()
+        if nl.startswith("grand total"):
+            for m3, v in zip(cur_ms, vals): tot[m3] = v
+        elif nl in wl_low:
+            d = out.setdefault(wl_low[nl], {})
+            for m3, v in zip(cur_ms, vals): d[m3] = v
+    return out, tot
+
+
+def fetch_tic_history():
+    """mfhhis历史文件回填 (runner侧; 档案已厚则跳过)。"""
+    import requests
+    p = OUT / "tic_series.json"
+    arch = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    if not arch.get("sample") and len(arch.get("months", [])) > 120:
+        return
+    merged, mtot, hit = {}, {}, 0
+    for i in range(1, 6):
+        try:
+            r = requests.get(f"https://ticdata.treasury.gov/resource-center/data-chart-center/tic/Documents/mfhhis0{i}.txt",
+                             headers={"User-Agent": "Mozilla/5.0"}, timeout=60)
+            if r.status_code != 200: continue
+            out, tot = _parse_tic_table(r.text)
+            for c, d in out.items():
+                merged.setdefault(c, {}).update(d)
+            mtot.update(tot)
+            if out: hit += 1
+        except Exception as e:
+            print(f"  mfhhis0{i} 失败: {e}")
+    if not merged:
+        print("  !! TIC历史回填零命中")
+        return
+    allm = sorted({m3 for d in merged.values() for m3 in d} | set(mtot))
+    _write("tic_series", {"sample": False, "months": allm,
+                          "series": {c: [d.get(m3) for m3 in allm] for c, d in merged.items()},
+                          "total": [mtot.get(m3) for m3 in allm]})
+    print(f"  TIC历史回填: {hit}个文件, {len(allm)}个月")
+
+
+def fetch_corp():
+    """SIFMA公司债月度发行: xlsx候选+防御解析 (weekly), 失败保留上一版。"""
+    import requests, io
+    try:
+        from openpyxl import load_workbook
+    except ImportError:
+        print("  corp跳过: openpyxl未装"); return
+    URLS = ["https://www.sifma.org/wp-content/uploads/2017/06/US-Corporate-Bonds-SIFMA.xlsx",
+            "https://www.sifma.org/wp-content/uploads/2021/10/US-Corporate-Bonds-SIFMA.xlsx",
+            "https://www.sifma.org/wp-content/uploads/2017/06/Corporate-US-Corporate-SIFMA.xlsx"]
+    wb = None
+    for u in URLS:
+        try:
+            r = requests.get(u, headers={"User-Agent": "Mozilla/5.0"}, timeout=90)
+            if r.status_code == 200 and len(r.content) > 20000:
+                wb = load_workbook(io.BytesIO(r.content), data_only=True, read_only=True)
+                print(f"  corp源: {u.rsplit('/', 1)[-1]}")
+                break
+        except Exception as e:
+            print(f"  corp {u.rsplit('/', 1)[-1]} 失败: {e}")
+    if wb is None:
+        print("  !! corp全候选失败, 保留上一版"); return
+    from datetime import datetime, date as _date
+    bym = {}
+    for ws in wb.worksheets:
+        if "issuance" not in ws.title.lower(): continue
+        for row in ws.iter_rows(values_only=True):
+            if not row or row[0] is None: continue
+            d0, ym = row[0], None
+            if isinstance(d0, (datetime, _date)): ym = f"{d0.year}-{d0.month:02d}"
+            elif isinstance(d0, str):
+                import re as _re
+                m2 = _re.match(r"(20\d\d)[-/\.](\d{1,2})", d0.strip())
+                if m2: ym = f"{m2.group(1)}-{int(m2.group(2)):02d}"
+            if not ym: continue
+            nums = [v for v in row[1:8] if isinstance(v, (int, float)) and v > 0]
+            if nums:
+                bym[ym] = round(sum(nums[:2]), 1)
+    if len(bym) < 60:
+        print(f"  !! corp解析月数不足({len(bym)}), 保留上一版"); return
+    _write("corp_issuance", {"sample": False, "series": [
+        {"month": m3, "bn": v} for m3, v in sorted(bym.items())]})
+
+
+def fetch_gross():
+    """月度总发行: 全场次接纳额加总2000+ (weekly)。"""
+    bym = {}
+    for y0 in range(2000, 2027, 3):
+        recs = api_get("/v1/accounting/od/auctions_query",
+                       {"filter": f"auction_date:gte:{y0}-01-01,auction_date:lt:{y0+3}-01-01",
+                        "fields": "auction_date,total_accepted,offering_amt",
+                        "sort": "auction_date"}, max_pages=6)
+        for r in recs:
+            m = (r.get("auction_date") or "")[:7]
+            v = _pick(r, ["total_accepted", "offering_amt"])
+            if m and v:
+                bym[m] = bym.get(m, 0) + v/1e9
+    if len(bym) < 100:
+        print(f"  !! gross发行月数不足({len(bym)}), 保留上一版")
+        return
+    _write("gross_issuance", {"sample": False, "tsy": [
+        {"month": m, "bn": round(v, 0)} for m, v in sorted(bym.items())]})
 
 
 def fetch_soma():
@@ -947,7 +1158,8 @@ FETCHERS = {
                  fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
                  fetch_debt_limit_history, fetch_market, fetch_approps_status,
                  fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
-                 fetch_local, fetch_tic, fetch_annual],
+                 fetch_local, fetch_tic, fetch_tic_history, fetch_gross, fetch_corp,
+                 fetch_annual],
     "due:mts":  [fetch_mts, fetch_avg_rates, fetch_interest,
                  fetch_annual],
     "due:mspd": [fetch_mspd],
@@ -1220,6 +1432,60 @@ def write_sample():
             "t_ind":   [338,344,371,387,406,393,504,558,505,540],
             "t_corp":  [50,47,48,55,60,64,95,120,105,98]},
         "ngdp": [18206,18695,19477,20533,21381,21060,22996,25744,27360,28781]})
+    tic_k = {
+        "Japan": [("2000-01",317),("2004-01",690),("2008-01",586),("2012-01",1080),("2016-01",1123),
+                  ("2020-01",1211),("2021-11",1330),("2023-10",1098),("2025-06",1135),("2026-06",1125)],
+        "China, Mainland": [("2000-01",60),("2004-01",157),("2008-01",490),("2011-07",1315),
+                  ("2013-11",1317),("2016-01",1238),("2020-01",1078),("2022-04",1003),
+                  ("2024-01",797),("2026-06",758)],
+        "United Kingdom": [("2000-01",50),("2008-01",157),("2012-01",112),("2016-01",211),
+                  ("2019-01",287),("2021-01",439),("2023-01",656),("2025-01",740),("2026-06",815)],
+        "Belgium": [("2000-01",28),("2008-01",13),("2014-03",381),("2016-01",143),("2020-01",210),
+                  ("2023-01",332),("2026-06",352)],
+        "Luxembourg": [("2000-01",25),("2008-01",70),("2012-01",134),("2016-01",221),("2020-01",255),
+                  ("2023-01",329),("2026-06",424)],
+        "Cayman Islands": [("2000-01",20),("2008-01",100),("2012-01",75),("2016-01",265),
+                  ("2020-01",216),("2023-01",285),("2026-06",432)],
+        "Canada": [("2000-01",15),("2010-01",77),("2016-01",67),("2020-01",130),("2023-01",254),("2026-06",402)],
+        "France": [("2000-01",25),("2010-01",30),("2016-01",60),("2020-01",131),("2023-01",240),("2026-06",312)],
+        "Ireland": [("2000-01",5),("2010-01",42),("2016-01",264),("2020-01",282),("2023-01",255),("2026-06",340)],
+        "Switzerland": [("2000-01",18),("2010-01",107),("2016-01",230),("2020-01",238),("2023-01",291),("2026-06",300)],
+    }
+    allm = [m for m, _ in _interp([("2000-01",0),("2026-06",0)])]
+    tser = {}
+    for c, kn in tic_k.items():
+        d = dict(_interp(kn))
+        tser[c] = [round(d[m2], 0) if m2 in d else None for m2 in allm]
+    tot = [round(sum(tser[c][i] or 0 for c in tser) * 1.75, 0) for i in range(len(allm))]
+    _write("tic_series", {"sample": True, "months": allm, "series": tser, "total": tot})
+
+    corp_k = [("2000-01",45),("2003-01",55),("2007-01",75),("2009-01",95),("2012-01",95),
+              ("2015-01",110),("2017-01",120),("2020-04",250),("2021-01",150),("2022-06",90),
+              ("2024-01",130),("2025-01",145),("2026-07",135)]
+    _write("corp_issuance", {"sample": True, "series": [
+        {"month": m, "bn": round(v*(1.15 if m[5:7] in ("01","03","09") else 1.0), 0)}
+        for m, v in _interp(corp_k)]})
+
+    g_k = [("2000-01",190),("2004-01",320),("2008-10",750),("2010-01",680),("2014-01",560),
+           ("2018-01",780),("2020-04",2450),("2021-01",1650),("2023-06",1900),
+           ("2025-01",2250),("2026-07",2400)]
+    _write("gross_issuance", {"sample": True, "tsy": [
+        {"month": m, "bn": round(v, 0)} for m, v in _interp(g_k)]})
+
+    import random as _rd
+    _rd.seed(7)
+    CLS = {"Investment funds": (52, 68), "Dealers and brokers": (11, 18),
+           "Foreign and international": (8, 16), "SOMA": (0, 20), "Individuals": (0.1, 0.5)}
+    alot = {}
+    for cls, (lo, hi) in CLS.items():
+        alot[cls] = {}
+        for y2 in range(2010, 2027):
+            drift = (y2-2010)/16
+            alot[cls][str(y2)] = {str(mm): round(lo+(hi-lo)*(drift if cls=="Investment funds"
+                                  else (1-drift if cls=="Dealers and brokers" else _rd.random())), 1)
+                                  for mm in range(1, 13 if y2 < 2026 else 8)}
+    _write("allotments", {"sample": True, "note": "Investor Class月度XLS对话转换", "classes": alot})
+
     _write("tic_holders", {"sample": True, "foreign_total": 9120, "top": [
         {"name": "Japan", "bn": 1125}, {"name": "United Kingdom", "bn": 815},
         {"name": "China, Mainland", "bn": 758}, {"name": "Cayman Islands", "bn": 432},
