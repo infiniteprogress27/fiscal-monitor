@@ -499,6 +499,37 @@ layers:
           - {name: auctions_query(coupon尺寸推导), freq: 逐场, kind: API}
           - {name: 卖方preview, freq: 季, kind: 人工锚}
 
+      - id: gross_issuance
+        name: 总发行对照
+        view: issuance_view
+        status_line: text
+        text_status: "国债月度总发行(拍卖实况) vs 企业债发行(SIFMA口径锚); 挤出效应观察窗"
+        verified: "2026-08-12"
+        qual:
+          state: 国债侧2000年起全自动; 企业债为SIFMA月度口径人工锚(对话更新)
+          watch: 企业债放量月份与国债拍卖尾部的同月相关; 发债窗口对拍卖日历的避让
+          mechanism: >
+            国债=当月全部拍卖接纳额加总(bills+coupon, 拍卖实况); 企业债=SIFMA投资级+高收益
+            月度总发行。两者之和即固收一级市场月度总供给, 企业债占比走高的月份是挤出观察点。
+        sources:
+          - {name: auctions_query(全场次2000+), freq: 周, kind: API}
+          - {name: SIFMA公司债月度统计, freq: 月, kind: 人工锚·对话更新}
+
+      - id: auction_demand
+        name: 拍卖需求结构
+        view: demand_heatmap
+        status_line: text
+        text_status: "Coupon一级市场投资者类别配售份额, 月度×年份热力表"
+        verified: "2026-08-12"
+        qual:
+          state: 五类投资者月度配售份额; 基金持续吸收交易商让出的份额是结构主线
+          watch: Investment funds份额新高; SOMA再投资月份挤占; 海外份额趋势位
+          mechanism: >
+            数据为财政部Investor Class Auction Allotments月度报告(Coupon口径), 官方为XLS无API,
+            更新通道=对话转换(上传xls或数值即转)。色阶为该类别历史分位: 红高蓝低。
+        sources:
+          - {name: Treasury Investor Class Auction Allotments, freq: 月, kind: XLS·对话转换}
+
       - id: funding_forecast
         name: 财年融资预测
         view: funding_widget
@@ -583,11 +614,11 @@ layers:
 
       - id: holders
         name: 持有人结构
-        view: holders_v2
+        view: holders_v3
         status_line: none
         verified: "2026-08-10"
         qual:
-          state: "海外(TIC月度)与SOMA自动接入; 货基/银行/家庭为Z.1季度人工锚"
+          state: "国别累计变化图可调起始基点; 近端TIC逐月自动累积, 2000-2025历史段为示例锚(TIC历史文件可一次替换为全真实)"
           watch: TIC国别月度; SOMA rollover/增持; Z.1季度全景
         anchors_z1:
           as_of: 2026Q1
