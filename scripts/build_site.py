@@ -513,6 +513,83 @@ def v_paygo_view(obj, ctx):
     return table(["记分卡项", "#状态/数额", "备注"], rows) + links_chips(obj) + qual_card(obj["qual"])
 
 
+def v_issuance_view(obj, ctx):
+    ts = (ctx.get("gross_issuance") or {}).get("tsy") or []
+    co = {r["month"]: r["bn"] for r in (ctx.get("corp_issuance") or {}).get("series") or []}
+    months = [r["month"] for r in ts]
+    tsy_c, corp_c = [], []
+    cy, at, ac = None, 0, 0
+    for r in ts:
+        if r["month"][:4] != cy:
+            cy, at, ac = r["month"][:4], 0, 0
+        at += r["bn"] or 0
+        c0 = co.get(r["month"])
+        ac += c0 or 0
+        tsy_c.append(round(at, 0))
+        corp_c.append(-round(ac, 0) if ac else None)
+    h = chart("ch_gross", "mirror", [m[2:] for m in months],
+              [{"label": "国债 (年内累计)", "data": tsy_c, "color": "ink"},
+               {"label": "企业债 (年内累计)", "data": corp_c, "color": "red"}], "bn",
+              opts={"tall": True})
+    h += '<div class="anchor-note">年内逐月累计, 每年1月清零 · 上=国债(拍卖接纳额实况), 下=企业债(SIFMA口径) · 纵轴上下对称等比, 高度直接可比 · 滚轮缩放双击复位</div>'
+    return h + qual_card(obj["qual"])
+
+
+def _heat_color(v, lo, hi):
+    if v is None: return ""
+    t = 0.5 if hi == lo else (v - lo) / (hi - lo)
+    if t >= 0.5:
+        a = (t - 0.5) * 2
+        return f"background:rgba(176,58,46,{0.08+0.42*a:.2f})"
+    a = (0.5 - t) * 2
+    return f"background:rgba(43,91,138,{0.08+0.42*a:.2f})"
+
+
+def v_demand_heatmap(obj, ctx):
+    al = (ctx.get("allotments") or {}).get("classes") or {}
+    h = ""
+    for cls, byy in al.items():
+        years = sorted(byy, reverse=True)
+        vals = [v for y in byy.values() for v in y.values() if v is not None]
+        lo, hi = (min(vals), max(vals)) if vals else (0, 1)
+        h += f"<h4>Coupon配售份额 · {esc(cls)} (%)</h4>"
+        h += '<table class="anx heat"><tr><th></th>' + "".join(f'<th class="num">{y}</th>' for y in years) + "</tr>"
+        for mm in range(1, 13):
+            h += f'<tr><td class="lbl">{mm}月</td>'
+            for y in years:
+                v = byy.get(y, {}).get(str(mm))
+                st = _heat_color(v, lo, hi)
+                h += f'<td class="num" style="{st}">{"" if v is None else f"{v:.1f}%"}</td>'
+            h += "</tr>"
+        h += "</table>"
+    h += '<div class="anchor-note">色阶=该类别全史分位(红高蓝低) · 源: Treasury Investor Class Auction Allotments月度XLS, 对话转换更新</div>'
+    return h + qual_card(obj["qual"])
+
+
+def v_holders_v3(obj, ctx):
+    h = """
+<div class="blx">
+  <div class="blx-bar"><span class="blx-hint">国别持有累计变化 · 起始基点可调, 全序列自动重算</span>
+  <label style="font-size:12px">起始: <select id="hxStart"></select></label></div>
+  <div class="chart tall" style="height:400px;max-height:400px"><canvas id="ch_tic"></canvas></div>
+</div>"""
+    tic = ctx.get("tic_holders") or {}
+    soma = (ctx.get("soma") or {}).get("series") or []
+    sup = (ctx["supply"].get("series") or [{}])[-1]
+    mkt = sup.get("bills_bn", 0) / (sup.get("tbills_share", 1) or 1) * 100 if sup.get("bills_bn") else None
+    soma_tot = soma[-1].get("soma_total") if soma else None
+    ft = tic.get("foreign_total")
+    pct = lambda v: f"{100*v/mkt:.1f}%" if (v and mkt) else "—"
+    rows = [("海外合计 (TIC)", fmt(ft), pct(ft), "自动·月度(滞后6周)"),
+            ("美联储SOMA", fmt(soma_tot), pct(soma_tot), "自动·周度")]
+    for r in (obj.get("anchors_z1") or {}).get("rows", []):
+        rows.append((r["holder"] + " (Z.1)", fmt(r["bn"]), pct(r["bn"]),
+                     f"人工锚·{(obj.get('anchors_z1') or {}).get('as_of', '')}"))
+    h += "<h4>持有人总览 · 占marketable比</h4>"
+    h += table(["持有人", "#$bn", "#占比", "更新方式"], rows)
+    return h + qual_card(obj["qual"])
+
+
 def v_qra_view(obj, ctx):
     qh = (ctx.get("qra_history") or {}).get("rows") or []
     h = "<h4>QRFE 融资估计历史 (每季录入)</h4>"
@@ -571,23 +648,28 @@ def v_cash_buyback(obj, ctx):
     h += chart("ch_tga", "line", [r["date"][5:] for r in s],
                [{"label": "TGA", "data": [r["close"] for r in s], "color": "blue", "w": 2, "fill": True},
                 {"label": "QRA目标", "data": [t]*len(s), "color": "muted", "dash": [5, 4], "w": 1}], "bn")
-    bs = yaml.safe_load((ROOT / "config/buyback_schedule.yaml").read_text(encoding="utf-8"))         if (ROOT / "config/buyback_schedule.yaml").exists() else {}
+    bs = yaml.safe_load((ROOT / "config/buyback_schedule.yaml").read_text(encoding="utf-8")) \
+        if (ROOT / "config/buyback_schedule.yaml").exists() else {}
     recs = (ctx["buybacks"].get("records") or [])
     typed = {str(o["date"]): o.get("type", "流动性支持") for o in bs.get("ops", [])}
-    ex_liq = sum(r.get("accepted_bn") or 0 for r in recs if typed.get(r.get("op_date"), "流动性支持") == "流动性支持")
-    ex_cm = sum(r.get("accepted_bn") or 0 for r in recs if typed.get(r.get("op_date")) == "现金管理")
-    env = bs.get("envelopes") or {}
-    cum = (bs.get("cum_since_2024_bn") or 0) + ex_liq + ex_cm
     sup = (ctx["supply"].get("series") or [{}])[-1]
     mkt = sup.get("bills_bn", 0) / (sup.get("tbills_share", 1) or 1) * 100 if sup.get("bills_bn") else None
-    pct = f"{cum/mkt*100:.2f}%" if mkt else "—"
-    h += f"<h4>回购二分结构 · {esc(bs.get('quarter', ''))}</h4>"
-    h += table(["类型", "目的", "#当季envelope", "#本季已执行", "#2024以来累计", "占marketable比"],
-               [("流动性支持", "周度买入off-the-run, 缓解做市商资产负债表", fmt(env.get("liquidity_bn"), 1),
-                 fmt(ex_liq, 1), "", ""),
-                ("现金管理", "缴税季现金高峰赎回短端, 削融资波动", fmt(env.get("cashmgmt_bn"), 1),
-                 fmt(ex_cm, 1), "", ""),
-                ("合计", "", "", fmt(ex_liq+ex_cm, 1), fmt(cum, 0), pct)])
+    cum = bs.get("cum_since_2024_bn") or 0
+    h += f"<h4>回购计划结构 · {esc(bs.get('quarter', ''))}</h4>"
+    for pg in bs.get("programs", []):
+        ex = sum(r.get("accepted_bn") or 0 for r in recs
+                 if typed.get(r.get("op_date")) == pg["name"].replace("回购", ""))
+        h += f'<div class="ptitle">{esc(pg["name"])}</div>'
+        h += table(["项目", "内容"], [
+            ("目的", esc(pg.get("purpose", ""))),
+            ("季度总额度", f'{fmt(pg.get("envelope_bn"), 1)} bn'),
+            ("季度场次", f'{pg.get("ops_per_quarter", "—")} 场'),
+            ("节奏", esc(pg.get("cadence", ""))),
+            ("本季已执行", f'{fmt(ex, 1)} bn')])
+        h += table(["期限篮", "#每场上限 bn"],
+                   [(bk["bucket"], fmt(bk.get("per_op_max_bn"), 1)) for bk in pg.get("buckets", [])])
+    pcts = f"{cum/mkt*100:.2f}%" if mkt else "—"
+    h += f'<div class="anchor-note">2024年启动以来累计回购 <b>{fmt(cum, 0)}bn</b> · 占marketable存量 {pcts} · 两计划均不改变久期政策含义, 与QT方向无关</div>'
     h += "<h4>近期操作</h4>"
     h += table(["日期", "类型", "bucket", "#上限", "#接纳", "#offer/max"],
                [((r.get("op_date") or "")[5:], typed.get(r.get("op_date"), "流动性支持"),
@@ -645,7 +727,7 @@ VIEWS = {"combo": v_combo,
     "baseline_center": v_baseline_center, "cycle_instances": v_cycle_instances,
     "approps_v2": v_approps_v2, "expansion_view": v_expansion_view, "fytd_progress": v_fytd_progress,
     "annual_widget": v_annual_widget, "local_widget": v_local_widget, "holders_v2": v_holders_v2, "dts_flows": v_dts_flows,
-    "qra_view": v_qra_view, "funding_widget": v_funding_widget,
+    "qra_view": v_qra_view, "issuance_view": v_issuance_view, "demand_heatmap": v_demand_heatmap, "holders_v3": v_holders_v3, "funding_widget": v_funding_widget,
     "cash_buyback": v_cash_buyback, "debt_long": v_debt_long,
     "supply_share": v_supply_share,
     "structure_view": v_structure_view, "holders_table": v_holders_table,
@@ -727,7 +809,7 @@ def main():
     ctx = {"anchors": cfg["anchors"]}
     for name in ["debt", "debt_limit", "debt_limit_history", "market", "tga", "mts", "mts_receipts", "mts_outlays",
                  "dts_flows", "auctions", "upcoming", "buybacks", "supply", "approps_status",
-                 "qra_history", "coupon_sizes", "wam", "debt_long", "bill1y", "local_fiscal", "tic_holders", "soma",
+                 "qra_history", "coupon_sizes", "wam", "debt_long", "bill1y", "local_fiscal", "tic_holders", "soma", "tic_series", "corp_issuance", "gross_issuance", "allotments",
                  "mspd_structure", "avg_rates", "interest"]:
         ctx[name] = J(name)
     ctx["fy_paths"] = fy_paths(ctx["mts"].get("series") or [])
@@ -843,9 +925,11 @@ def main():
                 if p_.get("id") == "local_fiscal":
                     lx_payload["census"] = p_.get("anchors_census") or {}
     page_lx = json.dumps(lx_payload, ensure_ascii=False)
+    page_hx = json.dumps(ctx.get("tic_series") or {}, ensure_ascii=False)
     mx = DATA / "cbo_matrix.json"
     page = page.replace("__ANNUAL__", page_anx)
     page = page.replace("__LOCAL__", page_lx)
+    page = page.replace("__TICS__", page_hx)
     page = page.replace("__FNXDEF__", page_fnx)
     page = page.replace("__CBOMATRIX__", mx.read_text(encoding="utf-8") if mx.exists() else "null")
     page = page.replace("__EVENTS__", json.dumps(EVENTS, ensure_ascii=False))
@@ -1151,6 +1235,19 @@ CHARTS.forEach(c=>{
       label:d.label,data:d.data,
       backgroundColor:d.color==='auto'?d.data.map(v=>v>=0?PAL.green+'B3':PAL.red+'B3'):(PAL[d.color]||d.color)+'B3'}))},
       options:{scales:{y:{grid:{color:'#EDEFEA'}},x:{grid:{display:false},ticks:{maxTicksLimit:12}}}}});
+  } else if(c.kind==='mirror'){
+    const allv=c.datasets.flatMap(d=>d.data.filter(v=>v!=null).map(Math.abs));
+    const M0=Math.ceil(Math.max(...allv)*1.05/100)*100;
+    const ch=new Chart(el,{type:'bar',data:{labels:c.labels,datasets:c.datasets.map(d=>({
+      label:d.label,data:d.data,backgroundColor:(PAL[d.color]||d.color)+'B3',
+      barPercentage:1.0,categoryPercentage:0.95}))},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{tooltip:{callbacks:{label:t=>t.dataset.label+': '+Math.abs(t.raw).toLocaleString()+'bn'}},
+               zoom:{pan:{enabled:true,mode:'x'},zoom:{wheel:{enabled:true},pinch:{enabled:true},mode:'x'}}},
+      scales:{y:{min:-M0,max:M0,grid:{color:'#EDEFEA'},
+                 ticks:{callback:v=>{const a=Math.abs(v);return a>=1000?(a/1000)+'T':a;}},afterFit:a=>{a.width=64}},
+              x:{grid:{display:false},ticks:{maxTicksLimit:16}}}}});
+    el.ondblclick=()=>ch.resetZoom();
   } else if(c.kind==='hbar'){
     new Chart(el,{type:'bar',data:{labels:c.labels,datasets:c.datasets.map(d=>({
       label:d.label,data:d.data,backgroundColor:(PAL[d.color]||d.color)+'B3'}))},
@@ -1158,6 +1255,46 @@ CHARTS.forEach(c=>{
       scales:{x:{grid:{color:'#EDEFEA'}},y:{grid:{display:false}}}}});
   }
 });
+// ---- 持有人国别累计变化 (可调基点)
+const HX = __TICS__;
+if(HX && HX.months && document.getElementById('hxStart')){
+(function(){
+  const M = HX.months, S = HX.series || {};
+  const sel = document.getElementById('hxStart');
+  const years = [...new Set(M.map(m=>m.slice(0,4)))];
+  years.forEach(y=>{const o=document.createElement('option');o.value=y+'-01';o.text=y;sel.appendChild(o);});
+  sel.value = years.includes('2019')?'2019-01':years[0]+'-01';
+  const COLS = [PAL.blue,'#D4A017',PAL.red,'#6B4E8C',PAL.green,'#B8651B','#3A7CA5','#8C5946','#4A4A4A','#2E8B74'];
+  let CH=null;
+  function draw(){
+    const i0 = Math.max(0, M.indexOf(sel.value));
+    const lbls = M.slice(i0).map(m=>m.slice(2));
+    const names = Object.keys(S).sort((a,b)=>{
+      const la=S[a][M.length-1]||0, lb=S[b][M.length-1]||0;
+      const da=(la-(S[a][i0]||la)), db=(lb-(S[b][i0]||lb));
+      return Math.abs(db)-Math.abs(da);
+    }).slice(0,8);
+    const ds = names.map((c,ci)=>({label:c, yAxisID:'y',
+      data:S[c].slice(i0).map(v=>{const b0=S[c][i0]; return (v!=null&&b0!=null)?Math.round(v-b0):null;}),
+      borderColor:COLS[ci%COLS.length], borderWidth:1.6, pointRadius:0, tension:.15}));
+    if(HX.total && HX.total.length){
+      ds.unshift({label:'海外合计', yAxisID:'y',
+        data:HX.total.slice(i0).map(v=>{const b0=HX.total[i0]; return (v!=null&&b0!=null)?Math.round(v-b0):null;}),
+        borderColor:PAL.ink, borderWidth:2.4, pointRadius:0, tension:.15});
+    }
+    if(CH) CH.destroy();
+    CH=new Chart(document.getElementById('ch_tic'),{type:'line',
+      data:{labels:lbls,datasets:ds},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{title:{display:true,text:'自 '+sel.value.slice(0,4)+' 年起累计变化 ($bn)',font:{size:12}},
+                 legend:{labels:{boxWidth:14,font:{size:10.5}}}},
+        scales:{y:{grid:{color:'#EDEFEA'},ticks:{callback:v=>v},afterFit:a=>{a.width=56}},
+                x:{grid:{display:false},ticks:{maxTicksLimit:16}}}}});
+  }
+  sel.onchange=draw; draw();
+})();
+}
+
 // ---- 地方收支 (央地对照, 图表联动)
 const LX = __LOCAL__;
 if(document.getElementById('lxTable') && !(LX && LX.years && LX.years.length)){
