@@ -46,7 +46,7 @@
    "ok": false
   },
   "apportionment-db": {
-   "hash": "7044c724d23168d9",
+   "hash": "636834b26bbf6686",
    "ok": true
   },
   "cbo-data-page": {
@@ -57,7 +57,7 @@
  "obj_last_change": {
   "mandatory_legislation": "2026-08-06",
   "caps_sequestration": "2026-08-10",
-  "impoundment": "2026-08-20",
+  "impoundment": "2026-08-24",
   "cbo_baseline": "2026-08-10",
   "tax_legislation": "2026-02-10",
   "appropriations": "2026-07-22",
