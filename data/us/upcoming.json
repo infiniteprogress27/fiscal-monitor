@@ -682,36 +682,12 @@
    "offering_bn": null
   },
   {
-   "announce": "2026-08-25",
-   "auction_date": "2026-08-27",
-   "issue_date": "2026-09-01",
-   "type": "Bill",
-   "term": "4-Week",
-   "offering_bn": 100.0
-  },
-  {
-   "announce": "2026-08-25",
-   "auction_date": "2026-08-27",
-   "issue_date": "2026-09-01",
-   "type": "Bill",
-   "term": "8-Week",
-   "offering_bn": 90.0
-  },
-  {
-   "announce": "2026-08-20",
-   "auction_date": "2026-08-27",
-   "issue_date": "2026-08-31",
-   "type": "Note",
-   "term": "7-Year",
-   "offering_bn": 44.0
-  },
-  {
    "announce": "2026-08-27",
    "auction_date": "2026-08-31",
    "issue_date": "2026-09-03",
    "type": "Bill",
    "term": "26-Week",
-   "offering_bn": null
+   "offering_bn": 79.0
   },
   {
    "announce": "2026-08-27",
@@ -719,7 +695,7 @@
    "issue_date": "2026-09-03",
    "type": "Bill",
    "term": "13-Week",
-   "offering_bn": null
+   "offering_bn": 92.0
   },
   {
    "announce": "2026-08-27",
@@ -727,7 +703,7 @@
    "issue_date": "2026-09-03",
    "type": "Bill",
    "term": "6-Week",
-   "offering_bn": null
+   "offering_bn": 85.0
   },
   {
    "announce": "2026-08-27",
@@ -735,8 +711,8 @@
    "issue_date": "2026-09-03",
    "type": "Bill",
    "term": "52-Week",
-   "offering_bn": null
+   "offering_bn": 52.0
   }
  ],
- "fetched_at": "2026-08-27T03:28:58.542436Z"
+ "fetched_at": "2026-08-28T06:14:48.919577Z"
 }
