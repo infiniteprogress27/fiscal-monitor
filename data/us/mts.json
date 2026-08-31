@@ -2,12 +2,6 @@
  "sample": false,
  "series": [
   {
-   "month": "2018-07",
-   "receipts": 316.3,
-   "outlays": 391.1,
-   "balance": -74.9
-  },
-  {
    "month": "2018-08",
    "receipts": 240.4,
    "outlays": 328.8,
@@ -584,5 +578,5 @@
    "balance": 215.0
   }
  ],
- "fetched_at": "2026-08-24T12:33:58.670294Z"
+ "fetched_at": "2026-08-31T18:33:49.035307Z"
 }

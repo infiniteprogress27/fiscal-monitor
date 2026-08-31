@@ -2,13 +2,61 @@
  "sample": false,
  "records": [
   {
+   "auction_date": "2026-09-01",
+   "type": "Bill",
+   "term": "6-Week",
+   "cusip": "912797UK1",
+   "offering_bn": 85.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-09-01",
+   "type": "Bill",
+   "term": "52-Week",
+   "cusip": "912797WA1",
+   "offering_bn": 52.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-08-31",
+   "type": "Bill",
+   "term": "13-Week",
+   "cusip": "912797VA2",
+   "offering_bn": 92.0,
+   "high_yield": 3.859,
+   "btc": 2.77,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-08-31",
+   "type": "Bill",
+   "term": "26-Week",
+   "cusip": "912797WD5",
+   "offering_bn": 79.0,
+   "high_yield": 4.018,
+   "btc": 2.63,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
    "auction_date": "2026-08-27",
    "type": "Note",
    "term": "7-Year",
    "cusip": "91282CRJ2",
    "offering_bn": 44.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 4.512,
+   "btc": 2.5,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -19,8 +67,8 @@
    "term": "4-Week",
    "cusip": "912797VE4",
    "offering_bn": 100.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 3.711,
+   "btc": 2.73,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -31,8 +79,8 @@
    "term": "8-Week",
    "cusip": "912797VN4",
    "offering_bn": 90.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 3.742,
+   "btc": 2.77,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -1332,91 +1380,7 @@
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
-  },
-  {
-   "auction_date": "2026-05-27",
-   "type": "Bill",
-   "term": "17-Week",
-   "cusip": "912797VE4",
-   "offering_bn": 69.0,
-   "high_yield": 3.725,
-   "btc": 3.01,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-05-27",
-   "type": "Note",
-   "term": "1-Year 11-Month",
-   "cusip": "91282CQM6",
-   "offering_bn": 28.0,
-   "high_yield": null,
-   "btc": 3.49,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-05-27",
-   "type": "Note",
-   "term": "5-Year",
-   "cusip": "91282CQU8",
-   "offering_bn": 70.0,
-   "high_yield": 4.182,
-   "btc": 2.34,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-05-26",
-   "type": "Bill",
-   "term": "6-Week",
-   "cusip": "912797RF6",
-   "offering_bn": 85.0,
-   "high_yield": 3.686,
-   "btc": 2.71,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-05-26",
-   "type": "Bill",
-   "term": "26-Week",
-   "cusip": "912797SU2",
-   "offering_bn": 77.0,
-   "high_yield": 3.771,
-   "btc": 2.77,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-05-26",
-   "type": "Note",
-   "term": "2-Year",
-   "cusip": "91282CQS3",
-   "offering_bn": 69.0,
-   "high_yield": 4.071,
-   "btc": 2.64,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-05-26",
-   "type": "Bill",
-   "term": "13-Week",
-   "cusip": "912797TY3",
-   "offering_bn": 89.0,
-   "high_yield": 3.678,
-   "btc": 3.08,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
   }
  ],
- "fetched_at": "2026-08-27T00:18:29.687495Z"
+ "fetched_at": "2026-08-31T18:34:11.081931Z"
 }
