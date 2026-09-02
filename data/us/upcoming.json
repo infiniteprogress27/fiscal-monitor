@@ -683,14 +683,6 @@
   },
   {
    "announce": "2026-09-01",
-   "auction_date": "2026-09-02",
-   "issue_date": "2026-09-08",
-   "type": "Bill",
-   "term": "17-Week",
-   "offering_bn": 72.0
-  },
-  {
-   "announce": "2026-09-01",
    "auction_date": "2026-09-03",
    "issue_date": "2026-09-08",
    "type": "Bill",
@@ -754,5 +746,5 @@
    "offering_bn": null
   }
  ],
- "fetched_at": "2026-09-02T00:26:10.943856Z"
+ "fetched_at": "2026-09-02T20:06:05.745396Z"
 }
