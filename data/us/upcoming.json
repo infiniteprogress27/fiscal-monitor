@@ -687,7 +687,7 @@
    "issue_date": "2026-09-10",
    "type": "Bill",
    "term": "13-Week",
-   "offering_bn": null
+   "offering_bn": 92.0
   },
   {
    "announce": "2026-09-03",
@@ -730,5 +730,5 @@
    "offering_bn": 22.0
   }
  ],
- "fetched_at": "2026-09-03T20:07:16.629642Z"
+ "fetched_at": "2026-09-03T22:51:46.542813Z"
 }
