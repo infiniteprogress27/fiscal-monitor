@@ -1,30 +1,30 @@
 {
  "sample": false,
- "as_of": "2026-07-31",
+ "as_of": "2026-08-31",
  "mix": [
   {
    "type": "Bills",
-   "out_bn": 6989.0
+   "out_bn": 7248.0
   },
   {
    "type": "Notes",
-   "out_bn": 16172.0
+   "out_bn": 16218.0
   },
   {
    "type": "Bonds",
-   "out_bn": 5489.0
+   "out_bn": 5525.0
   },
   {
    "type": "TIPS",
-   "out_bn": 2150.0
+   "out_bn": 2153.0
   },
   {
    "type": "FRN",
-   "out_bn": 652.0
+   "out_bn": 680.0
   }
  ],
  "maturity_wall": [],
  "wam_months": null,
  "note": "到期墙待mspd_table_3接入",
- "fetched_at": "2026-09-04T00:17:21.465316Z"
+ "fetched_at": "2026-09-05T00:17:43.825288Z"
 }
