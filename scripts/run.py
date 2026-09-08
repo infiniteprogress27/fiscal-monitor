@@ -108,5 +108,20 @@ def main():
         build()
 
 
+def jp(mode):
+    """日本站: 与美国同调度, 同一workflow顺序执行; 任一步失败不阻塞另一国。"""
+    import fetch_jp as FJ, events_jp as EJ
+    try:
+        if mode == "sample": FJ.write_sample()
+        else: FJ.run_group(mode)
+        EJ.refresh()
+        subprocess.run([sys.executable, str(ROOT / "scripts/build_jp.py")], check=True)
+    except Exception as e:
+        print(f"!! jp流水失败(不阻塞): {e}")
+
+
 if __name__ == "__main__":
     main()
+    _mode = next((a.split("=")[1] if "=" in a else sys.argv[i+1]
+                  for i, a in enumerate(sys.argv) if a.startswith("--mode")), "daily")
+    jp(_mode)
