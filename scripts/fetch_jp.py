@@ -48,10 +48,20 @@ def _era_to_iso(s):
 def fetch_jgb_yields():
     """財務省 国債金利情報 CSV(Shift-JIS, 和暦): 当年+全史。日频, 1974+。"""
     import requests, csv, io
-    urls = ["https://www.mof.go.jp/jgbs/reference/interest_rate/historical/jgbcme_all.csv",
+    urls = ["https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/historical/jgbcme_all.csv",
+            "https://www.mof.go.jp/jgbs/reference/interest_rate/jgbcme.csv",
+            "https://www.mof.go.jp/english/policy/jgbs/reference/interest_rate/jgbcme.csv",
             "https://www.mof.go.jp/jgbs/reference/interest_rate/jgbcm.csv"]
+    # 累积档: 历史文件若不可得, 当月文件逐日并入
+    p_arch = OUT / "jgb_yields.json"
+    if p_arch.exists():
+        arch = json.loads(p_arch.read_text(encoding="utf-8"))
+        if not arch.get("sample"):
+            for i, d in enumerate(arch.get("dates", [])):
+                byd_prev = {k: arch["series"][k][i] for k in arch["series"] if arch["series"][k][i] is not None}
+                if byd_prev: globals().setdefault("_ARCH", {})[d] = byd_prev
     TEN = {"1年": "1y", "2年": "2y", "5年": "5y", "10年": "10y", "20年": "20y", "30年": "30y", "40年": "40y"}
-    byd = {}
+    byd = dict(globals().get("_ARCH", {}))
     got = 0
     diag = []
     for u in urls:
@@ -63,10 +73,13 @@ def fetch_jgb_yields():
             rows = list(csv.reader(io.StringIO(text)))
             diag.append("首5行: " + " || ".join(",".join(x)[:120] for x in rows[:5]))
             diag.append("末2行: " + " || ".join(",".join(x)[:120] for x in rows[-2:]))
-            hdr_i = next((i for i, row in enumerate(rows) if any("10年" in c for c in row)), None)
+            hdr_i = next((i for i, row in enumerate(rows) if any(("10年" in c) or (c.strip().upper() == "10Y") for c in row)), None)
             if hdr_i is None: continue
             hdr = [c.strip() for c in rows[hdr_i]]
             idx = {TEN[h]: i for i, h in enumerate(hdr) if h in TEN}
+            if not idx:   # 英文表头
+                EN = {"1Y": "1y", "2Y": "2y", "5Y": "5y", "10Y": "10y", "20Y": "20y", "30Y": "30y", "40Y": "40y"}
+                idx = {EN[h.upper()]: i for i, h in enumerate(hdr) if h.upper() in EN}
             for row in rows[hdr_i+1:]:
                 if not row or not row[0].strip(): continue
                 d = _era_to_iso(row[0])
@@ -78,9 +91,11 @@ def fetch_jgb_yields():
                 if rec: byd[d] = rec; got += 1
         except Exception as e:
             print(f"  jgb csv 失败 {u.rsplit('/',1)[-1]}: {e}")
+    (OUT / "_debug_jgb.txt").write_text(f"parsed={len(byd)} got={got}\n" + "\n".join(diag), encoding="utf-8")
+    if got == 0:
+        print("  !! JGB利率零命中, 保留上一版"); return
     if len(byd) < 500:
-        (OUT / "_debug_jgb.txt").write_text(f"parsed={len(byd)} got={got}\n" + "\n".join(diag), encoding="utf-8")
-        print(f"  !! JGB利率不足({len(byd)}), 保留上一版"); return
+        print(f"  JGB利率累积档 {len(byd)}日 (历史文件未得, 逐日增长)")
     ds = sorted(byd)
     _write("jgb_yields", {"sample": False, "dates": ds,
                           "series": {k: [byd[d].get(k) for d in ds] for k in TEN.values()}})
