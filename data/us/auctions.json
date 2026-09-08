@@ -14,6 +14,30 @@
    "tail_bp": null
   },
   {
+   "auction_date": "2026-09-10",
+   "type": "Bill",
+   "term": "8-Week",
+   "cusip": "912797VW4",
+   "offering_bn": 85.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-09-10",
+   "type": "Bill",
+   "term": "4-Week",
+   "cusip": "912797VL8",
+   "offering_bn": 90.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
    "auction_date": "2026-09-09",
    "type": "Note",
    "term": "9-Year 11-Month",
@@ -26,13 +50,25 @@
    "tail_bp": null
   },
   {
+   "auction_date": "2026-09-09",
+   "type": "Bill",
+   "term": "17-Week",
+   "cusip": "912797WP8",
+   "offering_bn": 72.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
    "auction_date": "2026-09-08",
    "type": "Bill",
    "term": "6-Week",
    "cusip": "912797UL9",
    "offering_bn": 75.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 3.809,
+   "btc": 2.93,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -43,8 +79,8 @@
    "term": "26-Week",
    "cusip": "912797WK9",
    "offering_bn": 79.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 4.023,
+   "btc": 2.88,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -55,8 +91,8 @@
    "term": "3-Year",
    "cusip": "91282CRL7",
    "offering_bn": 58.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 4.474,
+   "btc": 2.72,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -67,8 +103,8 @@
    "term": "13-Week",
    "cusip": "912797VG9",
    "offering_bn": 92.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 3.89,
+   "btc": 2.61,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -1382,5 +1418,5 @@
    "tail_bp": null
   }
  ],
- "fetched_at": "2026-09-08T06:24:43.156736Z"
+ "fetched_at": "2026-09-08T20:17:01.213731Z"
 }
