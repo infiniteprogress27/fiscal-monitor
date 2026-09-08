@@ -34,7 +34,7 @@ def refresh():
         for dom, tenor, size in RULE:
             if d.day == dom and d.weekday() < 5:
                 upsert(evs, {"id": f"jpauc-{d.isoformat()}-{tenor}", "date": d.isoformat(), "cat": "发行",
-                             "owner": "auctions_jp", "dtype": "估", "label": f"招标 {tenor} {size}兆円", "checklist": []})
+                             "owner": "auctions_jp", "dtype": "估", "label": f"招标 {tenor} ¥{size}T", "checklist": []})
     # 招标结果回填
     p = DATA / "auctions_jp.json"
     if p.exists():
@@ -42,7 +42,7 @@ def refresh():
             if r.get("btc") is not None:
                 eid = f"jpauc-{r['date']}-{r['tenor']}"
                 upsert(evs, {"id": eid, "date": r["date"], "cat": "发行", "owner": "auctions_jp", "dtype": "自动",
-                             "label": f"招标 {r['tenor']} {r['size_t']}兆円", "checklist": []})
+                             "label": f"招标 {r['tenor']} ¥{r['size_t']}T", "checklist": []})
                 ev = next(x for x in evs if x["id"] == eid)
                 ev["status"] = "occurred"; ev["result"] = {"summary": f"倍数 {r['btc']:.2f} · 尾差 {r.get('tail_bp', 0):.1f}bp"}
     for e in evs:
