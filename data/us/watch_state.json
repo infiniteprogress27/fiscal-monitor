@@ -34,6 +34,11 @@
    "date": "2026-06-23",
    "text": "Referred to the Subcommittee on Disability Assistance and Memorial Affairs.",
    "cbo": null
+  },
+  "119-hr-6500": {
+   "date": "2026-09-02",
+   "text": "Became Public Law No: 119-103.",
+   "cbo": "2026-01-20T21:39:00Z"
   }
  },
  "pages": {
@@ -60,7 +65,7 @@
   "impoundment": "2026-09-07",
   "cbo_baseline": "2026-08-10",
   "tax_legislation": "2026-02-10",
-  "appropriations": "2026-07-22",
+  "appropriations": "2026-09-02",
   "fiscal_expansion": "2026-07-23"
  }
 }
