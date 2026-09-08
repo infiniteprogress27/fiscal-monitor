@@ -69,7 +69,7 @@ layers:
           watch: 参院Farm Bill markup; BUILD America 250 floor排期; OBBBA的Medicaid工作要求执行时间表与州诉讼
         provisions:
           - {item: Farm Bill(含SNAP授权), vehicle: 2018法案三度延长, expiry: "2026-09-30(部分程序7/24已到期)", plan: "众院H.R.7567已过(4/30·224-200), 参院6/23讨论稿markup中, 通不过则再延长", impact: "≈0 (BBEDCA§257基线假设延续; 特殊: 商品条款极端回落1938/49永久法)"}
-          - {item: 地面交通授权(IIJA), vehicle: IIJA, expiry: 2026-09-30, plan: "H.R.8870 BUILD America 250($580B/5yr)过T&I 62-2, floor待排; 参院版CR含授权短期延长(过渡桥); HTF缺口靠一般基金转移", impact: "≈0 (§257假设合同授权按通胀延续)"}
+          - {item: 地面交通授权(IIJA), vehicle: IIJA, expiry: 2026-09-30, plan: "H.R.8870 BUILD America 250($580B/5yr)过T&I 62-2, floor待排; H.R.6500已成法: 地面交通授权延长至12/11(过渡桥落地); HTF缺口靠一般基金转移", impact: "≈0 (§257假设合同授权按通胀延续)"}
           - {item: Medicaid(OBBBA修订), vehicle: OBBBA, expiry: "工作要求2026年底起分批生效", plan: "州执行差异与诉讼, 关注豁免", impact: ""}
           - {item: SNAP州成本分担, vehicle: OBBBA, expiry: FY2028起生效, plan: 州预算博弈, impact: ""}
           - {item: Social Security(OASDI), vehicle: 社保法, expiry: 信托基金耗尽~2034→自动削减约23%, plan: 无现实立法路径, impact: "≈0 (基线假设足额支付; 特殊: 真实缺口看受托人精算~3.8%应税工资)"}
@@ -252,7 +252,7 @@ layers:
         watch_pages:
           - {id: cbo-data-page, url: "https://www.cbo.gov/data/budget-economic-data", name: CBO数据页}
         qual:
-          state: 现行基线1月版, 夏季更新待发(约8/20); 版本间移动看三因素分解
+          state: 现行基线2月版; 夏季更新截至9/8未见发布(CBO页面对runner封锁, 需人肉确认); 版本间移动看三因素分解
           base_case: 夏季版计入年内立法与关税收入重估; 立法评分经监听器自动捕获(congress.gov关联CBO estimates)
           watch: 三因素分解中立法项的构成; IEEPA判决对关税收入假设的冲击; ACA延长案若成法+$28B/yr入基线
           mechanism: >
@@ -329,19 +329,19 @@ layers:
         name: 拨款(年度)
         view: approps_v2
         status_line: stage
-        verified: "2026-08-11"
+        verified: "2026-09-08"
         laws: [cba, ada]
         bills:
-          - {ref: 119-hr-9770, name: CR(H.R.9770)}
+          - {ref: 119-hr-6500, name: CR(H.R.9770)}
         links:
           - {name: CRS拨款状态表, url: "https://crsreports.congress.gov/AppropriationsStatusTable"}
           - {name: CRFB Appropriations Watch, url: "https://www.crfb.org/blogs/appropriations-watch-fy-2027"}
           - {name: 众院拨款委, url: "https://appropriations.house.gov/"}
           - {name: 参院拨款委, url: "https://www.appropriations.senate.gov/"}
         qual:
-          state: "参院8/8以90-6过CR至12/11回传众院(9月表决); shutdown风险在轨解除未落地; 参院12法案仍零markup"
-          base_case: "众院9月接受参院版(修正风险存在但低); 12/11成为新到期节点; 全年案压到选举后, 国防/非国防topline是12月主战场"
-          watch: "众院是否修正参院版CR; 12/11节点; 国防topline谈判(Murray已点名); 补充拨款($87.6B); 扩张全景见年度财政扩张对象"
+          state: "CR至12/11已于9/2成法(H.R.6500), FY27开局无关门风险; 12法案零成法, 全年案压至中期选举后跛脚鸭会期"
+          base_case: "12/11节点前omnibus难成, 大概率再CR至1-2月或全年CR; 选举结果决定杠杆, 国防topline是核心分歧"
+          watch: "12/11节点; 参院12法案会期推进(仍零markup); 国防/非国防topline; 补充拨款($87.6B)是否搭车12月载体"
           background: FY2026三次关门(10/1-11/12 ACA; 1/31-2/3; DHS 2/14-4/30共76天), 2026-04打包收官, ICE/BSO资金剔除改走和解
         instances:
           - fy: 2027
@@ -349,8 +349,8 @@ layers:
             supplementals:
               - {name: FY2027国防补充请求, requested_bn: 87.6, date: "2026-06-24", stage: 众院拨款委审议中, designation: 紧急指定(cap外), note: 弹药与库存补给为主}
             cr_chain:
-              - {name: H.R.9770(众院版), covers: 至2026-12-04, status: "众院7月已过(无anomalies), 参院未采纳"}
-              - {name: 参院版CR(替代文本), covers: 至2026-12-11, status: "8/8参院90-6通过(含anomalies·冻结OMB拨款审批新规·地面交通授权延长); 回传众院9月首周表决"}
+              - {name: H.R.9770(众院版), covers: 至2026-12-04, status: "被替代(参院改用H.R.6500为载体)"}
+              - {name: "H.R.6500 Continuing Appropriations and Extensions Act, 2027", covers: 至2026-12-11, status: "已成法: 参院8/8 90-6 → 众院9/1 370-48(suspension) → 总统9/2签署; 含OMB拨款审批规则冻结·地面交通与退伍军人授权延长·hemp禁令推迟"}
             matrix:
               - {bill: Defense, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: 全委6/24通过}
               - {bill: Labor-HHS-Ed, h302b: null, s302b: null, fy26: null, house: 全委, senate: 未动, note: 争议最大}
@@ -487,7 +487,7 @@ layers:
         status_line: stage
         verified: "2026-08-10"
         qual:
-          state: "8/5 Statement: coupon结构维持不变; 前瞻指引延续; QRFE历史与coupon结构见下"
+          state: "8/5 Statement: coupon结构维持不变, 前瞻指引延续; 下一QRFE 11/2(周一)·Statement 11/4"
           base_case: coupon尺寸维持至FY27中, 增量融资靠Tbills; 卖方共识增coupon窗口在2027年8月起
           watch: QRFE三指标vs卖方锚; 前瞻指引措辞diff; TBAC专题
           mechanism: >
