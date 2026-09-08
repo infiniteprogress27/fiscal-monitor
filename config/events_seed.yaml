@@ -118,16 +118,23 @@ events:
     label: 参院90-6通过CR至12/11(替代文本, 回传众院)
     checklist: [众院是否修正, OMB审批新规冻结条款]
   - id: node-house-cr-vote
-    date: "2026-09-02"
+    date: "2026-09-01"
     cat: 立法
     owner: appropriations
     dtype: 估
-    label: 众院复会表决参院版CR(9月首周, 估)
-    checklist: [通过即12/11生效, 修正则回参院]
+    label: 众院370-48通过H.R.6500(CR至12/11)
+    checklist: [suspension程序两党过, 19R+29D反对]
   - id: node-cr-1211
     date: "2026-12-11"
     cat: 到期
     owner: appropriations
-    dtype: 估
-    label: CR到期节点(参院版, 待成法确认)
+    dtype: 法定
+    label: CR到期节点(H.R.6500, 法定)
     checklist: [omnibus或再CR, 国防topline谈判结果]
+  - id: leg-cr-signed
+    date: "2026-09-02"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: 总统签署H.R.6500成法(CR至12/11, 含OMB规则冻结·授权延长)
+    checklist: [P.L.编号, 12/11节点转法定]
