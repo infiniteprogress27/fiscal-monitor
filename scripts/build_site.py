@@ -514,8 +514,12 @@ def v_paygo_view(obj, ctx):
 
 
 def v_issuance_view(obj, ctx):
-    ts = (ctx.get("gross_issuance") or {}).get("tsy") or []
+    gi = ctx.get("gross_issuance") or {}
+    ts = gi.get("coupon") or gi.get("tsy") or []
     co = {r["month"]: r["bn"] for r in (ctx.get("corp_issuance") or {}).get("series") or []}
+    if not ts or not co:
+        return ('<div class="anchor-note">数据待weekly首跑生成后填充</div>'
+                + qual_card(obj["qual"]))
     months = [r["month"] for r in ts]
     tsy_c, corp_c = [], []
     cy, at, ac = None, 0, 0
@@ -528,10 +532,10 @@ def v_issuance_view(obj, ctx):
         tsy_c.append(round(at, 0))
         corp_c.append(-round(ac, 0) if ac else None)
     h = chart("ch_gross", "mirror", [m[2:] for m in months],
-              [{"label": "国债 (年内累计)", "data": tsy_c, "color": "ink"},
+              [{"label": "国债coupon (年内累计)", "data": tsy_c, "color": "ink"},
                {"label": "企业债 (年内累计)", "data": corp_c, "color": "red"}], "bn",
               opts={"tall": True})
-    h += '<div class="anchor-note">年内逐月累计, 每年1月清零 · 上=国债(拍卖接纳额实况), 下=企业债(SIFMA口径) · 纵轴上下对称等比, 高度直接可比 · 滚轮缩放双击复位</div>'
+    h += '<div class="anchor-note">年内逐月累计, 每年1月清零 · 上=国债coupon(Notes/Bonds/TIPS/FRN拍卖实况, 剔除bills短端滚动以保证与企业债同为期限债供给口径), 下=企业债(SIFMA) · 纵轴对称等比高度直接可比 · 滚轮缩放双击复位</div>'
     return h + qual_card(obj["qual"])
 
 
@@ -547,6 +551,9 @@ def _heat_color(v, lo, hi):
 
 def v_demand_heatmap(obj, ctx):
     al = (ctx.get("allotments") or {}).get("classes") or {}
+    if not al:
+        return ('<div class="anchor-note">锚文件待生成(下次任意模式运行自动播种); 真实数据=对话转换Investor Class XLS</div>'
+                + qual_card(obj["qual"]))
     h = ""
     for cls, byy in al.items():
         years = sorted(byy, reverse=True)
