@@ -138,6 +138,43 @@ def _fytd(r):
                       "prior_fytd_outly_amt", "prior_fytd_rcpt_outly_amt"]))
 
 
+def ensure_seeds():
+    """锚文件缺失自动播种(生产端兜底, 不覆盖已有)。"""
+    if not (OUT / "corp_issuance.json").exists():
+        corp_k = [("2000-01",45),("2003-01",55),("2007-01",75),("2009-01",95),("2012-01",95),
+                  ("2015-01",110),("2017-01",120),("2020-04",250),("2021-01",150),("2022-06",90),
+                  ("2024-01",130),("2025-01",145),("2026-07",135)]
+        def _mnum2(m): return int(m[:4])*12+int(m[5:7])
+        out, prev = [], None
+        for m2, v in corp_k:
+            if prev:
+                a, b = _mnum2(prev[0]), _mnum2(m2)
+                for k in range(a, b):
+                    y2, mm = divmod(k-1, 12)
+                    t = (k-a)/(b-a)
+                    out.append((f"{y2}-{mm+1:02d}", prev[1]+(v-prev[1])*t))
+            prev = (m2, v)
+        out.append(prev)
+        _write("corp_issuance", {"sample": True, "series": [
+            {"month": m2, "bn": round(v, 0)} for m2, v in out]})
+        print("  播种: corp_issuance(SIFMA锚)")
+    if not (OUT / "allotments.json").exists():
+        import random as _rd
+        _rd.seed(7)
+        CLS = {"Investment funds": (52, 68), "Dealers and brokers": (11, 18),
+               "Foreign and international": (8, 16), "SOMA": (0, 20), "Individuals": (0.1, 0.5)}
+        alot = {}
+        for cls, (lo, hi) in CLS.items():
+            alot[cls] = {}
+            for y2 in range(2010, 2027):
+                drift = (y2-2010)/16
+                alot[cls][str(y2)] = {str(mm): round(lo+(hi-lo)*(drift if cls == "Investment funds"
+                                      else (1-drift if cls == "Dealers and brokers" else _rd.random())), 1)
+                                      for mm in range(1, 13 if y2 < 2026 else 8)}
+        _write("allotments", {"sample": True, "note": "Investor Class月度XLS对话转换", "classes": alot})
+        print("  播种: allotments(投资者类别锚)")
+
+
 def fetch_debt_limit():
     """限额内 = 公众 + 政府间 - 不计入 + 其他计入 (表IIIC无合计行)。"""
     recs = api_get("/v1/accounting/dts/debt_subject_to_limit",
@@ -798,27 +835,25 @@ def fetch_tic():
     latest_rows = sorted([{"name": k, "bn": v[0]} for k, v in rows.items()], key=lambda x: -x["bn"])
     _write("tic_holders", {"sample": False, "foreign_total": total[0] if total else None,
                            "top": latest_rows[:12]})
-    # 累积档合并
+    # 累积档合并: 先把档案规范化为字典(兼容列表格式), 再并入当前13个月
     p = OUT / "tic_series.json"
-    arch = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {"months": [], "series": {}, "total": {}}
-    bym = {m2: i for i, m2 in enumerate(arch.get("months", []))}
-    sers = arch.setdefault("series", {})
-    tot = arch.setdefault("total", {})
+    arch = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    am = arch.get("months") or []
+    sd, td = {}, {}
+    for c, v in (arch.get("series") or {}).items():
+        if isinstance(v, dict): sd[c] = dict(v)
+        elif isinstance(v, list): sd[c] = {am[j]: v[j] for j in range(min(len(am), len(v))) if v[j] is not None}
+    tv = arch.get("total")
+    if isinstance(tv, dict): td = dict(tv)
+    elif isinstance(tv, list): td = {am[j]: tv[j] for j in range(min(len(am), len(tv))) if tv[j] is not None}
     for i, m2 in enumerate(ms):
         for c, v in rows.items():
-            if i < len(v):
-                sers.setdefault(c, {})
-                if isinstance(sers[c], list):   # 旧格式兼容
-                    sers[c] = {arch["months"][j]: sers[c][j] for j in range(len(arch["months"]))}
-                sers[c][m2] = v[i]
-        if total and i < len(total):
-            tot[m2] = total[i]
-    allm = sorted({m3 for c in sers.values() for m3 in c} | set(tot))
-    arch2 = {"sample": arch.get("sample", False), "months": allm,
-             "series": {c: [d.get(m3) for m3 in allm] for c, d in
-                        ((c2, (v2 if isinstance(v2, dict) else {})) for c2, v2 in sers.items())},
-             "total": [tot.get(m3) for m3 in allm]}
-    _write("tic_series", arch2)
+            if i < len(v): sd.setdefault(c, {})[m2] = v[i]
+        if total and i < len(total): td[m2] = total[i]
+    allm = sorted({m3 for d in sd.values() for m3 in d} | set(td))
+    _write("tic_series", {"sample": False if sd else arch.get("sample", True), "months": allm,
+                          "series": {c: [d.get(m3) for m3 in allm] for c, d in sd.items()},
+                          "total": [td.get(m3) for m3 in allm]})
 
 
 def _parse_tic_table(text):
@@ -950,23 +985,27 @@ def fetch_corp():
 
 
 def fetch_gross():
-    """月度总发行: 全场次接纳额加总2000+ (weekly)。"""
-    bym = {}
+    """月度总发行: 全口径与coupon口径分列, 2000+ (weekly)。"""
+    bym, byc = {}, {}
     for y0 in range(2000, 2027, 3):
         recs = api_get("/v1/accounting/od/auctions_query",
                        {"filter": f"auction_date:gte:{y0}-01-01,auction_date:lt:{y0+3}-01-01",
-                        "fields": "auction_date,total_accepted,offering_amt",
+                        "fields": "auction_date,total_accepted,offering_amt,security_type",
                         "sort": "auction_date"}, max_pages=6)
         for r in recs:
             m = (r.get("auction_date") or "")[:7]
             v = _pick(r, ["total_accepted", "offering_amt"])
-            if m and v:
-                bym[m] = bym.get(m, 0) + v/1e9
+            if not (m and v): continue
+            bym[m] = bym.get(m, 0) + v/1e9
+            if (r.get("security_type") or "") in ("Note", "Bond", "TIPS", "FRN"):
+                byc[m] = byc.get(m, 0) + v/1e9
     if len(bym) < 100:
         print(f"  !! gross发行月数不足({len(bym)}), 保留上一版")
         return
-    _write("gross_issuance", {"sample": False, "tsy": [
-        {"month": m, "bn": round(v, 0)} for m, v in sorted(bym.items())]})
+    ms = sorted(bym)
+    _write("gross_issuance", {"sample": False,
+        "tsy": [{"month": m, "bn": round(bym[m], 0)} for m in ms],
+        "coupon": [{"month": m, "bn": round(byc.get(m, 0), 0)} for m in ms]})
 
 
 def fetch_soma():
@@ -1150,10 +1189,10 @@ def fetch_coupon_deep():
 # run.py 按组取用: daily=日度源; intraday=拍卖日快线; weekly=慢频;
 # due组=事件账本判定当日到期的文件类抓取
 FETCHERS = {
-    "daily":    [fetch_debt, fetch_debt_limit, fetch_tga, fetch_dts_flows, fetch_upcoming,
+    "daily":    [ensure_seeds, fetch_debt, fetch_debt_limit, fetch_tga, fetch_dts_flows, fetch_upcoming,
                  fetch_approps_status],
-    "intraday": [fetch_auctions, fetch_upcoming, fetch_buybacks],
-    "weekly":   [fetch_mts,
+    "intraday": [ensure_seeds, fetch_auctions, fetch_upcoming, fetch_buybacks],
+    "weekly":   [ensure_seeds, fetch_mts,
                  fetch_avg_rates, fetch_interest,
                  fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
                  fetch_debt_limit_history, fetch_market, fetch_approps_status,
