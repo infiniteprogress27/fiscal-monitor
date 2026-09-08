@@ -53,12 +53,16 @@ def fetch_jgb_yields():
     TEN = {"1年": "1y", "2年": "2y", "5年": "5y", "10年": "10y", "20年": "20y", "30年": "30y", "40年": "40y"}
     byd = {}
     got = 0
+    diag = []
     for u in urls:
         try:
             r = requests.get(u, headers={"User-Agent": "Mozilla/5.0"}, timeout=90)
+            diag.append(f"URL {u.rsplit('/',1)[-1]} status={r.status_code} bytes={len(r.content)} ctype={r.headers.get('content-type')}")
             if r.status_code != 200: continue
             text = r.content.decode("shift_jis", "ignore")
             rows = list(csv.reader(io.StringIO(text)))
+            diag.append("首5行: " + " || ".join(",".join(x)[:120] for x in rows[:5]))
+            diag.append("末2行: " + " || ".join(",".join(x)[:120] for x in rows[-2:]))
             hdr_i = next((i for i, row in enumerate(rows) if any("10年" in c for c in row)), None)
             if hdr_i is None: continue
             hdr = [c.strip() for c in rows[hdr_i]]
@@ -75,7 +79,7 @@ def fetch_jgb_yields():
         except Exception as e:
             print(f"  jgb csv 失败 {u.rsplit('/',1)[-1]}: {e}")
     if len(byd) < 500:
-        (OUT / "_debug_jgb.txt").write_text(f"parsed={len(byd)} got={got}\n", encoding="utf-8")
+        (OUT / "_debug_jgb.txt").write_text(f"parsed={len(byd)} got={got}\n" + "\n".join(diag), encoding="utf-8")
         print(f"  !! JGB利率不足({len(byd)}), 保留上一版"); return
     ds = sorted(byd)
     _write("jgb_yields", {"sample": False, "dates": ds,
