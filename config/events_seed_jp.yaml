@@ -1,0 +1,13 @@
+events:
+  - {id: jp-req-2027, date: "2026-08-31", cat: 文件, owner: budget_cycle_jp, dtype: 法定, label: FY2027概算请求提出(各省→财务省), checklist: [总额待核, 要望枠]}
+  - {id: jp-tax-jul, date: "2026-09-02", cat: 文件, owner: tax_progress, dtype: 估, label: 7月税收收入额调公布, checklist: [4-7月累计vs去年同期]}
+  - {id: jp-boj-sep, date: "2026-09-18", cat: 文件, owner: boj_view, dtype: 估, label: 日银金融政策决定会合(9/17-18), checklist: [政策利率, 购入减额进度]}
+  - {id: jp-tax-aug, date: "2026-10-01", cat: 文件, owner: tax_progress, dtype: 估, label: 8月税收收入额调公布}
+  - {id: jp-supp-2026, date: "2026-11-20", cat: 立法, owner: supplementary, dtype: 估, label: FY2026补充预算阁议决定(估), checklist: [规模, 财源构成, 发行计划改定]}
+  - {id: jp-boj-oct, date: "2026-10-30", cat: 文件, owner: boj_view, dtype: 估, label: 日银金融政策决定会合(10/29-30)}
+  - {id: jp-plan-2027, date: "2026-12-24", cat: 文件, owner: issuance_plan, dtype: 估, label: FY2027政府预算案·国债发行计划阁议决定(估), checklist: [新规国债规模, 日历基准结构, 假定利率]}
+  - {id: jp-boj-dec, date: "2026-12-18", cat: 文件, owner: boj_view, dtype: 估, label: 日银金融政策决定会合(12/17-18)}
+  - {id: jp-taxreform, date: "2026-12-15", cat: 立法, owner: tax_legislation_jp, dtype: 估, label: FY2027税制改正大纲(与党决定, 估), checklist: [防卫财源所得税附加时点, 给付附带税额抵免]}
+  - {id: jp-diet-2027, date: "2027-01-23", cat: 立法, owner: budget_cycle_jp, dtype: 估, label: 通常国会召集·预算审议开始(估)}
+  - {id: jp-mlt-jan, date: "2027-01-20", cat: 文件, owner: mlt_projection, dtype: 估, label: 内阁府中长期测算1月版(估)}
+  - {id: jp-budget-pass, date: "2027-03-31", cat: 到期, owner: budget_cycle_jp, dtype: 法定, label: FY2027当初预算成立期限(逾期→暂定预算)}
