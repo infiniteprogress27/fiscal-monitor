@@ -32,7 +32,7 @@ layers:
         verified: "2026-09-08"
         qual:
           state: 特例国债连续第33年发行; 授权立法从逐年审议变为5年一次, 财政民主主义之争在野党提起
-          watch: 特例国债法成立确认; 60年规则脱钩讨论; 前倒债限额50兆円使用
+          watch: 特例国债法成立确认; 60年规则脱钩讨论; 前倒债限额¥50T使用
           mechanism: 财政法第4条禁止赤字国债, 特例法是例外授权; 授权期是日本唯一的'发行硬约束'节点, 对应美国债限的功能位置但无额度上限
         sources:
           - {name: 财务省国债发行计划, freq: 年+改定, kind: 人工锚}
@@ -41,10 +41,10 @@ layers:
         name: 支出约束 · 骨太目安与基本财政收支目标
         view: spending_rules
         status_line: text
-        text_status: "软约束体系: PB目标(骨太方针) · 社保/非社保目安 · 概算请求基准 · 防卫43兆円计划"
+        text_status: "软约束体系: PB目标(骨太方针) · 社保/非社保目安 · 概算请求基准 · 防卫¥43T计划"
         verified: "2026-09-08"
         qual:
-          state: 当初预算口径一般会计PB转正(FY2026), 但补充预算与预备费在框架外; 2026骨太的PB表述待核
+          state: 当初预算口径一般会计PB转正(FY2026); 骨太方针2026于7/21决定(PB目标表述待核); ¥140T请求若大幅保留将逆转PB
           watch: 6月骨太方针的目标年份措辞; 补充预算规模对PB实绩的侵蚀; 中长期测算7月版
         sources:
           - {name: 经济财政运营与改革基本方针(骨太方针), freq: 年(6月), kind: 人工锚}
@@ -68,22 +68,22 @@ layers:
         name: 预算周期与当初预算构成
         view: budget_cycle_jp
         status_line: text
-        text_status: "FY2027周期: 概算请求已提出(8/31) → 12月下旬政府案 → 3月末成立"
+        text_status: "FY2027概算请求¥140T创纪录(8/31, 无上限+投资枠) → 12月下旬政府案 → 3月末成立"
         verified: "2026-09-08"
         qual:
-          state: FY2026当初122.3兆円(国债费31.3兆, 社保39.1兆); FY2027概算请求总额待核
-          watch: 12月政府案的新规国债是否守住30兆以下; 国债费对预算假定利率的敏感度
+          state: "FY2026当初¥122.3T(4/7成立, 11年来首次拖过3月); FY2027概算请求约¥140T: 取消请求上限, 新设投资枠, '脱补充预算依赖'把原补充项目前移至当初"
+          watch: 12月政府案的新规国债是否守住¥30T以下; 国债费对预算假定利率的敏感度
         sources:
           - {name: 财务省预算政府案, freq: 年(12月), kind: 人工锚}
       - id: supplementary
         name: 补充预算与预备费 · 年度财政扩张
         view: supplementary
         status_line: text
-        text_status: "补充预算是扩张主通道: FY2025 17.7兆; FY2026秋季补充待观察"
+        text_status: "FY2025补充¥18.3T(12/16) · FY2026第1号¥3.1T(6/5, 中东应对预备费) · 高市宣示脱补充依赖"
         verified: "2026-09-08"
         qual:
-          state: 高市政权以补充预算承载经济对策; 预备费回落至1兆円常态
-          watch: 10-12月经济对策规模与财源(税收超收/剩余金/追加国债); 预备费使用
+          state: FY2026第1号补充¥3.1T全额赤字国债(中东局势预备费¥2.5T); 高市宣示'脱补充预算依赖', 扩张主通道向当初预算转移
+          watch: 秋季是否仍有第2号补充; 脱补充依赖是否兑现(当初预算¥140T请求的最终砍幅); 中东预备费使用
         sources:
           - {name: 财务省补充预算概要, freq: 不定期, kind: 人工锚}
 
@@ -97,7 +97,7 @@ layers:
         text_status: "月度税收累计 vs 当初预算与历年决算; 税收超收是年内核心动态"
         verified: "2026-09-08"
         qual:
-          state: FY2025决算见込约80兆超当初; FY2026当初83.7兆, 4-7月实绩进度与去年同期比较
+          state: FY2025决算见込约¥80T超当初; FY2026当初¥83.7T, 4-7月实绩进度与去年同期比较
           watch: 法人税5月/11月集中缴纳月的超收幅度; 消费税对名义增长的弹性; 决算剩余金去向
         sources:
           - {name: 财务省租税及印花收入收入额调, freq: 月(滞后约2月), kind: Excel·尽力解析}
@@ -115,7 +115,7 @@ layers:
         name: 地方财政 · 央地划分
         view: local_jp
         status_line: text
-        text_status: "地方财政计划FY2026 102.4兆; 央地转移=地方交付税+国库支出金"
+        text_status: "地方财政计划FY2026 ¥102.4T; 央地转移=地方交付税+国库支出金"
         verified: "2026-09-08"
         qual:
           state: 地方税与交付税双升; 央地转移占地方计划规模约37%
@@ -130,7 +130,7 @@ layers:
         name: 国债发行计划 · 日历基准结构
         view: issuance_plan
         status_line: text
-        text_status: "FY2026发行总额约175兆(新规29.6+再融资130+财投13); 日历基准172兆; 超长端缩减延续"
+        text_status: "FY2026发行总额约¥175T(新规29.6+再融资130+财投13); 日历基准¥172T; 超长端缩减延续"
         verified: "2026-09-08"
         qual:
           state: 对应美国QRA; 12月随预算公布, 补充预算时改定; 一级交易商会议为TBAC对应物
@@ -143,7 +143,7 @@ layers:
         name: 日银国债购入 · 供给侧对手方
         view: boj_view
         status_line: text
-        text_status: "减购路径: 2026Q2起每季-0.2兆, 2027Q1约2兆円/月; 6月中期评估维持(待核)"
+        text_status: "减购路径: 2026Q2起每季-¥0.2T, 2027Q1约¥2T/月; 6月中期评估维持(待核)"
         verified: "2026-09-08"
         qual:
           state: 日银持有约48%且减持中; 私人部门须吸收的净供给逐季上升
@@ -169,7 +169,7 @@ layers:
         name: 国债残高 · 长周期与/GDP
         view: debt_long_jp
         status_line: text
-        text_status: "普通国债残高约1,112兆円(FY2026末见込), 约174%名目GDP; 一般政府债务/GDP约232%"
+        text_status: "普通国债残高约1,¥112T(FY2026末见込), 约174%名目GDP; 一般政府债务/GDP约232%"
         verified: "2026-09-08"
         qual:
           state: 残高增速放缓但利率上行使国债费成为增长最快的支出项
@@ -190,10 +190,10 @@ layers:
         name: 利息成本 · 预算假定利率
         view: interest_jp
         status_line: text
-        text_status: "利息支付等FY2026 13.1兆; 加权利率1.2% vs 预算假定利率2.6%; 平均剩余期限约9.3年"
+        text_status: "利息支付等FY2026 ¥13.1T; 加权利率1.2% vs 预算假定利率2.6%; 平均剩余期限约9.3年"
         verified: "2026-09-08"
         qual:
-          state: 假定利率2.0→2.6%推动国债费+3.1兆; 存量置换缓慢使实际利息滞后于市场利率
+          state: 假定利率2.0→2.6%推动国债费+¥3.1T; 存量置换缓慢使实际利息滞后于市场利率
         sources:
           - {name: 财务省预算国债费·国债整理基金, freq: 年, kind: 人工锚}
       - id: yields_jp
@@ -210,7 +210,7 @@ layers:
 framework_laws:
   - {id: fl, name: 财政法(1947), note: 第4条禁止赤字国债(建设国债例外); 第5条禁止日银直接承购, status: 现行, last_change: —}
   - {id: sbl, name: 特例国债法, note: 赤字国债发行的例外授权; 2021年法覆盖FY2021-25, 2026年3月审议5年延长, status: 延长案审议(成立待核), last_change: 2026-03}
-  - {id: gx, name: GX推进法/儿童支援金法, note: GX经济转型债(20兆规模)与儿童特例债的发行依据, status: 现行, last_change: 2024}
+  - {id: gx, name: GX推进法/儿童支援金法, note: GX经济转型债(¥20T规模)与儿童特例债的发行依据, status: 现行, last_change: 2024}
   - {id: r60, name: 60年偿还规则, note: 国债整理基金对普通国债的定率(1.6%)转入与60年偿还, status: 现行(政治讨论中), last_change: —}
 
 reference:
