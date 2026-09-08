@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fiscal Monitor · US</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.5.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/hammerjs@2.0.8"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns@3.0.0/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-zoom@2.2.0"></script>
+<style>
+:root{--paper:#F4F6F3;--card:#FFF;--ink:#16222C;--muted:#5D6B76;--line:#E2E6E2;
+--green:#0E5A45;--red:#B03A2E;--blue:#2B5B8A;--amber:#8A6410;--amber-bg:#FBF3DC;
+--mono:'IBM Plex Mono',monospace;--sans:'IBM Plex Sans','Noto Sans SC',system-ui,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:13.5px;line-height:1.5}
+.wrap{max-width:1560px;margin:0 auto;padding:18px 28px 60px}
+a{color:var(--blue)}
+header{display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:8px;
+border-bottom:2px solid var(--ink);padding-bottom:10px}
+header h1{font-size:18px;font-weight:600}
+header h1 span{color:var(--blue)}
+.meta{font-family:var(--mono);font-size:11.5px;color:var(--muted)}
+.badge{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber);
+border-radius:3px;padding:1px 8px;font-size:11px;font-family:var(--mono);margin-left:8px}
+nav.top{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;padding:8px 0;border-bottom:1px solid var(--line);margin-bottom:12px}
+nav.top a{text-decoration:none;color:var(--muted);font-weight:500}
+nav.top a:hover{color:var(--ink)}
+
+.sec{font-size:11.5px;letter-spacing:1.5px;color:var(--muted);margin:14px 0 8px;font-weight:600}
+.clock{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px}
+.ev{flex:0 0 auto;background:var(--card);border:1px solid var(--line);border-left:3px solid var(--blue);
+border-radius:5px;padding:7px 12px;min-width:150px}
+.ev .d{font-family:var(--mono);font-size:18px;font-weight:600}
+.ev .lbl{font-size:12px;margin-top:2px}
+.ev .own{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:2px}
+.ev.today{background:var(--ink);color:#fff}
+.ev .d small{font-size:10px;font-weight:400;color:var(--muted)}
+.ev.cat-发行{border-left-color:var(--green)}.ev.cat-回购{border-left-color:var(--amber)}
+.ev.cat-文件{border-left-color:var(--blue)}.ev.cat-立法{border-left-color:var(--red)}
+.ev.cat-税期{border-left-color:var(--amber)}.ev.cat-政治{border-left-color:#6B4E8C}
+.ev.cat-人工{border-left-color:var(--muted)}
+.ev.today .own{color:#B9C2C9}
+.calbox{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:12px 14px}
+.calbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:8px}
+#calTitle{font-family:var(--mono);font-weight:600;font-size:14px;min-width:96px;text-align:center}
+.cbtn{background:none;border:1px solid var(--line);border-radius:4px;padding:2px 10px;
+cursor:pointer;font-size:13px;color:var(--ink);font-family:var(--sans)}
+.cbtn:hover{border-color:var(--muted)}
+.chips{display:flex;gap:6px;margin-left:auto;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:12px;padding:1px 10px;font-size:11.5px;
+cursor:pointer;user-select:none;color:var(--muted)}
+.chip.on{color:#fff}
+.chip.on[data-g="发行回购"]{background:var(--green);border-color:var(--green)}
+.chip.on[data-g="重要文件"]{background:var(--blue);border-color:var(--blue)}
+.chip.on[data-g="立法时间"]{background:var(--red);border-color:var(--red)}
+.chip.on[data-g="重要到期日"]{background:var(--amber);border-color:var(--amber)}
+.calhead{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:4px}
+.calhead div{font-family:var(--mono);font-size:10.5px;color:var(--muted);text-align:center}
+.calgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.day{border:1px solid #EEF0EC;border-radius:4px;min-height:84px;padding:3px 4px;
+cursor:pointer;background:var(--card);overflow:hidden}
+.day:hover{border-color:var(--muted)}
+.day.dim{background:#F8F9F7;color:#B9C2C9}
+.day.wknd{background:#F8F9F7}
+.day.today{outline:2px solid var(--ink);outline-offset:-2px}
+.day .dn{font-family:var(--mono);font-size:11px;color:var(--muted)}
+.day.today .dn{color:var(--ink);font-weight:600}
+.pill{font-size:10.5px;border-radius:3px;padding:0 4px;margin-top:2px;white-space:nowrap;
+overflow:hidden;text-overflow:ellipsis;border-left:3px solid transparent;background:transparent}
+.pill{color:var(--ink)}
+.pill.g-发行回购{border-left-color:var(--green);background:#E7F0EA}
+.pill.g-重要文件{border-left-color:var(--blue);background:#E4ECF4}
+.pill.g-立法时间{border-left-color:var(--red);background:#F5E6E4}
+.pill.g-重要到期日{border-left-color:var(--amber);background:#F6EEDC}
+.pill.done{opacity:.55}
+.pill.more{color:var(--blue);border-left-color:transparent;opacity:1}
+.caldetail{border-top:1px solid var(--line);margin-top:10px;padding-top:8px;font-size:12.5px}
+.caldetail .hint{color:var(--muted);font-size:12px}
+.calrules{border-top:1px dashed var(--line);margin-top:10px;padding-top:6px;
+font-family:var(--mono);font-size:10.5px;color:var(--muted);line-height:1.7}
+.dev{padding:6px 8px;border-left:3px solid var(--line);margin:6px 0;background:#FBFCFA;border-radius:0 4px 4px 0}
+.dev.g-发行回购{border-left-color:var(--green)}
+.dev.g-重要文件{border-left-color:var(--blue)}
+.dev.g-立法时间{border-left-color:var(--red)}
+.dev.g-重要到期日{border-left-color:var(--amber)}
+.dev .l1{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.dev .st{font-family:var(--mono);font-size:10.5px;border-radius:3px;padding:0 5px}
+.dev .st.occurred{background:#E3ECE2;color:var(--green)}
+.dev .st.scheduled{background:#E8EDF3;color:var(--blue)}
+.dev .st.revised{background:var(--amber-bg);color:var(--amber)}
+.dev .res{font-family:var(--mono);font-size:11.5px;color:var(--ink);margin-top:2px}
+.dev .chk{color:var(--muted);font-size:11.5px;margin-top:2px}
+
+
+.layer{margin-top:22px}
+.lhead{display:flex;align-items:baseline;gap:12px;border-bottom:1.5px solid var(--ink);padding-bottom:6px;margin-bottom:10px}
+.lhead h2{font-size:15px;font-weight:600}
+.ltime{font-size:11.5px;color:var(--muted)}
+.ltoggle{margin-left:auto;background:none;border:1px solid var(--line);border-radius:4px;
+padding:2px 10px;font-size:11.5px;color:var(--muted);cursor:pointer;font-family:var(--sans)}
+
+.obj{background:var(--card);border:1px solid var(--line);border-radius:6px;margin-bottom:12px;overflow:hidden}
+.srow{display:flex;align-items:baseline;gap:14px;padding:9px 16px;border-bottom:1px solid var(--line);
+background:#FBFCFA;flex-wrap:wrap}
+.oname{font-weight:600;font-size:13.5px;min-width:120px}
+.ometric{font-family:var(--mono);font-size:12.5px;color:var(--muted)}
+.ometric b{color:var(--ink);font-size:14px}
+.ostat{flex:0 0 auto;margin-left:auto;font-family:var(--mono);font-size:11.5px;color:var(--muted);text-align:right;white-space:nowrap;padding-left:16px}
+.osum{flex:1 1 auto;min-width:0;font-size:12px;color:var(--muted);line-height:1.5;text-align:left}
+.osum b{color:var(--muted);font-weight:600;font-size:12px}
+.srow .oname{flex:0 0 168px}
+.ptitle{font-size:13.5px;font-weight:600;margin:16px 0 6px;padding-left:8px;border-left:3px solid var(--ink)}
+.onode{margin-left:auto;font-size:12px;color:var(--muted)}
+.nn{font-family:var(--mono);font-weight:600;color:var(--red)}
+.work{padding:12px 16px}
+.work h4{font-size:11.5px;color:var(--muted);letter-spacing:.5px;margin:8px 0 6px}
+.chart{max-height:230px;margin:4px 0 10px}
+.chart.tall{height:470px;max-height:470px;width:100%}
+.chart.tall canvas{max-height:460px;width:100%!important}
+canvas{max-height:220px}
+.imp{font-family:var(--mono);font-size:11px;display:block;max-width:190px;
+white-space:normal;line-height:1.4;color:var(--ink)}
+.qcard{background:#F6F8F5;border-radius:5px;padding:9px 12px;margin-top:8px}
+.qrow{display:flex;gap:10px;font-size:12.5px;margin:3px 0}
+.qk{flex:0 0 68px;color:var(--blue);font-weight:500}
+.anchor-note{font-family:var(--mono);font-size:11.5px;color:var(--amber);margin:4px 0}
+details.dossier{border-top:1px solid var(--line)}
+details.dossier summary{cursor:pointer;padding:7px 16px;font-size:12px;color:var(--muted)}
+details.dossier > div, details.dossier > table{margin:4px 16px 12px}
+.mech{font-size:12.5px;color:var(--ink);background:#FBFCFA;border-left:3px solid var(--line);
+padding:8px 12px;margin-bottom:8px;white-space:pre-line}
+
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th{text-align:left;color:var(--muted);font-weight:500;padding:4px 8px;border-bottom:1.5px solid var(--line);
+font-size:11px;letter-spacing:.4px;white-space:nowrap}
+td{padding:4px 8px;border-bottom:1px solid #F0F2EF}
+td.t{font-family:var(--sans)}
+td.num,th.num{text-align:right;font-family:var(--mono);white-space:nowrap}
+tr:last-child td{border-bottom:none}
+.pos{color:var(--green)}.neg{color:var(--red)}
+.auto{font-family:var(--mono);font-size:11px;color:var(--blue)}
+.flow{margin:10px 0}
+.ftrack{display:flex;align-items:center;gap:12px;margin:7px 0;flex-wrap:wrap}
+.ftname{flex:0 0 88px;font-size:11.5px;color:var(--muted);font-weight:600;text-align:right}
+.fnodes{display:flex;align-items:center;flex-wrap:wrap;row-gap:6px}
+.fnode{font-size:11.5px;border:1.5px solid var(--line);border-radius:14px;padding:2px 11px;
+white-space:nowrap;color:var(--muted);background:var(--card)}
+.fnode b{font-weight:600;margin-right:2px}
+.fnote{font-size:10px;margin-left:5px;opacity:.85}
+.f-done{border-color:var(--green);color:var(--green);background:#EFF5F0}
+.f-active{border-color:var(--red);color:var(--red);font-weight:600;box-shadow:0 0 0 3px #B03A2E1F}
+.f-blocked{border-color:var(--amber);color:#7A5A0E;background:var(--amber-bg)}
+.f-late{border-color:var(--amber);color:var(--amber)}
+.f-risk{border-color:var(--red);color:var(--red);border-style:dashed}
+.f-branch{border-color:var(--blue);color:var(--blue)}
+.fcon{width:22px;height:1.5px;background:var(--line);margin:0 2px;flex:0 0 auto}
+.flegend{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap;opacity:.8}
+.blx-bar{display:flex;align-items:center;gap:10px;margin:6px 0;flex-wrap:wrap}
+.blx-hint{font-size:11.5px;color:var(--muted);margin-left:auto}
+.blx-tbl{overflow-x:auto}
+.blx-tbl table td{font-family:var(--mono);font-size:11.5px;text-align:right;white-space:nowrap}
+table.anx{table-layout:fixed;width:100%}
+table.anx .c-lbl{width:220px;text-align:left}
+table.anx .c-spk{width:84px;text-align:center}
+table.anx th.num,table.anx td.num{text-align:right}
+.blx-tbl table td.lbl{font-family:var(--sans);text-align:left}
+.blx-tbl tr.sel td{background:#EEF3F7}
+.blx-tbl tr.clickable{cursor:pointer}
+.blx-tbl tr.l0 td.lbl{font-weight:600}
+.blx-tbl input{width:56px;font-family:var(--mono);font-size:11px;border:1px solid var(--line);
+border-radius:3px;padding:1px 3px;text-align:right;background:#FFFDF5}
+.chip.on[data-g^="v"]{background:var(--ink);border-color:var(--ink)}
+.stub{color:var(--amber);font-family:var(--mono);font-size:11px;border:1px dashed var(--amber);
+border-radius:3px;padding:0 4px}
+.stg{font-family:var(--mono);font-size:11px;border-radius:3px;padding:1px 7px;white-space:nowrap}
+.s0{background:#F1F2F0;color:var(--muted)}.s1{background:#EDF1EA;color:var(--muted)}
+.s2{background:#E3ECE2;color:var(--green)}.s3{background:#D2E3D4;color:var(--green)}
+.s4{background:#C4DBF0;color:var(--blue)}.s5{background:var(--green);color:#fff}
+.crlink{font-size:12.5px;margin-top:8px}
+.mk{font-family:var(--mono);font-size:10.5px;border-radius:3px;padding:0 6px;margin-right:8px}
+.mk.hot{background:#F6E3DF;color:var(--red)}
+.mk.old{background:var(--amber-bg);color:var(--amber)}
+.flux{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:8px 14px}
+.fx{display:flex;gap:10px;align-items:baseline;font-size:12.5px;padding:3px 0;
+border-bottom:1px solid #F0F2EF;flex-wrap:wrap}
+.fx:last-child{border-bottom:none}
+.fxd{font-family:var(--mono);color:var(--muted);flex:0 0 44px}
+.fxc{font-family:var(--mono);font-size:10.5px;border-radius:3px;padding:0 5px;background:#F1F2F0;color:var(--muted)}
+.fxc.c-立法{color:var(--red)}.fxc.c-发行{color:var(--green)}.fxc.c-文件{color:var(--blue)}
+.fxr{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-left:auto}
+.grp{font-size:12px;font-weight:600;letter-spacing:.8px;color:var(--ink);
+margin:14px 0 8px;border-left:3px solid var(--ink);padding-left:8px}
+.lchips{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.lchip{font-size:11.5px;border:1px solid var(--line);border-radius:12px;padding:2px 10px;
+text-decoration:none;color:var(--blue)}
+.lchip:hover{border-color:var(--blue)}
+.src td{font-size:12px}
+footer{margin-top:26px;border-top:1px solid var(--line);padding-top:10px;
+font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:6px}
+@media (max-width:720px){.onode{margin-left:0;width:100%}}
+</style></head>
+<body><div class="wrap">
+<header><h1>FISCAL MONITOR <span>/ JP 日本</span> <a href="../" style="font-size:12px;margin-left:12px">→ US</a></h1><div class="meta">生成 2026-09-08 05:55 UTC · 对象注册表 2026-09-08</div></header>
+<nav class="top"><a href="#L0">L0 Timeline</a><a href="#L1">L1 规则与立法</a><a href="#L2">L2 预算</a><a href="#L3">L3 收支</a><a href="#L4">L4 发行</a><a href="#L5">L5 债务管理</a><a href="#ref">参考层</a></nav>
+
+<div class="layer" id="L0">
+<div class="lhead"><h2>L0 · Timeline</h2>
+<button class="ltoggle" data-layer="L0">收起工作视图</button></div>
+<section class="obj"><div class="srow"><span class="oname">财政日历</span>
+<span class="ostat">事件数据库 · 历史可回溯</span></div>
+<div class="work">
+<div class="calbox">
+  <div class="calbar">
+    <button class="cbtn" id="calPrev">‹</button>
+    <span id="calTitle"></span>
+    <button class="cbtn" id="calNext">›</button>
+    <button class="cbtn" id="calHome">今天</button>
+    <span class="chips" id="calChips"></span>
+  </div>
+  <div class="calhead" id="calHead"></div>
+  <div class="calgrid" id="calGrid"></div>
+  <div class="caldetail" id="calDetail"><span class="hint">点击日期查看事件明细、核对清单与结果</span></div>
+  <div class="calrules">事件账本 · 招标日程为财务省月度计划(估标待公告覆盖) · 生成 2026-09-08</div>
+</div>
+</div></section>
+<section class="obj"><div class="srow"><span class="oname">近7日变化流水</span>
+<span class="ostat">数据落地与监听命中</span></div>
+<div class="work"><div class="flux"><div class="fx"><span class="fxd">09-08</span><span class="fxc c-发行">发行</span><span>招标 5年 2.4兆円</span><span class="fxr">倍数 2.98 · 尾差 3.4bp</span></div><div class="fx"><span class="fxd">09-03</span><span class="fxc c-发行">发行</span><span>招标 30年 0.7兆円</span><span class="fxr"></span></div><div class="fx"><span class="fxd">09-03</span><span class="fxc c-发行">发行</span><span>招标 2年 2.6兆円</span><span class="fxr">倍数 3.88 · 尾差 3.1bp</span></div><div class="fx"><span class="fxd">09-02</span><span class="fxc c-文件">文件</span><span>7月税收收入额调公布</span><span class="fxr"></span></div><div class="fx"><span class="fxd">09-01</span><span class="fxc c-发行">发行</span><span>招标 10年 2.6兆円</span><span class="fxr"></span></div><div class="fx"><span class="fxd">09-01</span><span class="fxc c-发行">发行</span><span>招标 5年 2.4兆円</span><span class="fxr">倍数 2.87 · 尾差 0.8bp</span></div></div></div></section>
+</div>
+
+
+<div class="layer" id="L1">
+  <div class="lhead"><h2>L1 · 规则与立法</h2>
+  <button class="ltoggle" data-layer="L1">收起工作视图</button></div>
+  
+<section class="obj" id="obj-tax_legislation_jp">
+  <div class="srow">
+    <span class="oname">立法 · 税制与财源</span>
+    <span class="osum">消费税减税之议 · 防卫财源 · 育儿支援金 · 年末税制改正为年度决胜点</span>
+    <span class="ostat"><span class="nn">D-98</span> FY2027税制改正大纲(与党决定</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><table class=""><tr><th>议题</th><th>状态</th><th>赤字影响</th><th>节点</th></tr><tr><td class="t">消费税(食品零税率/减税之议)</td><td class="t">在野党主张; 高市政权未纳入FY2026</td><td class="t">食品零税率约-5兆円/年</td><td class="t">2026秋临时国会 / 年末税制改正</td></tr><tr><td class="t">所得税&#x27;壁&#x27;(基础控除等提高至160万円)</td><td class="t">FY2025税改成法, FY2026全年生效</td><td class="t">约-1.2兆円/年</td><td class="t">已生效</td></tr><tr><td class="t">防卫财源(防卫特别法人税·所得税附加·烟税)</td><td class="t">防卫特别法人税FY2026起(法人税额4%); 所得税附加时点待定</td><td class="t">+1兆円级/年</td><td class="t">年末税制改正</td></tr><tr><td class="t">儿童·育儿支援金</td><td class="t">FY2026起征收(医保附加), FY2028满额1兆円</td><td class="t">+0.6→1.0兆円</td><td class="t">已生效</td></tr><tr><td class="t">给付附带税额抵免</td><td class="t">国民民主/立宪主张, 政府检讨</td><td class="t">待定</td><td class="t">2026年末税改</td></tr><tr><td class="t">汽油税暂定税率废止</td><td class="t">2025年末决定废止</td><td class="t">-1.5兆円/年(国+地方)</td><td class="t">已生效</td></tr></table><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>高市政权&#x27;负责任的积极财政&#x27;; FY2026税制改正已生效项(所得税壁·汽油暂定税率废止), 消费税减税未纳入</span></div><div class="qrow"><span class="qk">Base case</span><span>2026年末税制改正聚焦防卫财源所得税附加时点与给付附带税额抵免设计; 消费税率不动</span></div><div class="qrow"><span class="qk">观察</span><span>在野党消费税减税法案; 税收超收规模(决算剩余金去向); 防卫特别法人税首年入库</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省税制改正大纲</td><td class="t">年(12月)</td><td class="t">人工锚</td></tr><tr><td class="t">国会审议(众参财政金融委)</td><td class="t">会期</td><td class="t">人工锚</td></tr></table></details>
+</section>
+<section class="obj" id="obj-deficit_authority">
+  <div class="srow">
+    <span class="oname">发行合法性约束 · 特例国债法</span>
+    <span class="osum">特例国债法5年延长(FY2026-30)审议中→授权到期FY2030是硬节点; 60年偿还规则维持</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><h4>发行合法性依据 · 按法律依据分类(FY2026当初, 兆円)</h4><table class=""><tr><th>依据</th><th class="num">金额</th></tr><tr><td class="t">建设国债(财政法第4条)</td><td class="num">6.7</td></tr><tr><td class="t">特例国债(特例国债法授权)</td><td class="num">22.9</td></tr><tr><td class="t">再融资国债(国债整理基金特别会计法)</td><td class="num">130.0</td></tr><tr><td class="t">财投债(财政融资资金法)</td><td class="num">13.0</td></tr><tr><td class="t">GX经济转型债 / 儿童特例债 / 复兴债</td><td class="num">1.8 / 0.3 / 0.1</td></tr></table><table class=""><tr><th>约束</th><th>现行状态</th><th>下一节点</th></tr><tr><td class="t">特例国债法(赤字国债授权)</td><td class="t">5年延长案(FY2026-2030)2026年3月国会审议 · 成立待核</td><td class="t">FY2030到期 → 2031年3月前需再立法</td></tr><tr><td class="t">60年偿还规则</td><td class="t">维持; 2025年起债务偿还费与规则脱钩之议题被政治化</td><td class="t">预算编成期(12月)</td></tr><tr><td class="t">提前发行债限额</td><td class="t">FY2026 50兆円</td><td class="t">每年度发行计划</td></tr></table><div class="anchor-note">日本无法定债务上限; 功能对应物是'发行必须有法律依据'——特例国债法的授权期限是最接近美国债限的硬节点</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>特例国债连续第33年发行; 授权立法从逐年审议变为5年一次, 财政民主主义之争在野党提起</span></div><div class="qrow"><span class="qk">观察</span><span>特例国债法成立确认; 60年规则脱钩讨论; 前倒债限额50兆円使用</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><div class="mech"><b>机制</b><br>财政法第4条禁止赤字国债, 特例法是例外授权; 授权期是日本唯一的&#x27;发行硬约束&#x27;节点, 对应美国债限的功能位置但无额度上限</div><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省国债发行计划</td><td class="t">年+改定</td><td class="t">人工锚</td></tr><tr><td class="t">国会法案数据库</td><td class="t">会期</td><td class="t">人工锚</td></tr></table></details>
+</section>
+<section class="obj" id="obj-spending_rules">
+  <div class="srow">
+    <span class="oname">支出约束 · 骨太目安与基本财政收支目标</span>
+    <span class="osum">软约束体系: PB目标(骨太方针) · 社保/非社保目安 · 概算请求基准 · 防卫43兆円计划</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><table class=""><tr><th>规则</th><th>内容</th><th>性质</th></tr><tr><td class="t">基本财政收支目标</td><td class="t">中央+地方PB黑字化: 2025-26年度目标 → 经济财政新生计划(2025-2030)期内稳定实现</td><td class="t">软目标(骨太方针)</td></tr><tr><td class="t">债务/GDP</td><td class="t">公债等残高/GDP安定地下降</td><td class="t">软目标</td></tr><tr><td class="t">社会保障自然增目安</td><td class="t">高龄化相当增(约+0.4-0.5兆円/年)以内</td><td class="t">预算编成目安</td></tr><tr><td class="t">非社保支出目安</td><td class="t">+0.33兆円/年 → 2025骨太起弹性化</td><td class="t">预算编成目安</td></tr><tr><td class="t">概算请求基准</td><td class="t">8月末各省概算请求上限; 要望枠4兆円</td><td class="t">行政规则</td></tr><tr><td class="t">防卫</td><td class="t">5年43兆円(FY2023-27), GDP2%达成FY2027</td><td class="t">计划约束</td></tr></table><div class="anchor-note">美国的支出约束是硬上限(caps/PAYGO/ICA), 日本是'目安'——如实标注软硬之别, 达成度按年度追踪</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>当初预算口径一般会计PB转正(FY2026), 但补充预算与预备费在框架外; 2026骨太的PB表述待核</span></div><div class="qrow"><span class="qk">观察</span><span>6月骨太方针的目标年份措辞; 补充预算规模对PB实绩的侵蚀; 中长期测算7月版</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">经济财政运营与改革基本方针(骨太方针)</td><td class="t">年(6月)</td><td class="t">人工锚</td></tr><tr><td class="t">IMF WEO(一般政府PB)</td><td class="t">年2次</td><td class="t">API</td></tr></table></details>
+</section>
+</div>
+<div class="layer" id="L2">
+  <div class="lhead"><h2>L2 · 预算</h2>
+  <button class="ltoggle" data-layer="L2">收起工作视图</button></div>
+  
+<section class="obj" id="obj-mlt_projection">
+  <div class="srow">
+    <span class="oname">中长期经济财政测算 · 版本矩阵</span>
+    <span class="osum">内阁府1月/7月两版; 成长实现与基线两场景的PB与债务/GDP路径</span>
+    <span class="ostat"><span class="nn">D-134</span> 内阁府中长期测算1月版(估)</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart" style="height:300px;max-height:300px"><canvas id="ch_mlt_pb" style="max-height:290px"></canvas></div><table class=""><tr><th>测算(现行版)</th><th class="num">2025</th><th class="num">2026</th><th class="num">2027</th><th class="num">2028</th><th class="num">2029</th><th class="num">2030</th><th class="num">2031</th><th class="num">2032</th><th class="num">2033</th><th class="num">2034</th><th class="num">2035</th></tr><tr><td class="t">PB/GDP 成长实现</td><td class="num">-0.3</td><td class="num">0.8</td><td class="num">1.1</td><td class="num">1.4</td><td class="num">1.8</td><td class="num">2.2</td><td class="num">2.5</td><td class="num">2.8</td><td class="num">3.0</td><td class="num">3.2</td><td class="num">3.4</td></tr><tr><td class="t">PB/GDP 基线</td><td class="num">-0.3</td><td class="num">0.3</td><td class="num">0.3</td><td class="num">0.2</td><td class="num">0.1</td><td class="num">0.0</td><td class="num">-0.2</td><td class="num">-0.4</td><td class="num">-0.6</td><td class="num">-0.8</td><td class="num">-1.0</td></tr><tr><td class="t">债务/GDP 成长实现</td><td class="num">204.0</td><td class="num">199.0</td><td class="num">195.0</td><td class="num">191.0</td><td class="num">186.0</td><td class="num">182.0</td><td class="num">178.0</td><td class="num">174.0</td><td class="num">170.0</td><td class="num">166.0</td><td class="num">162.0</td></tr><tr><td class="t">债务/GDP 基线</td><td class="num">204.0</td><td class="num">203.0</td><td class="num">202.0</td><td class="num">202.0</td><td class="num">202.0</td><td class="num">202.0</td><td class="num">203.0</td><td class="num">204.0</td><td class="num">205.0</td><td class="num">206.0</td><td class="num">207.0</td></tr></table><div class="anchor-note">内阁府中长期经济财政测算(1月/7月); pb=中央+地方基本财政收支/GDP%, debt=公债等残高/GDP%; 成长实现/基线两场景</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>对应美国CBO基线; 版本间移动看成长假设与税收弹性</span></div><div class="qrow"><span class="qk">观察</span><span>7月版对1月版的PB路径修正方向; 基线场景是否重回赤字</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">内阁府中长期经济财政测算</td><td class="t">年2次(1月/7月)</td><td class="t">人工锚·对话转换</td></tr></table></details>
+</section>
+<section class="obj" id="obj-budget_cycle_jp">
+  <div class="srow">
+    <span class="oname">预算周期与当初预算构成</span>
+    <span class="osum">FY2027周期: 概算请求已提出(8/31) → 12月下旬政府案 → 3月末成立</span>
+    <span class="ostat"><span class="nn">D-137</span> 通常国会召集·预算审议开始(估)</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><table class=""><tr><th>阶段</th><th>时点</th><th>FY2027周期状态</th></tr><tr><td class="t">概算请求</td><td class="t">8月末</td><td class="t">已提出(8/31) · 总额待核</td></tr><tr><td class="t">财务省审查</td><td class="t">9-12月</td><td class="t">进行中</td></tr><tr><td class="t">政府预算案阁议决定</td><td class="t">12月下旬</td><td class="t">待</td></tr><tr><td class="t">通常国会召集·众院审议</td><td class="t">1月下旬-3月初</td><td class="t">待</td></tr><tr><td class="t">参院审议·成立</td><td class="t">3月末</td><td class="t">待(逾期则暂定预算)</td></tr><tr><td class="t">补充预算(秋)</td><td class="t">10-12月</td><td class="t">FY2026补充: 待观察</td></tr></table><h4>FY2026 当初预算构成 (兆円) · 2025-12-26 政府案(3月成立)</h4><table class=""><tr><th>岁入</th><th class="num">兆円</th><th>岁出</th><th class="num">兆円</th></tr><tr><td class="t">税收(租税及印花收入)</td><td class="num">83.7</td><td class="t">一般歳出(政策支出)</td><td class="num">70.2</td></tr><tr><td class="t">所得税</td><td class="num">25.3</td><td class="t">社会保障</td><td class="num">39.1</td></tr><tr><td class="t">法人税</td><td class="num">20.7</td><td class="t">防卫</td><td class="num">9.0</td></tr><tr><td class="t">消费税</td><td class="num">26.7</td><td class="t">公共事业</td><td class="num">6.1</td></tr><tr><td class="t">其他税</td><td class="num">11.0</td><td class="t">文教科技</td><td class="num">6.0</td></tr><tr><td class="t">其他收入</td><td class="num">9.0</td><td class="t">其他政策支出</td><td class="num">10.0</td></tr><tr><td class="t">公债金(新规国债)</td><td class="num">29.6</td><td class="t">国债费</td><td class="num">31.3</td></tr><tr><td class="t">建设国债</td><td class="num">6.7</td><td class="t">债务偿还费</td><td class="num">18.2</td></tr><tr><td class="t">特例国债</td><td class="num">22.9</td><td class="t">利息支付等</td><td class="num">13.1</td></tr><tr><td class="t"></td><td class="num">—</td><td class="t">地方交付税等</td><td class="num">20.9</td></tr></table><div class="anchor-note">当初预算口径一般会计基本财政收支28年来首次转正(+0.2兆); 预算假定利率2.6%</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>FY2026当初122.3兆円(国债费31.3兆, 社保39.1兆); FY2027概算请求总额待核</span></div><div class="qrow"><span class="qk">观察</span><span>12月政府案的新规国债是否守住30兆以下; 国债费对预算假定利率的敏感度</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省预算政府案</td><td class="t">年(12月)</td><td class="t">人工锚</td></tr></table></details>
+</section>
+<section class="obj" id="obj-supplementary">
+  <div class="srow">
+    <span class="oname">补充预算与预备费 · 年度财政扩张</span>
+    <span class="osum">补充预算是扩张主通道: FY2025 17.7兆; FY2026秋季补充待观察</span>
+    <span class="ostat"><span class="nn">D-73</span> FY2026补充预算阁议决定(估)</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart" style="height:240px;max-height:240px"><canvas id="ch_supp" style="max-height:230px"></canvas></div><table class=""><tr><th>财年</th><th class="num">补充预算(兆円)</th><th class="num">次数</th><th class="num">预备费(兆円)</th></tr><tr><td class="t">FY2019</td><td class="num">4.5</td><td class="num">1</td><td class="num">—</td></tr><tr><td class="t">FY2020</td><td class="num">73.0</td><td class="num">3</td><td class="num">11.5</td></tr><tr><td class="t">FY2021</td><td class="num">36.0</td><td class="num">1</td><td class="num">5.0</td></tr><tr><td class="t">FY2022</td><td class="num">31.6</td><td class="num">2</td><td class="num">5.5</td></tr><tr><td class="t">FY2023</td><td class="num">13.2</td><td class="num">1</td><td class="num">5.0</td></tr><tr><td class="t">FY2024</td><td class="num">13.9</td><td class="num">1</td><td class="num">1.0</td></tr><tr><td class="t">FY2025</td><td class="num">17.7</td><td class="num">1</td><td class="num">1.0</td></tr><tr><td class="t">FY2026</td><td class="num">—</td><td class="num">0</td><td class="num">1.0</td></tr></table><div class="anchor-note">补充预算+预备费是日本财政扩张的主通道: 当初预算守PB形式, 补充预算承载经济对策; 税收超收→决算剩余金是其常规财源</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>高市政权以补充预算承载经济对策; 预备费回落至1兆円常态</span></div><div class="qrow"><span class="qk">观察</span><span>10-12月经济对策规模与财源(税收超收/剩余金/追加国债); 预备费使用</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省补充预算概要</td><td class="t">不定期</td><td class="t">人工锚</td></tr></table></details>
+</section>
+</div>
+<div class="layer" id="L3">
+  <div class="lhead"><h2>L3 · 收支</h2>
+  <button class="ltoggle" data-layer="L3">收起工作视图</button></div>
+  
+<section class="obj" id="obj-tax_progress">
+  <div class="srow">
+    <span class="oname">税收进度 · 当初/决算三口径</span>
+    <span class="osum">月度税收累计 vs 当初预算与历年决算; 税收超收是年内核心动态</span>
+    <span class="ostat"><span class="nn">D-23</span> 8月税收收入额调公布</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart" style="height:320px;max-height:320px"><canvas id="ch_tax_jp" style="max-height:310px"></canvas></div><h4>税种进度 · 2026-07实绩(9月上旬公布)</h4><table class=""><tr><th>税种</th><th class="num">FY2026当初</th><th class="num">FY2025决算见込</th><th class="num">当初/决算</th></tr><tr><td class="t">所得税</td><td class="num">25.3</td><td class="num">23.8</td><td class="num">106%</td></tr><tr><td class="t">法人税</td><td class="num">20.7</td><td class="num">19.5</td><td class="num">106%</td></tr><tr><td class="t">消费税</td><td class="num">26.7</td><td class="num">25.6</td><td class="num">104%</td></tr><tr><td class="t">其他</td><td class="num">11.0</td><td class="num">11.4</td><td class="num">96%</td></tr></table><div class="anchor-note">税收超收=决算-当初; 近年连续超收, 决算剩余金回流补充预算/防卫财源</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>FY2025决算见込约80兆超当初; FY2026当初83.7兆, 4-7月实绩进度与去年同期比较</span></div><div class="qrow"><span class="qk">观察</span><span>法人税5月/11月集中缴纳月的超收幅度; 消费税对名义增长的弹性; 决算剩余金去向</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省租税及印花收入收入额调</td><td class="t">月(滞后约2月)</td><td class="t">Excel·尽力解析</td></tr></table></details>
+</section>
+<section class="obj" id="obj-treasury_flows">
+  <div class="srow">
+    <span class="oname">国库对民间收支</span>
+    <span class="osum">月度国库受入/支付(DTS的日本对应物), 缴税月集中特征</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart" style="height:260px;max-height:260px"><canvas id="ch_tf_jp" style="max-height:250px"></canvas></div><div class="anchor-note">国库对民间收支月度(受入/支払), 财务省; 5月/11月/3月为法人税·所得税集中缴纳月</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>月度国库资金对民间收支; 5月/11月/3月为缴税集中月</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省财政资金对民间收支</td><td class="t">月</td><td class="t">Excel·尽力解析</td></tr></table></details>
+</section>
+<section class="obj" id="obj-local_jp">
+  <div class="srow">
+    <span class="oname">地方财政 · 央地划分</span>
+    <span class="osum">地方财政计划FY2026 102.4兆; 央地转移=地方交付税+国库支出金</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart" style="height:320px;max-height:320px"><canvas id="ch_local_jp" style="max-height:310px"></canvas></div><table class=""><tr><th>年度</th><th class="num">2016</th><th class="num">2017</th><th class="num">2018</th><th class="num">2019</th><th class="num">2020</th><th class="num">2021</th><th class="num">2022</th><th class="num">2023</th><th class="num">2024</th><th class="num">2025</th><th class="num">2026</th></tr><tr><td class="t">央地转移占计划规模 %</td><td class="num">35.2</td><td class="num">34.3</td><td class="num">34.1</td><td class="num">33.6</td><td class="num">34.2</td><td class="num">36.5</td><td class="num">36.8</td><td class="num">36.6</td><td class="num">36.6</td><td class="num">36.5</td><td class="num">37.5</td></tr></table><div class="anchor-note">地方财政计划(通常收支分): 地方税/地方交付税/国库支出金/地方债; 央地划分=交付税+国库支出金</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>地方税与交付税双升; 央地转移占地方计划规模约37%</span></div><div class="qrow"><span class="qk">观察</span><span>交付税总额对法人税上振的联动; 临时财政对策债零发行延续</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">总务省地方财政计划</td><td class="t">年(12月)</td><td class="t">人工锚</td></tr></table></details>
+</section>
+</div>
+<div class="layer" id="L4">
+  <div class="lhead"><h2>L4 · 发行</h2>
+  <button class="ltoggle" data-layer="L4">收起工作视图</button></div>
+  
+<section class="obj" id="obj-issuance_plan">
+  <div class="srow">
+    <span class="oname">国债发行计划 · 日历基准结构</span>
+    <span class="osum">FY2026发行总额约175兆(新规29.6+再融资130+财投13); 日历基准172兆; 超长端缩减延续</span>
+    <span class="ostat"><span class="nn">D-107</span> FY2027政府预算案·国债发行计划阁议决定(估)</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><h4>FY2026 国债发行计划 (兆円) · 2025-12-26</h4><table class=""><tr><th>项目</th><th class="num">FY2026当初</th><th class="num">FY2025当初</th><th class="num">增减</th></tr><tr><td class="t">新规财源债</td><td class="num">29.6</td><td class="num">28.6</td><td class="num">+1.0</td></tr><tr><td class="t">其中 建设国债</td><td class="num">6.7</td><td class="num">6.8</td><td class="num">-0.1</td></tr><tr><td class="t">其中 特例国债</td><td class="num">22.9</td><td class="num">21.9</td><td class="num">+1.0</td></tr><tr><td class="t">再融资国债</td><td class="num">130.0</td><td class="num">128.5</td><td class="num">+1.5</td></tr><tr><td class="t">财投债</td><td class="num">13.0</td><td class="num">12.0</td><td class="num">+1.0</td></tr><tr><td class="t">复兴债</td><td class="num">0.1</td><td class="num">0.1</td><td class="num">+0.0</td></tr><tr><td class="t">GX经济转型债</td><td class="num">1.8</td><td class="num">1.4</td><td class="num">+0.4</td></tr><tr><td class="t">儿童特例债</td><td class="num">0.3</td><td class="num">0.3</td><td class="num">+0.0</td></tr><tr><td class="t">发行总额</td><td class="num">175.0</td><td class="num">171.0</td><td class="num">+4.0</td></tr><tr><td class="t">其中 日历基准市中发行额</td><td class="num">172.3</td><td class="num">172.3</td><td class="num">+0.0</td></tr><tr><td class="t">提前发行债限额</td><td class="num">50.0</td><td class="num">50.0</td><td class="num">+0.0</td></tr></table><h4>日历基准市中发行额 · 单次规模 × 年度场次</h4><table class=""><tr><th>期限</th><th class="num">单次(兆円)</th><th class="num">场次/年</th><th class="num">年度合计</th></tr><tr><td class="t">2年</td><td class="num">2.60</td><td class="num">12</td><td class="num">31.2</td></tr><tr><td class="t">5年</td><td class="num">2.40</td><td class="num">12</td><td class="num">28.8</td></tr><tr><td class="t">10年</td><td class="num">2.60</td><td class="num">12</td><td class="num">31.2</td></tr><tr><td class="t">20年</td><td class="num">0.90</td><td class="num">12</td><td class="num">10.8</td></tr><tr><td class="t">30年</td><td class="num">0.70</td><td class="num">12</td><td class="num">8.4</td></tr><tr><td class="t">40年</td><td class="num">0.50</td><td class="num">6</td><td class="num">3.0</td></tr><tr><td class="t">物价联动10年</td><td class="num">0.25</td><td class="num">4</td><td class="num">1.0</td></tr><tr><td class="t">流动性供给</td><td class="num">0.60</td><td class="num">24</td><td class="num">14.4</td></tr><tr><td class="t">1年贴现</td><td class="num">3.50</td><td class="num">12</td><td class="num">42.0</td></tr><tr><td class="t">6个月贴现</td><td class="num">3.50</td><td class="num">12</td><td class="num">42.0</td></tr></table><div class="chart tall"><canvas id="ch_tenor_jp"></canvas></div><div class="anchor-note">日历基准=预先定额定期招标的4月-次年3月发行预定额面; 2025年6月改定后超长端缩减延续 · 再融资国债占发行总额约3/4: 净供给=新规财源债, 总供给看日历基准</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>对应美国QRA; 12月随预算公布, 补充预算时改定; 一级交易商会议为TBAC对应物</span></div><div class="qrow"><span class="qk">Base case</span><span>补充预算改定时增发以短中期为主; 超长端维持2025年6月缩减后水平</span></div><div class="qrow"><span class="qk">观察</span><span>补充预算的增发期限分布; 超长端(30/40年)需求; 一级交易商会议纪要</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省国债发行计划(PDF)</td><td class="t">年+改定</td><td class="t">人工锚</td></tr><tr><td class="t">国债市场特别参与者会议纪要</td><td class="t">季度</td><td class="t">人工锚</td></tr></table></details>
+</section>
+<section class="obj" id="obj-boj_view">
+  <div class="srow">
+    <span class="oname">日银国债购入 · 供给侧对手方</span>
+    <span class="osum">减购路径: 2026Q2起每季-0.2兆, 2027Q1约2兆円/月; 6月中期评估维持(待核)</span>
+    <span class="ostat"><span class="nn">D-10</span> 日银金融政策决定会合(9/17-18)</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart" style="height:240px;max-height:240px"><canvas id="ch_boj_jp" style="max-height:230px"></canvas></div><h4>日银总资产 (兆円, 月度)</h4><div class="chart" style="height:240px;max-height:240px"><canvas id="ch_bojassets" style="max-height:230px"></canvas></div><div class="anchor-note">月度长期国债购入预定额(兆円): 2026Q1前每季减0.4兆, 2026Q2起每季减0.2兆, 2027Q1约2兆; 持有份额约48%→减持中</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>日银持有约48%且减持中; 私人部门须吸收的净供给逐季上升</span></div><div class="qrow"><span class="qk">观察</span><span>2027年4月后的购入下限; 超长端急升时的机动购入; 持有份额季度变化</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">日银金融政策决定会合</td><td class="t">年8次</td><td class="t">人工锚</td></tr><tr><td class="t">FRED JPNASSETS(日银总资产)</td><td class="t">月</td><td class="t">API</td></tr></table></details>
+</section>
+<section class="obj" id="obj-auctions_jp">
+  <div class="srow">
+    <span class="oname">招标监控</span>
+    <span class="osum">近期招标结果(倍数·尾差)与未来日程</span>
+    <span class="ostat"><span class="nn">今日</span> 招标 5年 2.4兆円</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><h4>近期招标结果</h4><table class=""><tr><th>日期</th><th>期限</th><th class="num">规模(兆円)</th><th class="num">倍数</th><th class="num">尾差bp</th></tr><tr><td class="t">09-08</td><td class="t">5年</td><td class="num">2.40</td><td class="num">2.98</td><td class="num">3.4</td></tr><tr><td class="t">09-03</td><td class="t">2年</td><td class="num">2.60</td><td class="num">3.88</td><td class="num">3.1</td></tr><tr><td class="t">09-01</td><td class="t">5年</td><td class="num">2.40</td><td class="num">2.87</td><td class="num">0.8</td></tr><tr><td class="t">08-27</td><td class="t">2年</td><td class="num">2.60</td><td class="num">2.60</td><td class="num">3.1</td></tr><tr><td class="t">08-25</td><td class="t">5年</td><td class="num">2.40</td><td class="num">3.40</td><td class="num">0.5</td></tr><tr><td class="t">08-20</td><td class="t">2年</td><td class="num">2.60</td><td class="num">3.64</td><td class="num">0.6</td></tr><tr><td class="t">08-18</td><td class="t">5年</td><td class="num">2.40</td><td class="num">3.60</td><td class="num">0.6</td></tr><tr><td class="t">08-13</td><td class="t">2年</td><td class="num">2.60</td><td class="num">2.96</td><td class="num">3.2</td></tr><tr><td class="t">08-11</td><td class="t">5年</td><td class="num">2.40</td><td class="num">2.62</td><td class="num">0.8</td></tr><tr><td class="t">08-06</td><td class="t">2年</td><td class="num">2.60</td><td class="num">3.31</td><td class="num">2.1</td></tr><tr><td class="t">08-04</td><td class="t">5年</td><td class="num">2.40</td><td class="num">3.21</td><td class="num">0.9</td></tr><tr><td class="t">07-30</td><td class="t">2年</td><td class="num">2.60</td><td class="num">3.77</td><td class="num">0.5</td></tr></table><h4>未来招标日程</h4><table class=""><tr><th>日期</th><th>期限</th><th class="num">规模(兆円)</th></tr><tr><td class="t">09-10</td><td class="t">2年</td><td class="num">2.60</td></tr><tr><td class="t">09-15</td><td class="t">5年</td><td class="num">2.40</td></tr><tr><td class="t">09-17</td><td class="t">2年</td><td class="num">2.60</td></tr><tr><td class="t">09-22</td><td class="t">5年</td><td class="num">2.40</td></tr><tr><td class="t">09-24</td><td class="t">2年</td><td class="num">2.60</td></tr><tr><td class="t">09-29</td><td class="t">5年</td><td class="num">2.40</td></tr><tr><td class="t">10-01</td><td class="t">2年</td><td class="num">2.60</td></tr><tr><td class="t">10-06</td><td class="t">5年</td><td class="num">2.40</td></tr></table><div class="anchor-note">招标结果(財務省逐场页面, 尽力解析待接入); btc=倍数, tail=平均-最低价差</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>超长端招标倍数与尾差是2025年以来的市场压力表</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省招标结果</td><td class="t">逐场</td><td class="t">HTML·尽力解析</td></tr></table></details>
+</section>
+</div>
+<div class="layer" id="L5">
+  <div class="lhead"><h2>L5 · 债务管理</h2>
+  <button class="ltoggle" data-layer="L5">收起工作视图</button></div>
+  
+<section class="obj" id="obj-debt_long_jp">
+  <div class="srow">
+    <span class="oname">国债残高 · 长周期与/GDP</span>
+    <span class="osum">普通国债残高约1,112兆円(FY2026末见込), 约174%名目GDP; 一般政府债务/GDP约232%</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart tall"><canvas id="ch_debt_jp"></canvas></div><h4>一般政府总债务/GDP (IMF口径, %)</h4><div class="chart" style="height:220px;max-height:220px"><canvas id="ch_ggdebt_jp" style="max-height:210px"></canvas></div><div class="anchor-note">普通国债残高(年度末, 兆円) 与 名目GDP; 2026为年度末见込 · 普通国债口径(财务省)与一般政府口径(IMF/SNA)并列, 不跨口径相减</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>残高增速放缓但利率上行使国债费成为增长最快的支出项</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省国债及借入金现在高</td><td class="t">季</td><td class="t">人工锚</td></tr><tr><td class="t">IMF WEO / FRED</td><td class="t">年</td><td class="t">API</td></tr></table></details>
+</section>
+<section class="obj" id="obj-holders_jp">
+  <div class="srow">
+    <span class="oname">持有者结构</span>
+    <span class="osum">日银~48%减持中 · 银行~12% · 保险年金~20% · 海外~13%</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart tall"><canvas id="ch_holders_jp"></canvas></div><div class="anchor-note">资金循环统计(BOJ季度): 国债·国库短期证券合计持有者份额% · 日银份额从2013年11%升至2024年53%后进入减持段——供给侧对手方消失是日本国债市场结构变化的主线</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>日银退出后的边际买家是银行与海外; 生保受资本规制约束减持超长端</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">日银资金循环统计</td><td class="t">季</td><td class="t">CSV·尽力解析</td></tr></table></details>
+</section>
+<section class="obj" id="obj-interest_jp">
+  <div class="srow">
+    <span class="oname">利息成本 · 预算假定利率</span>
+    <span class="osum">利息支付等FY2026 13.1兆; 加权利率1.2% vs 预算假定利率2.6%; 平均剩余期限约9.3年</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="chart" style="height:280px;max-height:280px"><canvas id="ch_int_rate_jp" style="max-height:270px"></canvas></div><h4>利息支付等 (一般会计国债费内, 兆円)</h4><div class="chart" style="height:240px;max-height:240px"><canvas id="ch_int_jp" style="max-height:230px"></canvas></div><h4>平均剩余期限 (年)</h4><div class="chart" style="height:220px;max-height:220px"><canvas id="ch_wam_jp" style="max-height:210px"></canvas></div><div class="anchor-note">利息支付等(一般会计国债费, 兆円)/存量加权利率%/预算假定利率%/平均剩余期限(年) · 预算假定利率是日本特有的预算变量: 其与实际10年利率的裂口决定国债费的下年调整方向</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>假定利率2.0→2.6%推动国债费+3.1兆; 存量置换缓慢使实际利息滞后于市场利率</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省预算国债费·国债整理基金</td><td class="t">年</td><td class="t">人工锚</td></tr></table></details>
+</section>
+<section class="obj" id="obj-yields_jp">
+  <div class="srow">
+    <span class="oname">国债利率曲线</span>
+    <span class="osum">财务省日频利率(1974年起), 2/5/10/20/30/40年</span>
+    <span class="ostat">—</span>
+  </div>
+  <div style="display:none">
+  </div>
+  <div class="work"><div class="anchor-note">利率数据待首跑</div><div class="qcard"><div class="qrow"><span class="qk">状态</span><span>全自动日频源; 超长端利率是财政可持续性的市场定价</span></div></div></div>
+  <details class="dossier"><summary>档案 · 机制与来源</summary><table class="src"><tr><th>来源</th><th>频率</th><th>接入</th></tr><tr><td class="t">财务省国债金利情报CSV</td><td class="t">日</td><td class="t">API</td></tr></table></details>
+</section>
+</div>
+
+<div class="layer" id="ref">
+<div class="lhead"><h2>R · 参考层</h2></div>
+<section class="obj"><div class="srow"><span class="oname">管线注记</span></div>
+<div class="work"><ul style="padding-left:18px;font-size:12.5px"><li>自动: 日频利率(财务省CSV) · 名目GDP/债务·PB(IMF WEO+FRED) · 日银总资产(FRED)</li><li>尽力解析(首跑校验): 招标结果HTML · 税收月度Excel · 国库对民间收支Excel · 资金循环CSV</li><li>人工锚(对话更新): 发行计划 · 当初/补充预算 · 中长期测算 · 骨太目安 · 假定利率 · 平均剩余期限</li></ul>
+<div class="qcard" style="margin-top:10px">完整数据源清单与勾稽关系另见 us_fiscal_data_sources.md (仓库内)。</div></div></section>
+</div>
+
+<footer><span>数据: FiscalData / QRA文件包 / congress.gov / OMB / CBO · 定性: objects_us.yaml + events_seed.yaml · 账本: events.jsonl</span>
+<span>对象制 · 单页 · 层内折叠</span></footer>
+</div>
+<script>
+const CHARTS = [{"id": "ch_mlt_pb", "kind": "line", "labels": ["2025", "2026", "2027", "2028", "2029", "2030", "2031", "2032", "2033", "2034", "2035"], "datasets": [{"label": "PB/GDP 成长实现(2026年7月版)", "data": [-0.3, 0.8, 1.1, 1.4, 1.8, 2.2, 2.5, 2.8, 3.0, 3.2, 3.4], "color": "green", "w": 2}, {"label": "PB/GDP 基线(2026年7月版)", "data": [-0.3, 0.3, 0.3, 0.2, 0.1, 0.0, -0.2, -0.4, -0.6, -0.8, -1.0], "color": "red", "w": 2}, {"label": "成长实现(2026年1月版)", "data": [-0.4, 0.5, 0.9, 1.2, 1.6, 2.0, 2.3, 2.6, 2.8, 3.0, 3.2], "color": "green", "alpha": "66", "dash": [5, 4], "w": 1.2}, {"label": "基线(2026年1月版)", "data": [-0.4, 0.1, 0.2, 0.1, 0.0, -0.1, -0.3, -0.5, -0.7, -0.9, -1.1], "color": "red", "alpha": "66", "dash": [5, 4], "w": 1.2}], "y_unit": "%", "opts": {"h": 300}}, {"id": "ch_supp", "kind": "pnbar", "labels": ["FY2019", "FY2020", "FY2021", "FY2022", "FY2023", "FY2024", "FY2025", "FY2026"], "datasets": [{"label": "补充预算规模(兆円)", "data": [4.5, 73.0, 36.0, 31.6, 13.2, 13.9, 17.7, null], "color": "red"}], "y_unit": "", "opts": {"h": 240}}, {"id": "ch_tax_jp", "kind": "line", "labels": ["4月", "5月", "6月", "7月", "8月", "9月", "10月", "11月", "12月", "1月", "2月", "3月"], "datasets": [{"label": "FY2023(决算)", "data": [2.2, 7.2, 12.3, 17.3, 21.6, 26.0, 31.0, 36.0, 41.8, 49.0, 56.2, 72.1], "color": "muted", "w": 1.4, "dash": null}, {"label": "FY2024(决算)", "data": [2.3, 7.5, 12.8, 18.0, 22.6, 27.1, 32.3, 37.6, 43.6, 51.1, 58.7, 75.2], "color": "blue", "w": 1.4, "dash": null}, {"label": "FY2025(决算见込)", "data": [2.4, 8.0, 13.7, 19.3, 24.1, 28.9, 34.5, 40.1, 46.6, 54.6, 62.6, 80.3], "color": "green", "w": 1.4, "dash": null}, {"label": "FY2026(当初预算)", "data": [2.5, 8.4, 14.2, 20.1, 25.1, 30.1, 36.0, 41.9, 48.5, 56.9, 65.3, 83.7], "color": "ink", "w": 1.4, "dash": [5, 4]}, {"label": "FY2026(实绩)", "data": [2.5, 8.4, 14.2, 20.1, null, null, null, null, null, null, null, null], "color": "red", "w": 2.4, "dash": null}], "y_unit": "", "opts": {"h": 320}}, {"id": "ch_tf_jp", "kind": "line", "labels": ["23-09", "23-10", "23-11", "23-12", "24-01", "24-02", "24-03", "24-04", "24-05", "24-06", "24-07", "24-08", "24-09", "24-10", "24-11", "24-12", "25-01", "25-02", "25-03", "25-04", "25-05", "25-06", "25-07", "25-08", "25-09", "25-10", "25-11", "25-12", "26-01", "26-02", "26-03", "26-04", "26-05", "26-06", "26-07", "26-08"], "datasets": [{"label": "受入(收)", "data": [11.0, 11.0, 20.9, 11.0, 11.0, 11.0, 20.9, 11.0, 21.0, 11.1, 11.1, 11.1, 11.2, 11.2, 21.4, 11.3, 11.3, 11.4, 21.6, 11.4, 21.8, 11.5, 11.5, 11.6, 11.6, 11.6, 22.2, 11.7, 11.8, 11.8, 22.5, 11.9, 22.6, 11.9, 12.0, 12.0], "color": "green", "w": 1.6}, {"label": "支付(支)", "data": [11.4, 11.8, 10.9, 10.6, 12.3, 11.2, 12.5, 12.3, 11.3, 11.5, 11.7, 12.0, 11.9, 11.9, 12.1, 12.7, 11.9, 11.8, 12.4, 11.5, 11.6, 13.0, 12.2, 12.2, 11.2, 12.1, 12.4, 11.3, 12.6, 12.6, 11.5, 12.7, 12.4, 12.9, 12.3, 13.0], "color": "red", "w": 1.6}], "y_unit": "", "opts": {"h": 260}}, {"id": "ch_local_jp", "kind": "line", "labels": ["2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"], "datasets": [{"label": "地方财政计划规模", "data": [85.8, 86.6, 86.9, 89.6, 90.7, 89.8, 90.6, 92.0, 93.6, 96.5, 102.4], "color": "ink", "w": 2}, {"label": "地方税", "data": [39.4, 39.0, 39.5, 40.2, 40.8, 38.3, 41.2, 42.9, 44.1, 46.2, 48.0], "color": "green", "w": 1.6}, {"label": "地方交付税(央→地)", "data": [16.7, 16.3, 16.0, 16.2, 16.6, 17.4, 18.1, 18.4, 18.7, 19.0, 20.9], "color": "blue", "w": 1.6}, {"label": "国库支出金(央→地)", "data": [13.5, 13.4, 13.6, 13.9, 14.4, 15.4, 15.2, 15.3, 15.6, 16.2, 17.5], "color": "blue", "alpha": "77", "dash": [5, 4], "w": 1.4}, {"label": "地方债", "data": [9.2, 9.2, 9.2, 9.4, 9.3, 11.2, 7.6, 6.8, 6.3, 6.5, 6.4], "color": "red", "w": 1.2}], "y_unit": "", "opts": {"h": 320}}, {"id": "ch_tenor_jp", "kind": "line", "labels": ["10-04", "10-05", "10-06", "10-07", "10-08", "10-09", "10-10", "10-11", "10-12", "11-01", "11-02", "11-03", "11-04", "11-05", "11-06", "11-07", "11-08", "11-09", "11-10", "11-11", "11-12", "12-01", "12-02", "12-03", "12-04", "12-05", "12-06", "12-07", "12-08", "12-09", "12-10", "12-11", "12-12", "13-01", "13-02", "13-03", "13-04", "13-05", "13-06", "13-07", "13-08", "13-09", "13-10", "13-11", "13-12", "14-01", "14-02", "14-03", "14-04", "14-05", "14-06", "14-07", "14-08", "14-09", "14-10", "14-11", "14-12", "15-01", "15-02", "15-03", "15-04", "15-05", "15-06", "15-07", "15-08", "15-09", "15-10", "15-11", "15-12", "16-01", "16-02", "16-03", "16-04", "16-05", "16-06", "16-07", "16-08", "16-09", "16-10", "16-11", "16-12", "17-01", "17-02", "17-03", "17-04", "17-05", "17-06", "17-07", "17-08", "17-09", "17-10", "17-11", "17-12", "18-01", "18-02", "18-03", "18-04", "18-05", "18-06", "18-07", "18-08", "18-09", "18-10", "18-11", "18-12", "19-01", "19-02", "19-03", "19-04", "19-05", "19-06", "19-07", "19-08", "19-09", "19-10", "19-11", "19-12", "20-01", "20-02", "20-03", "20-04", "20-05", "20-06", "20-07", "20-08", "20-09", "20-10", "20-11", "20-12", "21-01", "21-02", "21-03", "21-04", "21-05", "21-06", "21-07", "21-08", "21-09", "21-10", "21-11", "21-12", "22-01", "22-02", "22-03", "22-04", "22-05", "22-06", "22-07", "22-08", "22-09", "22-10", "22-11", "22-12", "23-01", "23-02", "23-03", "23-04", "23-05", "23-06", "23-07", "23-08", "23-09", "23-10", "23-11", "23-12", "24-01", "24-02", "24-03", "24-04", "24-05", "24-06", "24-07", "24-08", "24-09", "24-10", "24-11", "24-12", "25-01", "25-02", "25-03", "25-04", "25-05", "25-06", "25-07", "25-08", "25-09", "25-10", "25-11", "25-12", "26-01", "26-02", "26-03"], "datasets": [{"label": "2y", "data": [2.6, 2.6, 2.61, 2.61, 2.61, 2.61, 2.62, 2.62, 2.62, 2.62, 2.63, 2.63, 2.63, 2.64, 2.64, 2.64, 2.64, 2.65, 2.65, 2.65, 2.66, 2.66, 2.66, 2.66, 2.67, 2.67, 2.67, 2.68, 2.68, 2.68, 2.68, 2.69, 2.69, 2.69, 2.69, 2.7, 2.7, 2.69, 2.67, 2.66, 2.64, 2.63, 2.62, 2.6, 2.59, 2.58, 2.56, 2.55, 2.53, 2.52, 2.51, 2.49, 2.48, 2.46, 2.45, 2.44, 2.42, 2.41, 2.39, 2.38, 2.37, 2.35, 2.34, 2.33, 2.31, 2.3, 2.28, 2.27, 2.26, 2.24, 2.23, 2.21, 2.2, 2.21, 2.21, 2.22, 2.23, 2.23, 2.24, 2.24, 2.25, 2.26, 2.26, 2.27, 2.28, 2.28, 2.29, 2.29, 2.3, 2.31, 2.31, 2.32, 2.33, 2.33, 2.34, 2.34, 2.35, 2.36, 2.36, 2.37, 2.38, 2.38, 2.39, 2.39, 2.4, 2.41, 2.41, 2.42, 2.42, 2.43, 2.44, 2.44, 2.45, 2.46, 2.46, 2.47, 2.48, 2.48, 2.49, 2.49, 2.5, 2.67, 2.83, 3.0, 3.0, 2.99, 2.99, 2.98, 2.98, 2.97, 2.97, 2.96, 2.96, 2.95, 2.95, 2.94, 2.94, 2.93, 2.93, 2.92, 2.92, 2.91, 2.91, 2.9, 2.9, 2.89, 2.88, 2.86, 2.85, 2.84, 2.83, 2.81, 2.8, 2.79, 2.77, 2.76, 2.75, 2.74, 2.73, 2.71, 2.7, 2.69, 2.67, 2.66, 2.65, 2.64, 2.62, 2.61, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6], "color": "ink", "w": 1.5}, {"label": "5y", "data": [2.4, 2.41, 2.42, 2.42, 2.43, 2.44, 2.45, 2.46, 2.47, 2.48, 2.48, 2.49, 2.5, 2.51, 2.52, 2.52, 2.53, 2.54, 2.55, 2.56, 2.57, 2.58, 2.58, 2.59, 2.6, 2.61, 2.62, 2.62, 2.63, 2.64, 2.65, 2.66, 2.67, 2.68, 2.68, 2.69, 2.7, 2.69, 2.68, 2.68, 2.67, 2.66, 2.65, 2.64, 2.63, 2.62, 2.62, 2.61, 2.6, 2.59, 2.58, 2.58, 2.57, 2.56, 2.55, 2.54, 2.53, 2.52, 2.52, 2.51, 2.5, 2.49, 2.48, 2.48, 2.47, 2.46, 2.45, 2.44, 2.43, 2.42, 2.42, 2.41, 2.4, 2.4, 2.4, 2.41, 2.41, 2.41, 2.41, 2.41, 2.42, 2.42, 2.42, 2.42, 2.42, 2.43, 2.43, 2.43, 2.43, 2.43, 2.44, 2.44, 2.44, 2.44, 2.44, 2.45, 2.45, 2.45, 2.45, 2.45, 2.45, 2.46, 2.46, 2.46, 2.46, 2.46, 2.47, 2.47, 2.47, 2.47, 2.47, 2.48, 2.48, 2.48, 2.48, 2.48, 2.49, 2.49, 2.49, 2.49, 2.49, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.5, 2.49, 2.49, 2.48, 2.48, 2.48, 2.47, 2.47, 2.46, 2.46, 2.45, 2.45, 2.45, 2.44, 2.44, 2.43, 2.43, 2.42, 2.42, 2.42, 2.41, 2.41, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4], "color": "blue", "w": 1.5}, {"label": "10y", "data": [2.2, 2.21, 2.21, 2.22, 2.22, 2.23, 2.23, 2.24, 2.24, 2.25, 2.26, 2.26, 2.27, 2.27, 2.28, 2.28, 2.29, 2.29, 2.3, 2.31, 2.31, 2.32, 2.32, 2.33, 2.33, 2.34, 2.34, 2.35, 2.36, 2.36, 2.37, 2.37, 2.38, 2.38, 2.39, 2.39, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.4, 2.41, 2.41, 2.42, 2.42, 2.42, 2.43, 2.43, 2.44, 2.44, 2.44, 2.45, 2.45, 2.45, 2.46, 2.46, 2.47, 2.47, 2.47, 2.48, 2.48, 2.49, 2.49, 2.49, 2.5, 2.5, 2.51, 2.51, 2.51, 2.52, 2.52, 2.53, 2.53, 2.53, 2.54, 2.54, 2.55, 2.55, 2.55, 2.56, 2.56, 2.56, 2.57, 2.57, 2.58, 2.58, 2.58, 2.59, 2.59, 2.6, 2.6, 2.6, 2.61, 2.61, 2.62, 2.62, 2.63, 2.63, 2.64, 2.64, 2.65, 2.65, 2.66, 2.66, 2.67, 2.67, 2.68, 2.68, 2.69, 2.69, 2.7, 2.7, 2.7, 2.69, 2.69, 2.68, 2.68, 2.68, 2.67, 2.67, 2.66, 2.66, 2.65, 2.65, 2.65, 2.64, 2.64, 2.63, 2.63, 2.62, 2.62, 2.62, 2.61, 2.61, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6, 2.6], "color": "green", "w": 1.5}, {"label": "20y", "data": [1.1, 1.1, 1.11, 1.11, 1.11, 1.11, 1.12, 1.12, 1.12, 1.12, 1.13, 1.13, 1.13, 1.14, 1.14, 1.14, 1.14, 1.15, 1.15, 1.15, 1.16, 1.16, 1.16, 1.16, 1.17, 1.17, 1.17, 1.18, 1.18, 1.18, 1.18, 1.19, 1.19, 1.19, 1.19, 1.2, 1.2, 1.2, 1.19, 1.19, 1.19, 1.19, 1.18, 1.18, 1.18, 1.18, 1.17, 1.17, 1.17, 1.16, 1.16, 1.16, 1.16, 1.15, 1.15, 1.15, 1.14, 1.14, 1.14, 1.14, 1.13, 1.13, 1.13, 1.12, 1.12, 1.12, 1.12, 1.11, 1.11, 1.11, 1.11, 1.1, 1.1, 1.1, 1.1, 1.11, 1.11, 1.11, 1.11, 1.11, 1.12, 1.12, 1.12, 1.12, 1.12, 1.13, 1.13, 1.13, 1.13, 1.13, 1.14, 1.14, 1.14, 1.14, 1.14, 1.15, 1.15, 1.15, 1.15, 1.15, 1.15, 1.16, 1.16, 1.16, 1.16, 1.16, 1.17, 1.17, 1.17, 1.17, 1.17, 1.18, 1.18, 1.18, 1.18, 1.18, 1.19, 1.19, 1.19, 1.19, 1.19, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.2, 1.19, 1.18, 1.18, 1.17, 1.16, 1.15, 1.14, 1.13, 1.12, 1.12, 1.11, 1.1, 1.09, 1.08, 1.07, 1.07, 1.06, 1.05, 1.04, 1.03, 1.02, 1.02, 1.01, 1.0, 0.99, 0.99, 0.98, 0.97, 0.97, 0.96, 0.95, 0.95, 0.94, 0.93, 0.93, 0.92, 0.91, 0.91, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9], "color": "amber", "w": 1.5}, {"label": "30y", "data": [0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.6, 0.61, 0.61, 0.62, 0.62, 0.63, 0.63, 0.64, 0.64, 0.65, 0.66, 0.66, 0.67, 0.67, 0.68, 0.68, 0.69, 0.69, 0.7, 0.71, 0.71, 0.72, 0.72, 0.73, 0.73, 0.74, 0.74, 0.75, 0.76, 0.76, 0.77, 0.77, 0.78, 0.78, 0.79, 0.79, 0.8, 0.8, 0.8, 0.81, 0.81, 0.81, 0.81, 0.81, 0.82, 0.82, 0.82, 0.82, 0.82, 0.83, 0.83, 0.83, 0.83, 0.83, 0.84, 0.84, 0.84, 0.84, 0.84, 0.85, 0.85, 0.85, 0.85, 0.85, 0.85, 0.86, 0.86, 0.86, 0.86, 0.86, 0.87, 0.87, 0.87, 0.87, 0.87, 0.88, 0.88, 0.88, 0.88, 0.88, 0.89, 0.89, 0.89, 0.89, 0.89, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.9, 0.89, 0.87, 0.86, 0.85, 0.83, 0.82, 0.81, 0.79, 0.78, 0.77, 0.75, 0.74, 0.73, 0.71, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7], "color": "red", "w": 1.5}, {"label": "40y", "data": [0.3, 0.3, 0.31, 0.31, 0.31, 0.31, 0.32, 0.32, 0.32, 0.33, 0.33, 0.33, 0.33, 0.34, 0.34, 0.34, 0.34, 0.35, 0.35, 0.35, 0.36, 0.36, 0.36, 0.36, 0.37, 0.37, 0.37, 0.38, 0.38, 0.38, 0.38, 0.39, 0.39, 0.39, 0.39, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.4, 0.41, 0.41, 0.42, 0.42, 0.42, 0.43, 0.43, 0.44, 0.44, 0.44, 0.45, 0.45, 0.45, 0.46, 0.46, 0.47, 0.47, 0.47, 0.48, 0.48, 0.49, 0.49, 0.49, 0.5, 0.5, 0.51, 0.51, 0.51, 0.52, 0.52, 0.53, 0.53, 0.53, 0.54, 0.54, 0.55, 0.55, 0.55, 0.56, 0.56, 0.56, 0.57, 0.57, 0.58, 0.58, 0.58, 0.59, 0.59, 0.6, 0.6, 0.6, 0.61, 0.61, 0.62, 0.62, 0.63, 0.63, 0.64, 0.64, 0.65, 0.65, 0.66, 0.66, 0.67, 0.67, 0.68, 0.68, 0.69, 0.69, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.7, 0.69, 0.67, 0.66, 0.65, 0.63, 0.62, 0.61, 0.59, 0.58, 0.57, 0.55, 0.54, 0.53, 0.51, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5], "color": "#6B4E8C", "w": 1.5}], "y_unit": "", "opts": {"tall": true, "zoom": true}}, {"id": "ch_boj_jp", "kind": "line", "labels": ["2024Q3", "2024Q4", "2025Q1", "2025Q2", "2025Q3", "2025Q4", "2026Q1", "2026Q2", "2026Q3", "2026Q4", "2027Q1"], "datasets": [{"label": "月度长期国债购入预定额(兆円)", "data": [5.7, 5.3, 4.9, 4.5, 4.1, 3.7, 3.3, 2.9, 2.7, 2.5, 2.1], "color": "blue", "w": 2.2}], "y_unit": "", "opts": {"h": 240}}, {"id": "ch_bojassets", "kind": "line", "labels": ["16-09", "16-10", "16-11", "16-12", "17-01", "17-02", "17-03", "17-04", "17-05", "17-06", "17-07", "17-08", "17-09", "17-10", "17-11", "17-12", "18-01", "18-02", "18-03", "18-04", "18-05", "18-06", "18-07", "18-08", "18-09", "18-10", "18-11", "18-12", "19-01", "19-02", "19-03", "19-04", "19-05", "19-06", "19-07", "19-08", "19-09", "19-10", "19-11", "19-12", "20-01", "20-02", "20-03", "20-04", "20-05", "20-06", "20-07", "20-08", "20-09", "20-10", "20-11", "20-12", "21-01", "21-02", "21-03", "21-04", "21-05", "21-06", "21-07", "21-08", "21-09", "21-10", "21-11", "21-12", "22-01", "22-02", "22-03", "22-04", "22-05", "22-06", "22-07", "22-08", "22-09", "22-10", "22-11", "22-12", "23-01", "23-02", "23-03", "23-04", "23-05", "23-06", "23-07", "23-08", "23-09", "23-10", "23-11", "23-12", "24-01", "24-02", "24-03", "24-04", "24-05", "24-06", "24-07", "24-08", "24-09", "24-10", "24-11", "24-12", "25-01", "25-02", "25-03", "25-04", "25-05", "25-06", "25-07", "25-08", "25-09", "25-10", "25-11", "25-12", "26-01", "26-02", "26-03", "26-04", "26-05", "26-06", "26-07", "26-08"], "datasets": [{"label": "BOJ总资产", "data": [456.8, 463.4, 471.1, 476.5, 482.0, 487.9, 490.1, 497.7, 500.8, 502.1, 505.6, 511.6, 513.4, 518.0, 521.9, 521.4, 526.7, 533.2, 528.3, 535.1, 540.8, 537.0, 546.3, 550.9, 545.7, 551.8, 555.5, 552.1, 556.9, 561.9, 557.0, 562.0, 567.2, 564.9, 568.3, 572.7, 569.8, 575.7, 578.5, 573.1, 578.3, 584.9, 604.5, 619.0, 638.6, 648.9, 665.9, 682.9, 690.0, 698.2, 705.3, 702.6, 709.5, 712.6, 714.6, 720.2, 724.6, 716.9, 722.9, 726.7, 724.1, 725.2, 728.2, 723.8, 725.1, 730.6, 736.3, 738.7, 736.5, 732.7, 725.4, 709.2, 685.8, 696.0, 699.9, 703.9, 733.8, 739.6, 735.1, 740.1, 745.6, 732.8, 741.6, 748.5, 741.5, 750.7, 755.8, 750.0, 756.4, 760.4, 756.4, 758.3, 761.1, 753.7, 761.7, 764.8, 753.3, 756.9, 760.0, 748.0, 744.3, 747.1, 729.8, 731.2, 733.6, 717.5, 721.4, 724.0, 695.8, 696.3, 697.9, 677.8, 682.9, 683.8, 663.0, 663.3, 664.4, 639.6, 644.3, 644.7], "color": "ink", "w": 1.6}], "y_unit": "", "opts": {"h": 240, "zoom": true}}, {"id": "ch_debt_jp", "kind": "line", "labels": ["1965", "1966", "1967", "1968", "1969", "1970", "1971", "1972", "1973", "1974", "1975", "1976", "1977", "1978", "1979", "1980", "1981", "1982", "1983", "1984", "1985", "1986", "1987", "1988", "1989", "1990", "1991", "1992", "1993", "1994", "1995", "1996", "1997", "1998", "1999", "2000", "2001", "2002", "2003", "2004", "2005", "2006", "2007", "2008", "2009", "2010", "2011", "2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026"], "datasets": [{"label": "普通国债残高(兆円)", "data": [0.0, 2.0, 3.0, 5.0, 6.0, 8.0, 9.0, 11.0, 12.0, 14.0, 15.0, 27.0, 39.0, 51.0, 63.0, 74.0, 86.0, 98.0, 110.0, 122.0, 134.0, 140.0, 147.0, 153.0, 160.0, 166.0, 178.0, 190.0, 201.0, 213.0, 225.0, 254.0, 282.0, 311.0, 339.0, 368.0, 400.0, 432.0, 463.0, 495.0, 527.0, 549.0, 571.0, 592.0, 614.0, 636.0, 670.0, 704.0, 737.0, 771.0, 805.0, 833.0, 862.0, 890.0, 919.0, 947.0, 974.0, 1000.0, 1027.0, 1055.0, 1084.0, 1112.0], "color": "ink", "w": 2}, {"label": "残高/名目GDP % (右轴)", "data": [null, 4.0, 5.0, 7.0, 7.0, 9.0, 9.0, 9.0, 9.0, 10.0, 10.0, 16.0, 21.0, 25.0, 28.0, 31.0, 33.0, 35.0, 37.0, 39.0, 41.0, 40.0, 39.0, 38.0, 37.0, 37.0, 38.0, 40.0, 41.0, 42.0, 43.0, 48.0, 54.0, 59.0, 64.0, 69.0, 75.0, 81.0, 87.0, 93.0, 99.0, 104.0, 110.0, 115.0, 120.0, 126.0, 131.0, 136.0, 140.0, 145.0, 149.0, 154.0, 160.0, 165.0, 171.0, 176.0, 175.0, 173.0, 172.0, 173.0, 173.0, 174.0], "color": "red", "dash": [5, 4], "w": 1.6, "axis": "y2"}], "y_unit": "", "opts": {"tall": true, "zoom": true, "axes": {"y2": {"unit": "%"}}}}, {"id": "ch_ggdebt_jp", "kind": "line", "labels": ["2012", "2013", "2014", "2015", "2016", "2017", "2018", "2019", "2020", "2021", "2022", "2023", "2024", "2025", "2026", "2027", "2028", "2029", "2030", "2031"], "datasets": [{"label": "一般政府债务/GDP", "data": [197.1, 201.2, 203.6, 200.1, 202.1, 203.1, 203.7, 206.3, 228.8, 222.7, 227.8, 220.3, 214.5, 206.5, 204.4, 200.1, 197.7, 195.7, 193.9, 192.8], "color": "amber", "w": 2}], "y_unit": "%", "opts": {"h": 220}}, {"id": "ch_holders_jp", "kind": "line", "labels": ["2012Q1", "2012Q2", "2012Q3", "2012Q4", "2013Q1", "2013Q2", "2013Q3", "2013Q4", "2014Q1", "2014Q2", "2014Q3", "2014Q4", "2015Q1", "2015Q2", "2015Q3", "2015Q4", "2016Q1", "2016Q2", "2016Q3", "2016Q4", "2017Q1", "2017Q2", "2017Q3", "2017Q4", "2018Q1", "2018Q2", "2018Q3", "2018Q4", "2019Q1", "2019Q2", "2019Q3", "2019Q4", "2020Q1", "2020Q2", "2020Q3", "2020Q4", "2021Q1", "2021Q2", "2021Q3", "2021Q4", "2022Q1", "2022Q2", "2022Q3", "2022Q4", "2023Q1", "2023Q2", "2023Q3", "2023Q4", "2024Q1", "2024Q2", "2024Q3", "2024Q4", "2025Q1", "2025Q2", "2025Q3", "2025Q4", "2026Q1", "2026Q2"], "datasets": [{"label": "日本银行", "data": [11.0, 11.7, 12.5, 13.2, 13.9, 14.7, 15.4, 16.2, 16.9, 17.6, 18.4, 19.1, 19.8, 20.6, 21.3, 22.1, 22.8, 23.5, 24.3, 25.0, 25.7, 26.5, 27.2, 27.9, 28.7, 29.4, 30.2, 30.9, 31.6, 32.4, 33.1, 33.8, 34.6, 35.3, 36.1, 36.8, 37.5, 38.3, 39.0, 39.7, 40.5, 41.2, 41.9, 42.7, 43.4, 44.2, 44.9, 45.6, 46.4, 47.1, 52.1, 51.2, 50.3, 49.4, 48.5, 47.6, 46.7, 45.8], "color": "ink", "w": 2}, {"label": "银行等", "data": [40.0, 39.5, 39.0, 38.5, 38.0, 37.5, 37.1, 36.6, 36.1, 35.6, 35.1, 34.6, 34.1, 33.6, 33.1, 32.6, 32.1, 31.6, 31.2, 30.7, 30.2, 29.7, 29.2, 28.7, 28.2, 27.7, 27.2, 26.7, 26.2, 25.8, 25.3, 24.8, 24.3, 23.8, 23.3, 22.8, 22.3, 21.8, 21.3, 20.8, 20.4, 19.9, 19.4, 18.9, 18.4, 17.9, 17.4, 16.9, 16.4, 15.9, 15.4, 14.9, 14.5, 14.0, 13.5, 13.0, 12.5, 12.0], "color": "blue", "w": 1.4}, {"label": "保险·年金", "data": [23.0, 22.9, 22.9, 22.8, 22.8, 22.7, 22.7, 22.6, 22.6, 22.5, 22.5, 22.4, 22.4, 22.3, 22.3, 22.2, 22.2, 22.1, 22.1, 22.0, 21.9, 21.9, 21.8, 21.8, 21.7, 21.7, 21.6, 21.6, 21.5, 21.5, 21.4, 21.4, 21.3, 21.3, 21.2, 21.2, 21.1, 21.1, 21.0, 20.9, 20.9, 20.8, 20.8, 20.7, 20.7, 20.6, 20.6, 20.5, 20.5, 20.4, 20.4, 20.3, 20.3, 20.2, 20.2, 20.1, 20.1, 20.0], "color": "green", "w": 1.4}, {"label": "海外", "data": [8.0, 8.1, 8.2, 8.3, 8.4, 8.4, 8.5, 8.6, 8.7, 8.8, 8.9, 9.0, 9.1, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 9.8, 9.8, 9.9, 10.0, 10.1, 10.2, 10.3, 10.4, 10.5, 10.5, 10.6, 10.7, 10.8, 10.9, 11.0, 11.1, 11.2, 11.2, 11.3, 11.4, 11.5, 11.6, 11.7, 11.8, 11.9, 11.9, 12.0, 12.1, 12.2, 12.3, 12.4, 12.5, 12.6, 12.6, 12.7, 12.8, 12.9, 13.0], "color": "red", "w": 1.4}, {"label": "公的年金", "data": [8.0, 7.9, 7.9, 7.8, 7.7, 7.6, 7.6, 7.5, 7.4, 7.4, 7.3, 7.2, 7.2, 7.1, 7.0, 6.9, 6.9, 6.8, 6.7, 6.7, 6.6, 6.5, 6.5, 6.4, 6.3, 6.2, 6.2, 6.1, 6.0, 6.0, 5.9, 5.8, 5.8, 5.7, 5.6, 5.5, 5.5, 5.4, 5.3, 5.3, 5.2, 5.1, 5.1, 5.0, 4.9, 4.8, 4.8, 4.7, 4.6, 4.6, 4.5, 4.4, 4.4, 4.3, 4.2, 4.1, 4.1, 4.0], "color": "amber", "w": 1.4}, {"label": "家庭·其他", "data": [10.0, 9.9, 9.5, 9.4, 9.2, 9.1, 8.7, 8.5, 8.3, 8.1, 7.8, 7.7, 7.4, 7.3, 7.1, 6.9, 6.6, 6.5, 6.1, 5.9, 5.8, 5.6, 5.4, 5.2, 5.0, 4.8, 4.5, 4.3, 4.2, 3.8, 3.7, 3.5, 3.2, 3.0, 2.8, 2.6, 2.4, 2.2, 2.1, 1.9, 1.5, 1.4, 1.1, 0.9, 0.7, 0.6, 0.3, 0.2, -0.1, -0.3, -4.8, -3.3, -2.1, -0.5, 0.9, 2.4, 3.7, 5.2], "color": "muted", "w": 1.4}], "y_unit": "%", "opts": {"tall": true, "zoom": true}}, {"id": "ch_int_rate_jp", "kind": "line", "labels": ["FY2001", "FY2002", "FY2003", "FY2004", "FY2005", "FY2006", "FY2007", "FY2008", "FY2009", "FY2010", "FY2011", "FY2012", "FY2013", "FY2014", "FY2015", "FY2016", "FY2017", "FY2018", "FY2019", "FY2020", "FY2021", "FY2022", "FY2023", "FY2024", "FY2025", "FY2026"], "datasets": [{"label": "存量加权利率 %", "data": [2.7, 2.4, 2.0, 1.7, 1.5, 1.5, 1.5, 1.5, 1.4, 1.3, 1.3, 1.2, 1.1, 1.1, 1.0, 0.9, 0.9, 0.9, 0.9, 0.8, 0.8, 0.8, 0.9, 1.0, 1.1, 1.2], "color": "amber", "w": 2}, {"label": "预算假定利率 %", "data": [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.3, 2.3, 2.0, 2.0, 2.0, 2.0, 1.8, 1.8, 1.8, 1.6, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.1, 1.9, 2.0, 2.6], "color": "blue", "dash": [5, 4], "w": 1.6}], "y_unit": "%", "opts": {"h": 280}}, {"id": "ch_int_jp", "kind": "pnbar", "labels": ["FY2001", "FY2002", "FY2003", "FY2004", "FY2005", "FY2006", "FY2007", "FY2008", "FY2009", "FY2010", "FY2011", "FY2012", "FY2013", "FY2014", "FY2015", "FY2016", "FY2017", "FY2018", "FY2019", "FY2020", "FY2021", "FY2022", "FY2023", "FY2024", "FY2025", "FY2026"], "datasets": [{"label": "利息支付等", "data": [10.0, 9.4, 8.0, 7.5, 7.3, 7.6, 8.0, 8.1, 7.6, 7.9, 8.1, 8.0, 8.0, 8.1, 8.2, 8.1, 8.0, 7.9, 7.8, 7.5, 7.3, 7.2, 7.5, 8.4, 10.5, 13.1], "color": "red"}], "y_unit": "", "opts": {"h": 240}}, {"id": "ch_wam_jp", "kind": "line", "labels": ["FY2001", "FY2002", "FY2003", "FY2004", "FY2005", "FY2006", "FY2007", "FY2008", "FY2009", "FY2010", "FY2011", "FY2012", "FY2013", "FY2014", "FY2015", "FY2016", "FY2017", "FY2018", "FY2019", "FY2020", "FY2021", "FY2022", "FY2023", "FY2024", "FY2025", "FY2026"], "datasets": [{"label": "普通国债平均剩余期限", "data": [5.3, 5.6, 5.8, 6.0, 6.3, 6.6, 6.8, 7.0, 7.3, 7.5, 7.7, 7.9, 8.1, 8.3, 8.5, 8.8, 9.0, 9.1, 9.1, 9.2, 9.2, 9.2, 9.2, 9.2, 9.3, 9.3], "color": "ink", "w": 2}], "y_unit": "", "opts": {"h": 220}}];
+const PAL = {ink:'#16222C',muted:'#8A97A1',gray:'#5D6B76',green:'#0E5A45',red:'#B03A2E',blue:'#2B5B8A',amber:'#B07C10'};
+Chart.defaults.font.family="'IBM Plex Mono',monospace";
+Chart.defaults.font.size=10.5; Chart.defaults.color='#5D6B76';
+Chart.defaults.plugins.legend.labels.boxWidth=9;
+CHARTS.forEach(c=>{
+  const el=document.getElementById(c.id); if(!el) return;
+  if(c.kind==='line'){
+    const fmtT=v=>Math.abs(v)>=1000?Math.round(v/1000)+'T':Math.round(v).toLocaleString();
+    const scales={y:{grid:{color:'#EDEFEA'},
+      ticks:c.y_unit==='bn'?{callback:fmtT}:(c.y_unit==='%'?{callback:v=>(Math.round(v*100)/100)+'%'}:{})},
+      x:(c.opts&&c.opts.time)
+        ?{type:'time',grid:{display:false},ticks:{maxTicksLimit:12}}
+        :{grid:{display:false},ticks:{maxTicksLimit:c.opts&&c.opts.zoom?14:10}}};
+    const ax=(c.opts&&c.opts.axes)||{};
+    c.datasets.forEach(d=>{
+      if(d.axis==='y1') scales.y1={position:'right',type:(ax.y1&&ax.y1.log)?'logarithmic':'linear',
+        grid:{display:false},ticks:{color:PAL.blue+'99',
+        callback:v=>{const s=[100,200,500,1000,2000,5000,10000];return (ax.y1&&ax.y1.log)?(s.includes(v)?v.toLocaleString():null):v.toLocaleString();}}};
+      if(d.axis==='y2') scales.y2={position:'right',grid:{display:false},
+        ticks:{color:PAL.amber+'BB',callback:v=>v.toFixed(2)+((ax.y2&&ax.y2.unit)||'')}};
+    });
+    if(c.opts&&(c.opts.zoom||c.opts.tall)){
+      scales.y.afterFit=a=>{a.width=64};
+      if(scales.y1) scales.y1.afterFit=a=>{a.width=58};
+      if(scales.y2) scales.y2.afterFit=a=>{a.width=56};
+    }
+    const opts={scales,interaction:{mode:'index',intersect:false}};
+    if(c.opts&&(c.opts.tall||c.opts.h)) opts.maintainAspectRatio=false;
+    if(c.opts&&c.opts.zoom){
+      opts.plugins={zoom:{zoom:{wheel:{enabled:true},pinch:{enabled:true},mode:'xy'},
+                          pan:{enabled:true,mode:'xy',modifierKey:null}}};
+    }
+    const ch=new Chart(el,{type:'line',data:{labels:c.labels,datasets:c.datasets.map(d=>({
+      label:d.label,data:d.xy?d.xy.map(p=>({x:p[0],y:p[1]})):d.data,
+      borderColor:(PAL[d.color]||d.color)+(d.alpha||''),borderWidth:d.w||1.5,
+      borderDash:d.dash||[],pointRadius:0,tension:d.step?0:.15,stepped:!!d.step,spanGaps:false,
+      yAxisID:d.axis||'y',pointStyle:d.pstyle||'circle',
+      pointRadius:d.pr!=null?d.data.map((v,i)=>(v!=null&&(i+1>=d.data.length||d.data[i+1]==null))?d.pr:0):0,
+      pointBackgroundColor:'#fff',pointBorderColor:PAL[d.color]||d.color,pointBorderWidth:2,
+      fill:!!d.fill,backgroundColor:(PAL[d.color]||d.color)+'14'}))},
+      options:opts});
+    if(c.opts&&c.opts.zoom) el.ondblclick=()=>ch.resetZoom();
+  } else if(c.kind==='pnbar'){
+    new Chart(el,{type:'bar',data:{labels:c.labels,datasets:c.datasets.map(d=>({
+      label:d.label,data:d.data,
+      backgroundColor:d.color==='auto'?d.data.map(v=>v>=0?PAL.green+'B3':PAL.red+'B3'):(PAL[d.color]||d.color)+'B3'}))},
+      options:{scales:{y:{grid:{color:'#EDEFEA'}},x:{grid:{display:false},ticks:{maxTicksLimit:12}}}}});
+  } else if(c.kind==='mirror'){
+    const allv=c.datasets.flatMap(d=>d.data.filter(v=>v!=null).map(Math.abs));
+    const M0=Math.ceil(Math.max(...allv)*1.05/100)*100;
+    const ch=new Chart(el,{type:'bar',data:{labels:c.labels,datasets:c.datasets.map(d=>({
+      label:d.label,data:d.data,backgroundColor:(PAL[d.color]||d.color)+'B3',
+      barPercentage:1.0,categoryPercentage:0.95}))},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+      plugins:{tooltip:{callbacks:{label:t=>t.dataset.label+': '+Math.abs(t.raw).toLocaleString()+'bn'}},
+               zoom:{pan:{enabled:true,mode:'x'},zoom:{wheel:{enabled:true},pinch:{enabled:true},mode:'x'}}},
+      scales:{y:{min:-M0,max:M0,grid:{color:'#EDEFEA'},
+                 ticks:{callback:v=>{const a=Math.abs(v);return a>=1000?(a/1000)+'T':a;}},afterFit:a=>{a.width=64}},
+              x:{grid:{display:false},ticks:{maxTicksLimit:16}}}}});
+    el.ondblclick=()=>ch.resetZoom();
+  } else if(c.kind==='hbar'){
+    new Chart(el,{type:'bar',data:{labels:c.labels,datasets:c.datasets.map(d=>({
+      label:d.label,data:d.data,backgroundColor:(PAL[d.color]||d.color)+'B3'}))},
+      options:{indexAxis:'y',plugins:{legend:{display:false}},
+      scales:{x:{grid:{color:'#EDEFEA'}},y:{grid:{display:false}}}}});
+  }
+});
+// ---- 持有人国别累计变化 (可调基点)
+const HX = {};
+if(HX && HX.months && document.getElementById('hxStart')){
+(function(){
+  const M = HX.months, S = HX.series || {};
+  const sel = document.getElementById('hxStart');
+  const years = [...new Set(M.map(m=>m.slice(0,4)))];
+  years.forEach(y=>{const o=document.createElement('option');o.value=y+'-01';o.text=y;sel.appendChild(o);});
+  sel.value = years.includes('2019')?'2019-01':years[0]+'-01';
+  const COLS = [PAL.blue,'#D4A017',PAL.red,'#6B4E8C',PAL.green,'#B8651B','#3A7CA5','#8C5946','#4A4A4A','#2E8B74'];
+  let CH=null;
+  function draw(){
+    const i0 = Math.max(0, M.indexOf(sel.value));
+    const lbls = M.slice(i0).map(m=>m.slice(2));
+    const names = Object.keys(S).sort((a,b)=>{
+      const la=S[a][M.length-1]||0, lb=S[b][M.length-1]||0;
+      const da=(la-(S[a][i0]||la)), db=(lb-(S[b][i0]||lb));
+      return Math.abs(db)-Math.abs(da);
+    }).slice(0,8);
+    const ds = names.map((c,ci)=>({label:c, yAxisID:'y',
+      data:S[c].slice(i0).map(v=>{const b0=S[c][i0]; return (v!=null&&b0!=null)?Math.round(v-b0):null;}),
+      borderColor:COLS[ci%COLS.length], borderWidth:1.6, pointRadius:0, tension:.15}));
+    if(HX.total && HX.total.length){
+      ds.unshift({label:'海外合计', yAxisID:'y',
+        data:HX.total.slice(i0).map(v=>{const b0=HX.total[i0]; return (v!=null&&b0!=null)?Math.round(v-b0):null;}),
+        borderColor:PAL.ink, borderWidth:2.4, pointRadius:0, tension:.15});
+    }
+    if(CH) CH.destroy();
+    CH=new Chart(document.getElementById('ch_tic'),{type:'line',
+      data:{labels:lbls,datasets:ds},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{title:{display:true,text:'自 '+sel.value.slice(0,4)+' 年起累计变化 ($bn)',font:{size:12}},
+                 legend:{labels:{boxWidth:14,font:{size:10.5}}}},
+        scales:{y:{grid:{color:'#EDEFEA'},ticks:{callback:v=>v},afterFit:a=>{a.width=56}},
+                x:{grid:{display:false},ticks:{maxTicksLimit:16}}}}});
+  }
+  sel.onchange=draw; draw();
+})();
+}
+
+// ---- 地方收支 (央地对照, 图表联动)
+const LX = {};
+if(document.getElementById('lxTable') && !(LX && LX.years && LX.years.length)){
+  document.getElementById('lxTable').innerHTML =
+    '<div class="anchor-note">数据文件待weekly首跑生成(NIPA/QTAX), 生成后自动填充</div>';
+}
+if(LX && LX.years && LX.years.length && document.getElementById('lxTable')){
+(function(){
+  const Y = LX.years, N = Y.length, S = LX.series, G = LX.ngdp || [];
+  const ROWS = [
+    {id:'sl_rev',l:'州地方总收入',lv:0},
+    {id:'grants',l:'其中: 联邦转移(Grants)',lv:1},
+    {id:'sl_own',l:'其中: 自有收入',lv:1},
+    {id:'t_prop',l:'财产税 (QTAX·滞后一季)',lv:2},
+    {id:'t_sales',l:'一般销售税',lv:2},
+    {id:'t_ind',l:'州个人所得税',lv:2},
+    {id:'t_corp',l:'州企业所得税',lv:2},
+    {id:'sl_exp',l:'州地方总支出',lv:0},
+    ...(((LX.census||{}).spending)||[]).map((r,i)=>({id:'cx'+i,l:'支出·'+r.item+' (Census '+((LX.census||{}).as_of||'')+'锚)',lv:1,fixed:r.bn})),
+    {id:'fed_rev',l:'联邦总收入 (NIPA口径)',lv:0},
+    {id:'fed_exp',l:'联邦总支出 (NIPA口径)',lv:0},
+    {id:'dep',l:'联邦转移/州地方收入 %',lv:0,pct:true},
+  ];
+  const ser = id => {
+    if(id.startsWith('cx')) return Y.map(()=>null);
+    if(id==='sl_own') return Y.map((_,t)=>(S.sl_rev&&S.grants&&S.sl_rev[t]!=null&&S.grants[t]!=null)?S.sl_rev[t]-S.grants[t]:null);
+    if(id==='dep') return Y.map((_,t)=>(S.grants&&S.sl_rev&&S.grants[t]&&S.sl_rev[t])?100*S.grants[t]/S.sl_rev[t]:null);
+    return (S[id]||Y.map(()=>null));
+  };
+  const fmtc=v=>v==null?'—':Math.round(v).toLocaleString();
+  function spark(id){
+    const s=ser(id), yy=[];
+    for(let t=N-5;t<N;t++){ if(s[t]!=null&&s[t-1]) yy.push({fy:Y[t],v:100*(s[t]/s[t-1]-1)}); }
+    if(yy.length<2) return '';
+    const vs=yy.map(p=>p.v), mn=Math.min(...vs,0), mx=Math.max(...vs,0), rg=(mx-mn)||1;
+    const XY=yy.map((p,i)=>[6+i*(56/(yy.length-1)), 18-3-(p.v-mn)/rg*12]);
+    const zy=18-3-(0-mn)/rg*12, col=vs[vs.length-1]>=0?'#0E5A45':'#B03A2E';
+    let g=`<svg width="70" height="20" style="display:block;margin:0 auto"><line x1="6" y1="${zy}" x2="62" y2="${zy}" stroke="#E2E6E2"/><polyline points="${XY.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="1.4"/>`;
+    XY.forEach((p,i)=>{g+=`<circle cx="${p[0]}" cy="${p[1]}" r="2" fill="${col}"><title>${yy[i].fy}: ${yy[i].v>=0?'+':''}${yy[i].v.toFixed(1)}%</title></circle>`;});
+    return g+'</svg>';
+  }
+  let SEL=null, CH=null;
+  function drawT(){
+    let h=`<table class="anx"><tr><th class="c-lbl">科目 (bn · CY${Y[N-1]})</th><th class="c-spk">5年yoy走势</th><th class="num">最新</th><th class="num">上年</th><th class="num">yoy</th></tr>`;
+    ROWS.forEach(r=>{
+      if(r.fixed!=null){
+        h+=`<tr class="l${r.lv}"><td class="lbl c-lbl" style="padding-left:${8+r.lv*16}px">${r.l}</td>`
+          +`<td class="c-spk"></td><td class="num">${Math.round(r.fixed).toLocaleString()}</td>`
+          +`<td class="num">—</td><td class="num">—</td></tr>`;
+        return;
+      }
+      const s=ser(r.id), a=s[N-1], b0=s[N-2];
+      const yoy=(a!=null&&b0)?100*(a/b0-1):null;
+      const val = r.pct? (a==null?'—':a.toFixed(1)+'%') : fmtc(a);
+      const pv = r.pct? (b0==null?'—':b0.toFixed(1)+'%') : fmtc(b0);
+      h+=`<tr class="clickable l${r.lv}${SEL===r.id?' sel':''}" data-id="${r.id}">`
+        +`<td class="lbl c-lbl" style="padding-left:${8+r.lv*16}px">${r.l}</td><td class="c-spk">${spark(r.id)}</td>`
+        +`<td class="num">${val}</td><td class="num">${pv}</td>`
+        +`<td class="num ${yoy>=0?'pos':'neg'}">${yoy==null?'—':yoy.toFixed(1)+'%'}</td></tr>`;
+    });
+    document.getElementById('lxTable').innerHTML=h+'</table>';
+    document.querySelectorAll('#lxTable tr.clickable').forEach(tr=>tr.onclick=()=>{
+      SEL=(SEL===tr.dataset.id)?null:tr.dataset.id; drawT(); drawC();
+    });
+  }
+  function drawC(){
+    const lbls=Y.map(String);
+    let ds,title;
+    if(!SEL){
+      title='联邦 vs 州地方 · 收支与转移 (bn)';
+      ds=[
+        {label:'联邦收入',data:ser('fed_rev'),borderColor:PAL.green,borderWidth:2},
+        {label:'联邦支出',data:ser('fed_exp'),borderColor:PAL.red,borderWidth:2},
+        {label:'州地方收入',data:ser('sl_rev'),borderColor:PAL.green+'88',borderDash:[6,4],borderWidth:1.6},
+        {label:'州地方支出',data:ser('sl_exp'),borderColor:PAL.red+'88',borderDash:[6,4],borderWidth:1.6},
+        {label:'联邦转移(勾稽线)',data:ser('grants'),borderColor:PAL.blue,borderWidth:1.6}];
+      ds.forEach(d=>{d.yAxisID='y';});
+    } else {
+      const r=ROWS.find(x=>x.id===SEL); title=r.l;
+      if(r.pct){
+        ds=[{label:r.l,data:ser(SEL),borderColor:PAL.blue,borderWidth:2,yAxisID:'y2'}];
+      } else {
+        ds=[{label:r.l,data:ser(SEL),borderColor:PAL.red,borderWidth:2.2,yAxisID:'y'},
+            {label:'/NGDP %',data:ser(SEL).map((v,t)=>v!=null&&G[t]?100*v/G[t]:null),
+             borderColor:PAL.blue,borderDash:[5,4],borderWidth:1.6,yAxisID:'y2'}];
+      }
+    }
+    ds.forEach(d=>{d.pointRadius=0;d.tension=.15;});
+    const pctOnly = !!(SEL && (ROWS.find(x=>x.id===SEL)||{}).pct);
+    if(CH) CH.destroy();
+    CH=new Chart(document.getElementById('ch_local'),{type:'line',
+      data:{labels:lbls,datasets:ds},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{title:{display:true,text:title,font:{size:12}}},
+        scales:{y:{display:!pctOnly,grid:{color:'#EDEFEA'},ticks:{callback:v=>Math.abs(v)>=1000?Math.round(v/1000)+'T':v},afterFit:a=>{a.width=60}},
+                y2:{position:'right',grid:{display:false},ticks:{callback:v=>(Math.round(v*100)/100)+'%'},afterFit:a=>{a.width=52}},
+                x:{grid:{display:false}}}}});
+  }
+  drawT(); drawC();
+})();
+}
+
+// ---- 财年融资预测 (Exhibit式三年联动)
+const FNXD = {"baseline":[0,0,0]};
+if(document.getElementById('fnxTable')){
+(function(){
+  const FYS=[2026,2027,2028], LS='fm_fnx_v1';
+  const DEF={baseline:FNXD.baseline||[1925,2075,2250], other:[-67,0,0],
+    tga_end:[950,1001,1031], tga_start0:890, gross:[4395,4432,5414],
+    maturing:[3325,3615,3915], rollover:[483,460,418], buyback:[265,302,302],
+    start_c0:23318, start_b0:6397, soma_bills:[200,220,240], soma_total:[4200,4150,4100]};
+  let E; try{E=JSON.parse(localStorage.getItem(LS))||{};}catch(e){E={};}
+  const g=(k,i)=> (E[k]&&E[k][i]!=null&&E[k][i]!=='')?parseFloat(E[k][i]):(Array.isArray(DEF[k])?DEF[k][i]:DEF[k]);
+  function compute(){
+    const R={}; ['fin_need','dcash','need','pub_mat','net_c','net_b','end_c','end_b','pct','ppct','tga_start','start_c','start_b'].forEach(k=>R[k]=[]);
+    for(let i=0;i<3;i++){
+      const bl=g('baseline',i), ot=g('other',i);
+      R.fin_need[i]=bl+ot;
+      R.tga_start[i]= i===0? g('tga_start0',0): g('tga_end',i-1);
+      R.dcash[i]=g('tga_end',i)-R.tga_start[i];
+      R.need[i]=R.fin_need[i]+R.dcash[i];
+      R.pub_mat[i]=g('maturing',i)-g('rollover',i);
+      R.net_c[i]=g('gross',i)-R.pub_mat[i]-g('buyback',i);
+      R.net_b[i]=R.need[i]-R.net_c[i];
+      R.start_c[i]= i===0? g('start_c0',0): R.end_c[i-1];
+      R.start_b[i]= i===0? g('start_b0',0): R.end_b[i-1];
+      R.end_c[i]=R.start_c[i]+R.net_c[i];
+      R.end_b[i]=R.start_b[i]+R.net_b[i];
+      const mkt=R.end_c[i]+R.end_b[i];
+      R.pct[i]=100*R.end_b[i]/mkt;
+      R.ppct[i]=100*(R.end_b[i]-g('soma_bills',i))/(mkt-g('soma_total',i));
+    }
+    return R;
+  }
+  const ROWS=[
+    ['baseline','1 基线赤字 (CBO现行版默认)','edit'],
+    ['other','2 其他调整','edit'],
+    ['fin_need','3 融资需求 (1+2)','calc'],
+    ['tga_end','4 期末TGA假设','edit'],
+    ['dcash','5 现金变动 ΔTGA','calc'],
+    ['need','6 Marketable borrowing need (3+5)','bold'],
+    ['gross','7 总coupon拍卖','edit'],
+    ['maturing','8 coupon总到期','edit'],
+    ['rollover','9 Fed rollover','edit'],
+    ['pub_mat','10 公众持有到期 (8-9)','calc'],
+    ['buyback','11 预期回购','edit'],
+    ['net_c','12 净coupon供给 (7-10-11)','bold'],
+    ['net_b','15 净bills供给 (6-12, 残差)','bold'],
+    ['start_c','20 期初coupons存量','chain0'],
+    ['start_b','21 期初bills存量','chain0'],
+    ['end_c','22 期末coupons (12+20)','calc'],
+    ['end_b','23 期末bills (15+21)','calc'],
+    ['pct','24 Bills %marketable','pct'],
+    ['soma_bills','· SOMA bills持仓假设','edit'],
+    ['soma_total','· SOMA总持仓假设','edit'],
+    ['ppct','25 私人持有bills %','pct'],
+  ];
+  const F=v=>v==null?'—':Math.round(v).toLocaleString();
+  function draw(){
+    const R=compute();
+    let h='<table class="anx"><tr><th class="c-lbl" style="width:280px">项目 (bn)</th>'+FYS.map(y=>`<th class="num">FY${y}</th>`).join('')+'</tr>';
+    ROWS.forEach(([k,l,kind])=>{
+      const b=kind==='bold'?' style="font-weight:600"':'';
+      h+=`<tr${b}><td class="lbl c-lbl">${l}</td>`;
+      for(let i=0;i<3;i++){
+        if(kind==='edit'||(kind==='chain0'&&i===0)){
+          const key=kind==='chain0'?(k==='start_c'?'start_c0':'start_b0'):k;
+          const idx=kind==='chain0'?0:i;
+          h+=`<td class="num"><input data-k="${key}" data-i="${idx}" value="${g(key,idx)}"></td>`;
+        } else if(kind==='pct') h+=`<td class="num">${R[k][i].toFixed(1)}%</td>`;
+        else h+=`<td class="num">${F(R[k]?R[k][i]:null)}</td>`;
+      }
+      h+='</tr>';
+    });
+    document.getElementById('fnxTable').innerHTML=h+'</table>';
+    document.querySelectorAll('#fnxTable input').forEach(inp=>inp.onchange=()=>{
+      const k=inp.dataset.k, i=+inp.dataset.i;
+      E[k]=E[k]||[]; E[k][i]=inp.value;
+      localStorage.setItem(LS, JSON.stringify(E)); draw();
+    });
+  }
+  document.getElementById('fnxReset').onclick=()=>{E={};localStorage.removeItem(LS);draw();};
+  draw();
+})();
+}
+
+// ---- 年度收支进度 (图+表联动, sparkline)
+const ANX = {"years": [], "series": {}, "ngdp": [], "fytd": {}};
+if(ANX && ANX.years.length && document.getElementById('anxTable')){
+(function(){
+  const Y = ANX.years, N = Y.length, S = ANX.series, G = ANX.ngdp;
+  const sum = ids => Y.map((_,t)=> ids.reduce((a,k)=> a+((S[k]||[])[t]||0), 0));
+  const REV = Object.keys(S).filter(k=>k.startsWith('rev')), OUT = Object.keys(S).filter(k=>k.startsWith('out'));
+  const MAND = ['out_ss','out_med','out_mcd','out_incsec','out_othm'].filter(k=>S[k]);
+  const DISC = ['out_def','out_ndd'].filter(k=>S[k]);
+  function ser(id){
+    if(id==='rev') return sum(REV);
+    if(id==='out') return sum(OUT);
+    if(id==='mand') return sum(MAND);
+    if(id==='disc') return sum(DISC);
+    if(id==='deficit'){const r=sum(REV),o=sum(OUT);return Y.map((_,t)=>r[t]-o[t]);}
+    if(id==='primary'){const d=ser('deficit');return Y.map((_,t)=>d[t]+(S['out_int']||[])[t]);}
+    return S[id]||Y.map(()=>null);
+  }
+  const ROWS = [
+    {id:'rev',l:'收入 Revenues',lv:0,par:null},
+    {id:'rev_ind',l:'个人所得税',lv:1,par:'rev'},{id:'rev_pay',l:'Payroll税',lv:1,par:'rev'},
+    {id:'rev_corp',l:'企业所得税',lv:1,par:'rev'},{id:'rev_tariff',l:'关税',lv:1,par:'rev'},
+    {id:'rev_other',l:'其他收入',lv:1,par:'rev'},
+    {id:'out',l:'支出 Outlays',lv:0,par:null},
+    {id:'mand',l:'强制性 Mandatory',lv:1,par:'out'},
+    {id:'out_ss',l:'社会保障',lv:2,par:'out'},{id:'out_med',l:'Medicare',lv:2,par:'out'},
+    {id:'out_mcd',l:'Medicaid',lv:2,par:'out'},{id:'out_incsec',l:'收入保障',lv:2,par:'out'},
+    {id:'out_othm',l:'其他强制性',lv:2,par:'out'},
+    {id:'disc',l:'自由裁量 Discretionary',lv:1,par:'out'},
+    {id:'out_def',l:'国防',lv:2,par:'out'},{id:'out_ndd',l:'非国防',lv:2,par:'out'},
+    {id:'out_int',l:'净利息',lv:1,par:'out'},
+    {id:'deficit',l:'赤字 Deficit',lv:0,par:null},{id:'primary',l:'初级赤字 Primary',lv:1,par:null},
+  ];
+  const FY = ANX.fytd, fmtc=v=>v==null?'—':Math.round(v).toLocaleString();
+  function fytdOf(id){
+    if(FY[id]) return [FY[id].fytd, FY[id].fytd_prior];
+    const kids = {rev:REV,out:OUT,mand:MAND,disc:DISC}[id];
+    if(kids){let a=0,b=0,ok=false;kids.forEach(k=>{if(FY[k]){a+=FY[k].fytd;b+=FY[k].fytd_prior;ok=true;}});return ok?[a,b]:[null,null];}
+    if(id==='deficit'){const[r,rp]=fytdOf('rev'),[o,op]=fytdOf('out');return [r-o,rp-op];}
+    if(id==='primary'){const[d,dp]=fytdOf('deficit');return FY['out_int']?[d+FY['out_int'].fytd,dp+FY['out_int'].fytd_prior]:[null,null];}
+    return [null,null];
+  }
+  function spark(id){
+    const s=ser(id), yy=[];
+    for(let t=N-5;t<N;t++){ if(s[t]!=null&&s[t-1]) yy.push({fy:Y[t],v:100*(s[t]/s[t-1]-1)}); }
+    if(yy.length<2) return '';
+    const vs=yy.map(p=>p.v), mn=Math.min(...vs,0), mx=Math.max(...vs,0), rg=(mx-mn)||1;
+    const XY=yy.map((p,i)=>[6+i*(56/(yy.length-1)), 18-3-(p.v-mn)/rg*12]);
+    const zy=18-3-(0-mn)/rg*12;
+    const col=vs[vs.length-1]>=0?'#0E5A45':'#B03A2E';
+    let g=`<svg width="70" height="20" style="vertical-align:middle;display:block;margin:0 auto">`
+      +`<line x1="6" y1="${zy}" x2="62" y2="${zy}" stroke="#E2E6E2"/>`
+      +`<polyline points="${XY.map(p=>p.join(',')).join(' ')}" fill="none" stroke="${col}" stroke-width="1.4"/>`;
+    XY.forEach((p,i)=>{ g+=`<circle cx="${p[0]}" cy="${p[1]}" r="2" fill="${col}"><title>FY${String(yy[i].fy).slice(2)}: ${yy[i].v>=0?'+':''}${yy[i].v.toFixed(1)}%</title></circle>`; });
+    return g+'</svg>';
+  }
+  let SEL=null;
+  function drawT(){
+    const [revT]=fytdOf('rev'),[outT]=fytdOf('out');
+    let h=`<table class="anx"><tr><th class="c-lbl">科目 (bn · FYTD至${ANX.as_of||'—'})</th><th class="c-spk">5年yoy走势</th><th class="num">FYTD</th><th class="num">去年同期</th><th class="num">yoy</th><th class="num">占比</th></tr>`;
+    ROWS.forEach(r=>{
+      const [a,b]=fytdOf(r.id);
+      const yoy=(a!=null&&b)?100*(a/b-1):null;
+      const base=r.id.startsWith('rev')&&r.lv>0?revT:(r.par==='out'?outT:null);
+      const share=(a!=null&&base)?(100*a/base).toFixed(0)+'%':'—';
+      h+=`<tr class="clickable l${r.lv}${SEL===r.id?' sel':''}" data-id="${r.id}">`
+        +`<td class="lbl c-lbl" style="padding-left:${8+r.lv*16}px">${r.l}</td><td class="c-spk">${spark(r.id)}</td>`
+        +`<td class="num">${fmtc(a)}</td><td class="num">${fmtc(b)}</td>`
+        +`<td class="num ${yoy>=0?'pos':'neg'}">${yoy==null?'—':yoy.toFixed(1)+'%'}</td><td class="num">${share}</td></tr>`;
+    });
+    document.getElementById('anxTable').innerHTML=h+'</table>';
+    document.querySelectorAll('#anxTable tr.clickable').forEach(tr=>tr.onclick=()=>{
+      SEL=(SEL===tr.dataset.id)?null:tr.dataset.id; drawT(); drawC();
+    });
+  }
+  let CH2=null;
+  const pct=id=>ser(id).map((v,t)=>v!=null&&G[t]?100*v/G[t]:null);
+  function drawC(){
+    let ds,title;
+    const lbls=Y.map(y=>'FY'+String(y).slice(2));
+    if(!SEL){
+      title='收/支/赤 绝对额(左) 与 /NGDP(右)';
+      ds=[
+        {label:'收入',data:ser('rev'),borderColor:PAL.green,borderWidth:2,yAxisID:'y'},
+        {label:'支出',data:ser('out'),borderColor:PAL.red,borderWidth:2,yAxisID:'y'},
+        {label:'赤字',data:ser('deficit'),borderColor:PAL.ink,borderWidth:2,yAxisID:'y'},
+        {label:'收入/NGDP',data:pct('rev'),borderColor:PAL.green+'66',borderDash:[5,4],borderWidth:1.3,yAxisID:'y2'},
+        {label:'支出/NGDP',data:pct('out'),borderColor:PAL.red+'66',borderDash:[5,4],borderWidth:1.3,yAxisID:'y2'},
+        {label:'赤字/NGDP',data:pct('deficit'),borderColor:PAL.ink+'66',borderDash:[5,4],borderWidth:1.3,yAxisID:'y2'}];
+    } else {
+      const r=ROWS.find(x=>x.id===SEL); title=r.l+' · 绝对额(左)与/NGDP(右)';
+      ds=[{label:r.l,data:ser(SEL),borderColor:PAL.red,borderWidth:2.2,yAxisID:'y'},
+          {label:'/NGDP %',data:pct(SEL),borderColor:PAL.blue,borderDash:[5,4],borderWidth:1.6,yAxisID:'y2'}];
+    }
+    ds.forEach(d=>{d.pointRadius=0;d.tension=.15;});
+    if(CH2) CH2.destroy();
+    CH2=new Chart(document.getElementById('ch_annual'),{type:'line',
+      data:{labels:lbls,datasets:ds},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{title:{display:true,text:title,font:{size:12}}},
+        scales:{y:{grid:{color:'#EDEFEA'},ticks:{callback:v=>Math.abs(v)>=1000?Math.round(v/1000)+'T':v},afterFit:a=>{a.width=60}},
+                y2:{position:'right',grid:{display:false},ticks:{callback:v=>v.toFixed(1)+'%'},afterFit:a=>{a.width=52}},
+                x:{grid:{display:false}}}}});
+  }
+  drawT(); drawC();
+})();
+}
+
+// ---- CBO基线矩阵 (图+表联动, Δ可编辑)
+const MX = null;
+if(MX && document.getElementById('blxTable')){
+(function(){
+  const YRS = MX.years, N = YRS.length;
+  const VCUR = MX.versions[MX.versions.length-1].id, VPRV = MX.versions[0].id;
+  const LS = 'fm_blx_adj_v1';
+  let adj; try{ adj = JSON.parse(localStorage.getItem(LS)) || {}; }catch(e){ adj = {}; }
+  adj.rev = adj.rev || Array(N).fill(0); adj.out = adj.out || Array(N).fill(0);
+  const st = {view:'cur', sel:'deficit'};
+  const D = MX.data;
+  const leaf = (v,id)=> D[v][id] || Array(N).fill(null);
+  function series(v, id, withAdj){
+    const revIds = MX.items.filter(i=>i.id.startsWith('rev_')).map(i=>i.id);
+    const outIds = MX.items.filter(i=>i.id.startsWith('out_')).map(i=>i.id);
+    const rev = YRS.map((_,t)=> revIds.reduce((a,k)=>a+leaf(v,k)[t],0) + (withAdj?adj.rev[t]:0));
+    const out = YRS.map((_,t)=> outIds.reduce((a,k)=>a+leaf(v,k)[t],0) + (withAdj?adj.out[t]:0));
+    const def = YRS.map((_,t)=> rev[t]-out[t]);
+    if(id==='rev') return rev;
+    if(id==='out') return out;
+    if(id==='deficit') return def;
+    if(id==='primary') return YRS.map((_,t)=> def[t]+leaf(v,'out_int')[t]);
+    if(id==='debt_public'){
+      if(!withAdj) return leaf(v,'debt_public');
+      const base = leaf(v,'debt_public');
+      const def0 = series(v,'deficit',false);
+      let cum=0; return YRS.map((_,t)=>{cum+=def0[t]-def[t]; return base[t]+cum;});
+    }
+    if(id==='adj_rev') return adj.rev.slice();
+    if(id==='adj_out') return adj.out.slice();
+    return leaf(v,id);
+  }
+  const fmtc = v=> v==null?'':Math.round(v).toLocaleString();
+  function cellVal(item, t){
+    const id=item.id;
+    if(st.view==='cur')  return fmtc(series(VCUR,id,true)[t]);
+    if(st.view==='prev') return fmtc(series(VPRV,id,false)[t]);
+    if(st.view==='diff') return fmtc(series(VCUR,id,false)[t]-series(VPRV,id,false)[t]);
+    if(st.view==='pct'){ const g=leaf(VCUR,'ngdp')[t];
+      const x=series(VCUR,id,true)[t]; return id==='ngdp'?fmtc(x):(100*x/g).toFixed(1)+'%';}
+  }
+  const VIEWS_BLX = [['cur','现行基线(含Δ)'],['prev','上一版'],['diff','差异'],['pct','%GDP']];
+  function drawBar(){
+    document.getElementById('blxViews').innerHTML = VIEWS_BLX.map(([k,l])=>
+      `<span class="chip${st.view===k?' on':''}" data-g="v${k}" data-v="${k}">${l}</span>`).join('');
+    document.querySelectorAll('#blxViews .chip').forEach(c=>c.onclick=()=>{st.view=c.dataset.v; drawBar(); drawTbl();});
+  }
+  function drawTbl(){
+    let h='<table><tr><th style="text-align:left">科目 (USD bn)</th>'+YRS.map(y=>`<th class="num">FY${String(y).slice(2)}</th>`).join('')+'</tr>';
+    MX.items.forEach(it=>{
+      const editable = it.id.startsWith('adj_');
+      const cls = `l${it.lv}${it.memo?'':' clickable'}${st.sel===it.id?' sel':''}`;
+      h += `<tr class="${cls}" data-id="${it.id}"><td class="lbl" style="padding-left:${8+it.lv*16}px">${it.label}</td>`;
+      for(let t=0;t<N;t++){
+        if(editable){
+          const arr = it.id==='adj_rev'?adj.rev:adj.out;
+          h += `<td><input data-k="${it.id}" data-t="${t}" value="${arr[t]||0}"></td>`;
+        } else h += `<td>${cellVal(it,t)}</td>`;
+      }
+      h += '</tr>';
+    });
+    h+='</table>';
+    document.getElementById('blxTable').innerHTML=h;
+    document.querySelectorAll('#blxTable tr.clickable').forEach(tr=>tr.onclick=e=>{
+      if(e.target.tagName==='INPUT') return;
+      st.sel=tr.dataset.id; drawTbl(); drawChart();
+    });
+    document.querySelectorAll('#blxTable input').forEach(inp=>inp.onchange=()=>{
+      const arr = inp.dataset.k==='adj_rev'?adj.rev:adj.out;
+      arr[+inp.dataset.t] = parseFloat(inp.value)||0;
+      localStorage.setItem(LS, JSON.stringify(adj));
+      drawTbl(); drawChart();
+    });
+  }
+  let CH=null;
+  function drawChart(){
+    const item = MX.items.find(i=>i.id===st.sel) || MX.items[0];
+    const mk = (v,withAdj)=> series(v,item.id,withAdj);
+    const hasAdj = adj.rev.some(x=>x)||adj.out.some(x=>x);
+    const ds=[
+      {label:MX.versions[0].label,data:mk(VPRV,false),borderColor:PAL.muted,borderDash:[4,3],borderWidth:1.3,pointRadius:0},
+      {label:MX.versions[MX.versions.length-1].label+(hasAdj?' (含Δ)':''),data:mk(VCUR,true),borderColor:PAL.red,borderWidth:2.2,pointRadius:2},
+    ];
+    if(hasAdj)
+      ds.push({label:'现行·官方原值',data:mk(VCUR,false),borderColor:PAL.red+'55',borderDash:[6,4],borderWidth:1.2,pointRadius:0});
+    if(CH) CH.destroy();
+    CH = new Chart(document.getElementById('ch_bl_matrix'),{type:'line',
+      data:{labels:YRS.map(y=>'FY'+String(y).slice(2)),datasets:ds},
+      options:{maintainAspectRatio:false,interaction:{mode:'index',intersect:false},
+        plugins:{title:{display:true,text:item.label+' · 10年路径 (USD bn)',font:{size:12}}},
+        scales:{y:{grid:{color:'#EDEFEA'}},x:{grid:{display:false}}}}});
+  }
+  document.getElementById('blxReset').onclick=()=>{
+    adj={rev:Array(N).fill(0),out:Array(N).fill(0)};
+    localStorage.setItem(LS, JSON.stringify(adj)); drawTbl(); drawChart();
+  };
+  drawBar(); drawTbl(); drawChart();
+})();
+}
+
+// ---- 财政日历 (事件数据库视图)
+const EVDB = [{"id": "jpauc-2026-07-14-5年", "date": "2026-07-14", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.41 · 尾差 2.6bp"}}, {"id": "jpauc-2026-07-16-2年", "date": "2026-07-16", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.63 · 尾差 3.3bp"}}, {"id": "jpauc-2026-07-21-5年", "date": "2026-07-21", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.56 · 尾差 3.2bp"}}, {"id": "jpauc-2026-07-23-2年", "date": "2026-07-23", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 2.64 · 尾差 1.7bp"}}, {"id": "jpauc-2026-07-28-5年", "date": "2026-07-28", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.83 · 尾差 2.3bp"}}, {"id": "jpauc-2026-07-30-2年", "date": "2026-07-30", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.77 · 尾差 0.5bp"}}, {"id": "jpauc-2026-08-03-30年", "date": "2026-08-03", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 30年 0.7兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-08-04-5年", "date": "2026-08-04", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.21 · 尾差 0.9bp"}}, {"id": "jpauc-2026-08-06-2年", "date": "2026-08-06", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.31 · 尾差 2.1bp"}}, {"id": "jpauc-2026-08-11-20年", "date": "2026-08-11", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 20年 0.9兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-08-11-5年", "date": "2026-08-11", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 2.62 · 尾差 0.8bp"}}, {"id": "jpauc-2026-08-13-2年", "date": "2026-08-13", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 2.96 · 尾差 3.2bp"}}, {"id": "jpauc-2026-08-17-2年", "date": "2026-08-17", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-08-18-5年", "date": "2026-08-18", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.60 · 尾差 0.6bp"}}, {"id": "jpauc-2026-08-20-2年", "date": "2026-08-20", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.64 · 尾差 0.6bp"}}, {"id": "jpauc-2026-08-25-流动性供给", "date": "2026-08-25", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 流动性供给 0.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-08-25-5年", "date": "2026-08-25", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.40 · 尾差 0.5bp"}}, {"id": "jpauc-2026-08-27-2年", "date": "2026-08-27", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 2.60 · 尾差 3.1bp"}}, {"id": "jp-req-2027", "date": "2026-08-31", "cat": "文件", "owner": "budget_cycle_jp", "dtype": "法定", "label": "FY2027概算请求提出(各省→财务省)", "checklist": ["总额待核", "要望枠"], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-09-01-10年", "date": "2026-09-01", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 10年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-09-01-5年", "date": "2026-09-01", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 2.87 · 尾差 0.8bp"}}, {"id": "jp-tax-jul", "date": "2026-09-02", "cat": "文件", "owner": "tax_progress", "dtype": "估", "label": "7月税收收入额调公布", "checklist": ["4-7月累计vs去年同期"], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-09-03-30年", "date": "2026-09-03", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 30年 0.7兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08"}, {"id": "jpauc-2026-09-03-2年", "date": "2026-09-03", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 2.6兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.88 · 尾差 3.1bp"}}, {"id": "jpauc-2026-09-08-5年", "date": "2026-09-08", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 2.4兆円", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 2.98 · 尾差 3.4bp"}}, {"id": "jpauc-2026-09-11-20年", "date": "2026-09-11", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 20年 0.9兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-09-17-2年", "date": "2026-09-17", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 2年 2.6兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-boj-sep", "date": "2026-09-18", "cat": "文件", "owner": "boj_view", "dtype": "估", "label": "日银金融政策决定会合(9/17-18)", "checklist": ["政策利率", "购入减额进度"], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-09-22-40年", "date": "2026-09-22", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 40年 0.5兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-09-25-流动性供给", "date": "2026-09-25", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 流动性供给 0.6兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-tax-aug", "date": "2026-10-01", "cat": "文件", "owner": "tax_progress", "dtype": "估", "label": "8月税收收入额调公布", "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-10-01-10年", "date": "2026-10-01", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 10年 2.6兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-10-08-5年", "date": "2026-10-08", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 5年 2.4兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-10-22-40年", "date": "2026-10-22", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 40年 0.5兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-boj-oct", "date": "2026-10-30", "cat": "文件", "owner": "boj_view", "dtype": "估", "label": "日银金融政策决定会合(10/29-30)", "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-11-03-30年", "date": "2026-11-03", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 30年 0.7兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-11-11-20年", "date": "2026-11-11", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 20年 0.9兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-11-17-2年", "date": "2026-11-17", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 2年 2.6兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-supp-2026", "date": "2026-11-20", "cat": "立法", "owner": "supplementary", "dtype": "估", "label": "FY2026补充预算阁议决定(估)", "checklist": ["规模", "财源构成", "发行计划改定"], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-11-25-流动性供给", "date": "2026-11-25", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 流动性供给 0.6兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-12-01-10年", "date": "2026-12-01", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 10年 2.6兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jpauc-2026-12-03-30年", "date": "2026-12-03", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 30年 0.7兆円", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-taxreform", "date": "2026-12-15", "cat": "立法", "owner": "tax_legislation_jp", "dtype": "估", "label": "FY2027税制改正大纲(与党决定", "估)": null, "checklist": ["防卫财源所得税附加时点", "给付附带税额抵免"], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-boj-dec", "date": "2026-12-18", "cat": "文件", "owner": "boj_view", "dtype": "估", "label": "日银金融政策决定会合(12/17-18)", "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-plan-2027", "date": "2026-12-24", "cat": "文件", "owner": "issuance_plan", "dtype": "估", "label": "FY2027政府预算案·国债发行计划阁议决定(估)", "checklist": ["新规国债规模", "日历基准结构", "假定利率"], "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-mlt-jan", "date": "2027-01-20", "cat": "文件", "owner": "mlt_projection", "dtype": "估", "label": "内阁府中长期测算1月版(估)", "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-diet-2027", "date": "2027-01-23", "cat": "立法", "owner": "budget_cycle_jp", "dtype": "估", "label": "通常国会召集·预算审议开始(估)", "status": "scheduled", "created_at": "2026-09-08"}, {"id": "jp-budget-pass", "date": "2027-03-31", "cat": "到期", "owner": "budget_cycle_jp", "dtype": "法定", "label": "FY2027当初预算成立期限(逾期→暂定预算)", "status": "scheduled", "created_at": "2026-09-08"}], ONAMES = {"tax_legislation_jp": "立法 · 税制与财源", "deficit_authority": "发行合法性约束 · 特例国债法", "spending_rules": "支出约束 · 骨太目安与基本财政收支目标", "mlt_projection": "中长期经济财政测算 · 版本矩阵", "budget_cycle_jp": "预算周期与当初预算构成", "supplementary": "补充预算与预备费 · 年度财政扩张", "tax_progress": "税收进度 · 当初/决算三口径", "treasury_flows": "国库对民间收支", "local_jp": "地方财政 · 央地划分", "issuance_plan": "国债发行计划 · 日历基准结构", "boj_view": "日银国债购入 · 供给侧对手方", "auctions_jp": "招标监控", "debt_long_jp": "国债残高 · 长周期与/GDP", "holders_jp": "持有者结构", "interest_jp": "利息成本 · 预算假定利率", "yields_jp": "国债利率曲线"};
+const GROUPS = ["发行回购","重要文件","立法时间","重要到期日"];
+const byDate = {};
+EVDB.forEach(e=>{ if(e.status!=='cancelled') (byDate[e.date]=byDate[e.date]||[]).push(e); });
+const calState = {ym: new Date(), on: new Set(GROUPS)};
+const $ = id=>document.getElementById(id);
+const ymTitle = d=>`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}`;
+const dstr = d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+function drawChips(){
+  $('calChips').innerHTML = GROUPS.map(g=>
+    `<span class="chip${calState.on.has(g)?' on':''}" data-g="${g}">${g}</span>`).join('');
+  $('calChips').querySelectorAll('.chip').forEach(c=>c.onclick=()=>{
+    const g=c.dataset.g;
+    calState.on.has(g)?calState.on.delete(g):calState.on.add(g);
+    drawChips(); drawCal();
+  });
+}
+function drawCal(){
+  const y=calState.ym.getFullYear(), m=calState.ym.getMonth();
+  $('calTitle').textContent = ymTitle(calState.ym);
+  $('calHead').innerHTML = ['一','二','三','四','五','六','日'].map(w=>`<div>${w}</div>`).join('');
+  const first=new Date(y,m,1), start=new Date(first);
+  start.setDate(1-((first.getDay()+6)%7));
+  const todayS=dstr(new Date());
+  let html='';
+  for(let i=0;i<42;i++){
+    const d=new Date(start); d.setDate(start.getDate()+i);
+    const ds=dstr(d), dim=d.getMonth()!==m, wknd=d.getDay()===0||d.getDay()===6;
+    const evs=(byDate[ds]||[]).filter(e=>calState.on.has(e.group||'重要文件'));
+    let pills=evs.slice(0,3).map(e=>
+      `<div class="pill g-${e.group}${e.status==='occurred'?' done':''}" title="${e.label}">${e.label}</div>`).join('');
+    if(evs.length>3) pills+=`<div class="pill more">+${evs.length-3}</div>`;
+    html+=`<div class="day${dim?' dim':''}${wknd?' wknd':''}${ds===todayS?' today':''}" data-d="${ds}">
+<div class="dn">${d.getDate()}</div>${pills}</div>`;
+    if(i===41 && d.getMonth()===m) {} 
+  }
+  $('calGrid').innerHTML=html;
+  $('calGrid').querySelectorAll('.day').forEach(el=>el.onclick=()=>drawDetail(el.dataset.d));
+}
+function drawDetail(ds){
+  const evs=(byDate[ds]||[]).filter(e=>calState.on.has(e.group||'重要文件'));
+  if(!evs.length){ $('calDetail').innerHTML=`<span class="hint">${ds} 无事件</span>`; return; }
+  $('calDetail').innerHTML = `<b style="font-family:var(--mono)">${ds}</b>` + evs.map(e=>{
+    const rev=(e.revisions||[]).length?` · 改期×${e.revisions.length}`:'';
+    const est=e.dtype==='估计'?' · 估计值':'';
+    return `<div class="dev g-${e.group}">
+<div class="l1"><span class="st ${e.status}">${e.status}</span><b>${e.label}</b>
+<span style="color:var(--muted);font-size:11.5px">${ONAMES[e.owner]||e.owner||''} · ${e.cat}${est}${rev}</span></div>
+${e.result&&e.result.summary?`<div class="res">结果: ${e.result.summary}</div>`:''}
+${(e.checklist||[]).length?`<div class="chk">核对: ${e.checklist.join(' / ')}</div>`:''}</div>`;
+  }).join('');
+}
+$('calPrev').onclick=()=>{calState.ym.setMonth(calState.ym.getMonth()-1); drawCal();};
+$('calNext').onclick=()=>{calState.ym.setMonth(calState.ym.getMonth()+1); drawCal();};
+$('calHome').onclick=()=>{calState.ym=new Date(); drawCal(); drawDetail(dstr(new Date()));};
+drawChips(); drawCal(); drawDetail(dstr(new Date()));
+
+document.querySelectorAll('.ltoggle').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    const layer=document.getElementById(btn.dataset.layer);
+    const hidden=layer.classList.toggle('collapsed');
+    layer.querySelectorAll('.work, details.dossier').forEach(el=>{el.style.display=hidden?'none':'';});
+    btn.textContent=hidden?'展开工作视图':'收起工作视图';
+  });
+});
+</script></body></html>
