@@ -75,6 +75,7 @@ def fetch_jgb_yields():
         except Exception as e:
             print(f"  jgb csv 失败 {u.rsplit('/',1)[-1]}: {e}")
     if len(byd) < 500:
+        (OUT / "_debug_jgb.txt").write_text(f"parsed={len(byd)} got={got}\n", encoding="utf-8")
         print(f"  !! JGB利率不足({len(byd)}), 保留上一版"); return
     ds = sorted(byd)
     _write("jgb_yields", {"sample": False, "dates": ds,
@@ -288,16 +289,9 @@ def seed_auctions_jp():
     _write("auctions_jp", {"sample": True, "records": rows, "note": "招标结果(財務省逐场页面, 尽力解析待接入); btc=倍数, tail=平均-最低价差"})
 
 
-SEEDS = {"budget_jp": seed_budget, "supplementary": seed_supplementary, "mlt_projection": seed_mlt,
-         "issuance_plan": seed_issuance_plan, "tenor_history": seed_tenor_history, "tax_progress": seed_tax,
-         "treasury_flows": seed_flows, "local_jp": seed_local_jp, "debt_long_jp": seed_debt_long,
-         "holders_jp": seed_holders_jp, "interest_jp": seed_interest_jp, "boj_plan": seed_boj_plan,
-         "auctions_jp": seed_auctions_jp}
 
 
-def write_sample():
-    for n, fn in SEEDS.items(): fn()
-    # 利率样例: 2000+日频三期限
+def seed_yields():
     kn = {"2y": [("2000-01", 0.5), ("2006-06", 0.9), ("2010-01", 0.15), ("2016-06", -0.3), ("2021-01", -0.13), ("2023-12", 0.05), ("2025-06", 0.75), ("2026-08", 1.05)],
           "10y": [("2000-01", 1.7), ("2006-06", 1.9), ("2010-01", 1.3), ("2016-06", -0.2), ("2021-01", 0.03), ("2023-12", 0.65), ("2025-06", 1.45), ("2026-08", 1.62)],
           "30y": [("2000-01", 2.4), ("2006-06", 2.5), ("2010-01", 2.2), ("2016-06", 0.3), ("2021-01", 0.65), ("2023-12", 1.65), ("2025-06", 2.95), ("2026-08", 3.25)]}
@@ -310,9 +304,22 @@ def write_sample():
             for t in kn: ser[t].append(round(ms[t].get(m, list(ms[t].values())[-1]) + 0.02*((d.day % 7) - 3)/3, 3))
         d += timedelta(days=1)
     _write("jgb_yields", {"sample": True, "dates": dates, "series": ser})
+
+
+def seed_macro():
     _write("macro_jp", {"sample": True, "ngdp": {str(y): v for y, v in zip(range(2015, 2027), [540, 545, 553, 556, 558, 539, 553, 562, 597, 610, 628, 640])},
                         "debt_gdp": {str(y): v for y, v in zip(range(2015, 2027), [228, 232, 231, 232, 236, 258, 253, 248, 240, 237, 234, 232])},
                         "pb_gdp": {str(y): v for y, v in zip(range(2015, 2027), [-3.6, -3.4, -2.8, -2.2, -2.9, -8.6, -5.6, -3.6, -2.1, -1.5, -0.9, -0.5])}})
+
+SEEDS = {"budget_jp": seed_budget, "supplementary": seed_supplementary, "mlt_projection": seed_mlt,
+         "issuance_plan": seed_issuance_plan, "tenor_history": seed_tenor_history, "tax_progress": seed_tax,
+         "treasury_flows": seed_flows, "local_jp": seed_local_jp, "debt_long_jp": seed_debt_long,
+         "holders_jp": seed_holders_jp, "interest_jp": seed_interest_jp, "boj_plan": seed_boj_plan,
+         "auctions_jp": seed_auctions_jp, "jgb_yields": seed_yields, "macro_jp": seed_macro}
+
+
+def write_sample():
+    for n, fn in SEEDS.items(): fn()
     print("日本示例完成")
 
 
