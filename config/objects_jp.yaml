@@ -1,0 +1,220 @@
+# 日本财政追踪看板 · 对象注册表 (术语: 标准中文优先, 无对应概念保留日文并注)
+country: JP
+updated: "2026-09-08"
+anchors:
+  fy_current: 2026
+  budget_total_t: 122.3
+  new_bond_t: 29.6
+  assumed_rate: 2.6
+
+layers:
+  - id: L1
+    name: 规则与立法
+    objects:
+      - id: tax_legislation_jp
+        name: 立法 · 税制与财源
+        view: tax_legislation_jp
+        status_line: text
+        text_status: "消费税减税之议 · 防卫财源 · 育儿支援金 · 年末税制改正为年度决胜点"
+        verified: "2026-09-08"
+        qual:
+          state: 高市政权'负责任的积极财政'; FY2026税制改正已生效项(所得税壁·汽油暂定税率废止), 消费税减税未纳入
+          base_case: 2026年末税制改正聚焦防卫财源所得税附加时点与给付附带税额抵免设计; 消费税率不动
+          watch: 在野党消费税减税法案; 税收超收规模(决算剩余金去向); 防卫特别法人税首年入库
+        sources:
+          - {name: 财务省税制改正大纲, freq: 年(12月), kind: 人工锚}
+          - {name: 国会审议(众参财政金融委), freq: 会期, kind: 人工锚}
+      - id: deficit_authority
+        name: 发行合法性约束 · 特例国债法
+        view: deficit_authority
+        status_line: text
+        text_status: "特例国债法5年延长(FY2026-30)审议中→授权到期FY2030是硬节点; 60年偿还规则维持"
+        verified: "2026-09-08"
+        qual:
+          state: 特例国债连续第33年发行; 授权立法从逐年审议变为5年一次, 财政民主主义之争在野党提起
+          watch: 特例国债法成立确认; 60年规则脱钩讨论; 前倒债限额50兆円使用
+          mechanism: 财政法第4条禁止赤字国债, 特例法是例外授权; 授权期是日本唯一的'发行硬约束'节点, 对应美国债限的功能位置但无额度上限
+        sources:
+          - {name: 财务省国债发行计划, freq: 年+改定, kind: 人工锚}
+          - {name: 国会法案数据库, freq: 会期, kind: 人工锚}
+      - id: spending_rules
+        name: 支出约束 · 骨太目安与基本财政收支目标
+        view: spending_rules
+        status_line: text
+        text_status: "软约束体系: PB目标(骨太方针) · 社保/非社保目安 · 概算请求基准 · 防卫43兆円计划"
+        verified: "2026-09-08"
+        qual:
+          state: 当初预算口径一般会计PB转正(FY2026), 但补充预算与预备费在框架外; 2026骨太的PB表述待核
+          watch: 6月骨太方针的目标年份措辞; 补充预算规模对PB实绩的侵蚀; 中长期测算7月版
+        sources:
+          - {name: 经济财政运营与改革基本方针(骨太方针), freq: 年(6月), kind: 人工锚}
+          - {name: IMF WEO(一般政府PB), freq: 年2次, kind: API}
+
+  - id: L2
+    name: 预算
+    objects:
+      - id: mlt_projection
+        name: 中长期经济财政测算 · 版本矩阵
+        view: mlt_matrix
+        status_line: text
+        text_status: "内阁府1月/7月两版; 成长实现与基线两场景的PB与债务/GDP路径"
+        verified: "2026-09-08"
+        qual:
+          state: 对应美国CBO基线; 版本间移动看成长假设与税收弹性
+          watch: 7月版对1月版的PB路径修正方向; 基线场景是否重回赤字
+        sources:
+          - {name: 内阁府中长期经济财政测算, freq: 年2次(1月/7月), kind: 人工锚·对话转换}
+      - id: budget_cycle_jp
+        name: 预算周期与当初预算构成
+        view: budget_cycle_jp
+        status_line: text
+        text_status: "FY2027周期: 概算请求已提出(8/31) → 12月下旬政府案 → 3月末成立"
+        verified: "2026-09-08"
+        qual:
+          state: FY2026当初122.3兆円(国债费31.3兆, 社保39.1兆); FY2027概算请求总额待核
+          watch: 12月政府案的新规国债是否守住30兆以下; 国债费对预算假定利率的敏感度
+        sources:
+          - {name: 财务省预算政府案, freq: 年(12月), kind: 人工锚}
+      - id: supplementary
+        name: 补充预算与预备费 · 年度财政扩张
+        view: supplementary
+        status_line: text
+        text_status: "补充预算是扩张主通道: FY2025 17.7兆; FY2026秋季补充待观察"
+        verified: "2026-09-08"
+        qual:
+          state: 高市政权以补充预算承载经济对策; 预备费回落至1兆円常态
+          watch: 10-12月经济对策规模与财源(税收超收/剩余金/追加国债); 预备费使用
+        sources:
+          - {name: 财务省补充预算概要, freq: 不定期, kind: 人工锚}
+
+  - id: L3
+    name: 收支
+    objects:
+      - id: tax_progress
+        name: 税收进度 · 当初/决算三口径
+        view: tax_progress
+        status_line: text
+        text_status: "月度税收累计 vs 当初预算与历年决算; 税收超收是年内核心动态"
+        verified: "2026-09-08"
+        qual:
+          state: FY2025决算见込约80兆超当初; FY2026当初83.7兆, 4-7月实绩进度与去年同期比较
+          watch: 法人税5月/11月集中缴纳月的超收幅度; 消费税对名义增长的弹性; 决算剩余金去向
+        sources:
+          - {name: 财务省租税及印花收入收入额调, freq: 月(滞后约2月), kind: Excel·尽力解析}
+      - id: treasury_flows
+        name: 国库对民间收支
+        view: treasury_flows
+        status_line: text
+        text_status: "月度国库受入/支付(DTS的日本对应物), 缴税月集中特征"
+        verified: "2026-09-08"
+        qual:
+          state: 月度国库资金对民间收支; 5月/11月/3月为缴税集中月
+        sources:
+          - {name: 财务省财政资金对民间收支, freq: 月, kind: Excel·尽力解析}
+      - id: local_jp
+        name: 地方财政 · 央地划分
+        view: local_jp
+        status_line: text
+        text_status: "地方财政计划FY2026 102.4兆; 央地转移=地方交付税+国库支出金"
+        verified: "2026-09-08"
+        qual:
+          state: 地方税与交付税双升; 央地转移占地方计划规模约37%
+          watch: 交付税总额对法人税上振的联动; 临时财政对策债零发行延续
+        sources:
+          - {name: 总务省地方财政计划, freq: 年(12月), kind: 人工锚}
+
+  - id: L4
+    name: 发行
+    objects:
+      - id: issuance_plan
+        name: 国债发行计划 · 日历基准结构
+        view: issuance_plan
+        status_line: text
+        text_status: "FY2026发行总额约175兆(新规29.6+再融资130+财投13); 日历基准172兆; 超长端缩减延续"
+        verified: "2026-09-08"
+        qual:
+          state: 对应美国QRA; 12月随预算公布, 补充预算时改定; 一级交易商会议为TBAC对应物
+          base_case: 补充预算改定时增发以短中期为主; 超长端维持2025年6月缩减后水平
+          watch: 补充预算的增发期限分布; 超长端(30/40年)需求; 一级交易商会议纪要
+        sources:
+          - {name: 财务省国债发行计划(PDF), freq: 年+改定, kind: 人工锚}
+          - {name: 国债市场特别参与者会议纪要, freq: 季度, kind: 人工锚}
+      - id: boj_view
+        name: 日银国债购入 · 供给侧对手方
+        view: boj_view
+        status_line: text
+        text_status: "减购路径: 2026Q2起每季-0.2兆, 2027Q1约2兆円/月; 6月中期评估维持(待核)"
+        verified: "2026-09-08"
+        qual:
+          state: 日银持有约48%且减持中; 私人部门须吸收的净供给逐季上升
+          watch: 2027年4月后的购入下限; 超长端急升时的机动购入; 持有份额季度变化
+        sources:
+          - {name: 日银金融政策决定会合, freq: 年8次, kind: 人工锚}
+          - {name: FRED JPNASSETS(日银总资产), freq: 月, kind: API}
+      - id: auctions_jp
+        name: 招标监控
+        view: auctions_jp
+        status_line: text
+        text_status: "近期招标结果(倍数·尾差)与未来日程"
+        verified: "2026-09-08"
+        qual:
+          state: 超长端招标倍数与尾差是2025年以来的市场压力表
+        sources:
+          - {name: 财务省招标结果, freq: 逐场, kind: HTML·尽力解析}
+
+  - id: L5
+    name: 债务管理
+    objects:
+      - id: debt_long_jp
+        name: 国债残高 · 长周期与/GDP
+        view: debt_long_jp
+        status_line: text
+        text_status: "普通国债残高约1,112兆円(FY2026末见込), 约174%名目GDP; 一般政府债务/GDP约232%"
+        verified: "2026-09-08"
+        qual:
+          state: 残高增速放缓但利率上行使国债费成为增长最快的支出项
+        sources:
+          - {name: 财务省国债及借入金现在高, freq: 季, kind: 人工锚}
+          - {name: IMF WEO / FRED, freq: 年, kind: API}
+      - id: holders_jp
+        name: 持有者结构
+        view: holders_jp
+        status_line: text
+        text_status: "日银~48%减持中 · 银行~12% · 保险年金~20% · 海外~13%"
+        verified: "2026-09-08"
+        qual:
+          state: 日银退出后的边际买家是银行与海外; 生保受资本规制约束减持超长端
+        sources:
+          - {name: 日银资金循环统计, freq: 季, kind: CSV·尽力解析}
+      - id: interest_jp
+        name: 利息成本 · 预算假定利率
+        view: interest_jp
+        status_line: text
+        text_status: "利息支付等FY2026 13.1兆; 加权利率1.2% vs 预算假定利率2.6%; 平均剩余期限约9.3年"
+        verified: "2026-09-08"
+        qual:
+          state: 假定利率2.0→2.6%推动国债费+3.1兆; 存量置换缓慢使实际利息滞后于市场利率
+        sources:
+          - {name: 财务省预算国债费·国债整理基金, freq: 年, kind: 人工锚}
+      - id: yields_jp
+        name: 国债利率曲线
+        view: yields_jp
+        status_line: text
+        text_status: "财务省日频利率(1974年起), 2/5/10/20/30/40年"
+        verified: "2026-09-08"
+        qual:
+          state: 全自动日频源; 超长端利率是财政可持续性的市场定价
+        sources:
+          - {name: 财务省国债金利情报CSV, freq: 日, kind: API}
+
+framework_laws:
+  - {id: fl, name: 财政法(1947), note: 第4条禁止赤字国债(建设国债例外); 第5条禁止日银直接承购, status: 现行, last_change: —}
+  - {id: sbl, name: 特例国债法, note: 赤字国债发行的例外授权; 2021年法覆盖FY2021-25, 2026年3月审议5年延长, status: 延长案审议(成立待核), last_change: 2026-03}
+  - {id: gx, name: GX推进法/儿童支援金法, note: GX经济转型债(20兆规模)与儿童特例债的发行依据, status: 现行, last_change: 2024}
+  - {id: r60, name: 60年偿还规则, note: 国债整理基金对普通国债的定率(1.6%)转入与60年偿还, status: 现行(政治讨论中), last_change: —}
+
+reference:
+  pipeline_notes:
+    - "自动: 日频利率(财务省CSV) · 名目GDP/债务·PB(IMF WEO+FRED) · 日银总资产(FRED)"
+    - "尽力解析(首跑校验): 招标结果HTML · 税收月度Excel · 国库对民间收支Excel · 资金循环CSV"
+    - "人工锚(对话更新): 发行计划 · 当初/补充预算 · 中长期测算 · 骨太目安 · 假定利率 · 平均剩余期限"
