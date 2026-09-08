@@ -25,14 +25,14 @@ def v_deficit_authority(obj, ctx):
     ip = ctx.get("issuance_plan") or {}
     b = ctx.get("budget_jp") or {}
     rows = [(k, fmt(v, 1)) for k, v in b.get("revenue", []) if "国债" in k]
-    h = "<h4>发行合法性依据 · 按法律依据分类(FY2026当初, 兆円)</h4>"
+    h = "<h4>发行合法性依据 · 按法律依据分类(FY2026当初, ¥T)</h4>"
     h += table(["依据", "#金额"], [("建设国债(财政法第4条)", fmt(6.7, 1)), ("特例国债(特例国债法授权)", fmt(22.9, 1)),
                                   ("再融资国债(国债整理基金特别会计法)", fmt(130.0, 1)), ("财投债(财政融资资金法)", fmt(13.0, 1)),
                                   ("GX经济转型债 / 儿童特例债 / 复兴债", "1.8 / 0.3 / 0.1")])
     h += table(["约束", "现行状态", "下一节点"], [
         ("特例国债法(赤字国债授权)", "5年延长案(FY2026-2030)2026年3月国会审议 · 成立待核", "FY2030到期 → 2031年3月前需再立法"),
         ("60年偿还规则", "维持; 2025年起债务偿还费与规则脱钩之议题被政治化", "预算编成期(12月)"),
-        ("提前发行债限额", "FY2026 50兆円", "每年度发行计划"),
+        ("提前发行债限额", "FY2026 ¥50T", "每年度发行计划"),
     ])
     return h + _note("日本无法定债务上限; 功能对应物是'发行必须有法律依据'——特例国债法的授权期限是最接近美国债限的硬节点") + qual_card(obj["qual"])
 
@@ -43,10 +43,10 @@ def v_spending_rules(obj, ctx):
     h = table(["规则", "内容", "性质"], [
         ("基本财政收支目标", "中央+地方PB黑字化: 2025-26年度目标 → 经济财政新生计划(2025-2030)期内稳定实现", "软目标(骨太方针)"),
         ("债务/GDP", "公债等残高/GDP安定地下降", "软目标"),
-        ("社会保障自然增目安", "高龄化相当增(约+0.4-0.5兆円/年)以内", "预算编成目安"),
-        ("非社保支出目安", "+0.33兆円/年 → 2025骨太起弹性化", "预算编成目安"),
-        ("概算请求基准", "8月末各省概算请求上限; 要望枠4兆円", "行政规则"),
-        ("防卫", "5年43兆円(FY2023-27), GDP2%达成FY2027", "计划约束"),
+        ("社会保障自然增目安", "高龄化相当增(约+0.4-¥0.5T/年)以内", "预算编成目安"),
+        ("非社保支出目安", "+¥0.33T/年 → 2025骨太起弹性化", "预算编成目安"),
+        ("概算请求基准", "8月末各省概算请求上限; 要望枠¥4T", "行政规则"),
+        ("防卫", "5年¥43T(FY2023-27), GDP2%达成FY2027", "计划约束"),
     ])
     pb = mac.get("pb_gdp") or {}
     if pb:
@@ -58,12 +58,12 @@ def v_spending_rules(obj, ctx):
 
 def v_tax_legislation_jp(obj, ctx):
     return table(["议题", "状态", "赤字影响", "节点"], [
-        ("消费税(食品零税率/减税之议)", "在野党主张; 高市政权未纳入FY2026", "食品零税率约-5兆円/年", "2026秋临时国会 / 年末税制改正"),
-        ("所得税'壁'(基础控除等提高至160万円)", "FY2025税改成法, FY2026全年生效", "约-1.2兆円/年", "已生效"),
-        ("防卫财源(防卫特别法人税·所得税附加·烟税)", "防卫特别法人税FY2026起(法人税额4%); 所得税附加时点待定", "+1兆円级/年", "年末税制改正"),
-        ("儿童·育儿支援金", "FY2026起征收(医保附加), FY2028满额1兆円", "+0.6→1.0兆円", "已生效"),
+        ("消费税(食品零税率/减税之议)", "在野党主张; 高市政权未纳入FY2026", "食品零税率约-¥5T/年", "2026秋临时国会 / 年末税制改正"),
+        ("所得税'壁'(基础控除等提高至160万円)", "FY2025税改成法, FY2026全年生效", "约-¥1.2T/年", "已生效"),
+        ("防卫财源(防卫特别法人税·所得税附加·烟税)", "防卫特别法人税FY2026起(法人税额4%); 所得税附加时点待定", "+¥1T级/年", "年末税制改正"),
+        ("儿童·育儿支援金", "FY2026起征收(医保附加), FY2028满额¥1T", "+0.6→¥1.0T", "已生效"),
         ("给付附带税额抵免", "国民民主/立宪主张, 政府检讨", "待定", "2026年末税改"),
-        ("汽油税暂定税率废止", "2025年末决定废止", "-1.5兆円/年(国+地方)", "已生效"),
+        ("汽油税暂定税率废止", "2025年末决定废止", "-¥1.5T/年(国+地方)", "已生效"),
     ]) + qual_card(obj["qual"])
 
 
@@ -95,8 +95,8 @@ def v_budget_cycle_jp(obj, ctx):
         ("参院审议·成立", "3月末", "待(逾期则暂定预算)"), ("补充预算(秋)", "10-12月", "FY2026补充: 待观察"),
     ])
     if b:
-        h += f"<h4>FY{b.get('fy')} 当初预算构成 (兆円) · {esc(b.get('as_of', ''))}</h4>"
-        h += table(["岁入", "#兆円", "岁出", "#兆円"],
+        h += f"<h4>FY{b.get('fy')} 当初预算构成 (¥T) · {esc(b.get('as_of', ''))}</h4>"
+        h += table(["岁入", "#¥T", "岁出", "#¥T"],
                    [(r[0], fmt(r[1], 1), o[0], fmt(o[1], 1)) for r, o in zip(b.get("revenue", []) + [("", None)]*2, b.get("outlay", []))])
         h += _note(b.get("note", ""))
     return h + qual_card(obj["qual"])
@@ -106,8 +106,8 @@ def v_supplementary(obj, ctx):
     s = ctx.get("supplementary") or {}
     rows = s.get("rows", [])
     h = chart("ch_supp", "pnbar", [f"FY{r['fy']}" for r in rows],
-              [{"label": "补充预算规模(兆円)", "data": [r.get("amount") for r in rows], "color": "red"}], "", opts={"h": 240})
-    h += table(["财年", "#补充预算(兆円)", "#次数", "#预备费(兆円)"],
+              [{"label": "补充预算规模(¥T)", "data": [r.get("amount") for r in rows], "color": "red"}], "", opts={"h": 240})
+    h += table(["财年", "#补充预算(¥T)", "#次数", "#预备费(¥T)"],
                [(f"FY{r['fy']}", fmt(r.get("amount"), 1), r.get("count", ""),
                  fmt(next((x["t"] for x in s.get("reserve", []) if x["fy"] == r["fy"]), None), 1)) for r in rows])
     return h + _note("补充预算+预备费是日本财政扩张的主通道: 当初预算守PB形式, 补充预算承载经济对策; 税收超收→决算剩余金是其常规财源") + qual_card(obj["qual"])
@@ -155,11 +155,11 @@ def v_local_jp(obj, ctx):
 # ------------------------------------------------------------------ L4
 def v_issuance_plan(obj, ctx):
     ip = ctx.get("issuance_plan") or {}
-    h = f"<h4>FY{ip.get('fy')} 国债发行计划 (兆円) · {esc(ip.get('as_of', ''))}</h4>"
+    h = f"<h4>FY{ip.get('fy')} 国债发行计划 (¥T) · {esc(ip.get('as_of', ''))}</h4>"
     h += table(["项目", "#FY2026当初", "#FY2025当初", "#增减"],
                [(r[0], fmt(r[1], 1), fmt(r[2], 1), f"{r[1]-r[2]:+.1f}") for r in ip.get("table", [])])
     h += "<h4>日历基准市中发行额 · 单次规模 × 年度场次</h4>"
-    h += table(["期限", "#单次(兆円)", "#场次/年", "#年度合计"],
+    h += table(["期限", "#单次(¥T)", "#场次/年", "#年度合计"],
                [(r[0], fmt(r[1], 2), r[2], fmt(r[1]*r[2], 1)) for r in ip.get("calendar", [])])
     th = ctx.get("tenor_history") or {}
     ms = th.get("months", []); T = th.get("tenors", {})
@@ -175,11 +175,11 @@ def v_boj_view(obj, ctx):
     bp = ctx.get("boj_plan") or {}
     p = bp.get("path", [])
     h = chart("ch_boj_jp", "line", [x[0] for x in p],
-              [{"label": "月度长期国债购入预定额(兆円)", "data": [x[1] for x in p], "color": "blue", "w": 2.2}], "", opts={"h": 240})
+              [{"label": "月度长期国债购入预定额(¥T)", "data": [x[1] for x in p], "color": "blue", "w": 2.2}], "", opts={"h": 240})
     mac = ctx.get("macro_jp") or {}
     ba = (mac.get("boj_assets") or [])[-120:]
     if ba:
-        h += "<h4>日银总资产 (兆円, 月度)</h4>"
+        h += "<h4>日银总资产 (¥T, 月度)</h4>"
         h += chart("ch_bojassets", "line", [x["month"][2:] for x in ba],
                    [{"label": "BOJ总资产", "data": [x["t_yen"] for x in ba], "color": "ink", "w": 1.6}], "", opts={"h": 240, "zoom": True})
     return h + _note(bp.get("note", "")) + qual_card(obj["qual"])
@@ -191,10 +191,10 @@ def v_auctions_jp(obj, ctx):
     past = [r for r in recs if r["date"] <= TODAY.isoformat()][-12:]
     nxt = [r for r in recs if r["date"] > TODAY.isoformat()][:8]
     h = "<h4>近期招标结果</h4>"
-    h += table(["日期", "期限", "#规模(兆円)", "#倍数", "#尾差bp"],
+    h += table(["日期", "期限", "#规模(¥T)", "#倍数", "#尾差bp"],
                [(r["date"][5:], r["tenor"], fmt(r["size_t"], 2), fmt(r.get("btc"), 2), fmt(r.get("tail_bp"), 1)) for r in reversed(past)])
     h += "<h4>未来招标日程</h4>"
-    h += table(["日期", "期限", "#规模(兆円)"], [(r["date"][5:], r["tenor"], fmt(r["size_t"], 2)) for r in nxt])
+    h += table(["日期", "期限", "#规模(¥T)"], [(r["date"][5:], r["tenor"], fmt(r["size_t"], 2)) for r in nxt])
     return h + _note(a.get("note", "")) + qual_card(obj["qual"])
 
 
@@ -204,7 +204,7 @@ def v_debt_long_jp(obj, ctx):
     yrs = [str(y) for y in d.get("years", [])]
     ratio = [round(100*a/b, 0) if (a and b) else None for a, b in zip(d.get("jgb", []), d.get("ngdp", []))]
     h = chart("ch_debt_jp", "line", yrs,
-              [{"label": "普通国债残高(兆円)", "data": d.get("jgb"), "color": "ink", "w": 2},
+              [{"label": "普通国债残高(¥T)", "data": d.get("jgb"), "color": "ink", "w": 2},
                {"label": "残高/名目GDP % (右轴)", "data": ratio, "color": "red", "dash": [5, 4], "w": 1.6, "axis": "y2"}],
               "", opts={"tall": True, "zoom": True, "axes": {"y2": {"unit": "%"}}})
     mac = ctx.get("macro_jp") or {}
@@ -232,7 +232,7 @@ def v_interest_jp(obj, ctx):
     h = chart("ch_int_rate_jp", "line", yrs,
               [{"label": "存量加权利率 %", "data": it.get("avg_rate"), "color": "amber", "w": 2},
                {"label": "预算假定利率 %", "data": it.get("assumed_rate"), "color": "blue", "dash": [5, 4], "w": 1.6}], "%", opts={"h": 280})
-    h += "<h4>利息支付等 (一般会计国债费内, 兆円)</h4>"
+    h += "<h4>利息支付等 (一般会计国债费内, ¥T)</h4>"
     h += chart("ch_int_jp", "pnbar", yrs, [{"label": "利息支付等", "data": it.get("interest_t"), "color": "red"}], "", opts={"h": 240})
     h += "<h4>平均剩余期限 (年)</h4>"
     h += chart("ch_wam_jp", "line", yrs, [{"label": "普通国债平均剩余期限", "data": it.get("wam_yr"), "color": "ink", "w": 2}], "", opts={"h": 220})
