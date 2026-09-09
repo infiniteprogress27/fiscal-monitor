@@ -43,8 +43,8 @@
    "term": "9-Year 11-Month",
    "cusip": "91282CRF0",
    "offering_bn": 39.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 4.834,
+   "btc": 2.71,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -55,8 +55,8 @@
    "term": "17-Week",
    "cusip": "912797WP8",
    "offering_bn": 72.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 4.001,
+   "btc": 2.73,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -1418,5 +1418,5 @@
    "tail_bp": null
   }
  ],
- "fetched_at": "2026-09-08T23:01:26.489285Z"
+ "fetched_at": "2026-09-09T20:00:22.976596Z"
 }
