@@ -51,6 +51,7 @@
 {"id": "jpauc-2026-11-25-流动性供给", "date": "2026-11-25", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 流动性供给 ¥0.6T", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}
 {"id": "jpauc-2026-12-01-10年", "date": "2026-12-01", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 10年 ¥2.6T", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}
 {"id": "jpauc-2026-12-03-30年", "date": "2026-12-03", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 30年 ¥0.7T", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}
+{"id": "jpauc-2026-12-08-5年", "date": "2026-12-08", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 5年 ¥2.4T", "checklist": [], "status": "scheduled", "created_at": "2026-09-10"}
 {"id": "jp-taxreform", "date": "2026-12-15", "cat": "立法", "owner": "tax_legislation_jp", "dtype": "估", "label": "FY2027税制改正大纲(与党决定", "估)": null, "checklist": ["防卫财源所得税附加时点", "给付附带税额抵免"], "status": "scheduled", "created_at": "2026-09-08"}
 {"id": "jp-boj-dec", "date": "2026-12-18", "cat": "文件", "owner": "boj_view", "dtype": "估", "label": "日银金融政策决定会合(12/17-18)", "status": "scheduled", "created_at": "2026-09-08"}
 {"id": "jp-plan-2027", "date": "2026-12-24", "cat": "文件", "owner": "issuance_plan", "dtype": "估", "label": "FY2027政府预算案·国债发行计划阁议决定(估)", "checklist": ["新规国债规模", "日历基准结构", "假定利率"], "status": "scheduled", "created_at": "2026-09-08"}
