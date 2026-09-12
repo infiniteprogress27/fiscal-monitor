@@ -34,7 +34,7 @@
 {"id": "jpauc-2026-09-03-2年", "date": "2026-09-03", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 2年 ¥2.6T", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 3.88 · 尾差 3.1bp"}}
 {"id": "jp-req-pub", "date": "2026-09-05", "cat": "文件", "owner": "budget_cycle_jp", "dtype": "估", "label": "财务省公布概算请求总额明细(估9月上旬)", "status": "occurred", "created_at": "2026-09-08"}
 {"id": "jpauc-2026-09-08-5年", "date": "2026-09-08", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 ¥2.4T", "checklist": [], "status": "occurred", "created_at": "2026-09-08", "result": {"summary": "倍数 2.98 · 尾差 3.4bp"}}
-{"id": "jpauc-2026-09-11-20年", "date": "2026-09-11", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 20年 ¥0.9T", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}
+{"id": "jpauc-2026-09-11-20年", "date": "2026-09-11", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 20年 ¥0.9T", "checklist": [], "status": "occurred", "created_at": "2026-09-08"}
 {"id": "jpauc-2026-09-17-2年", "date": "2026-09-17", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 2年 ¥2.6T", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}
 {"id": "jp-boj-sep", "date": "2026-09-18", "cat": "文件", "owner": "boj_view", "dtype": "估", "label": "日银金融政策决定会合(9/17-18)", "checklist": ["政策利率", "购入减额进度"], "status": "scheduled", "created_at": "2026-09-08"}
 {"id": "jpauc-2026-09-22-40年", "date": "2026-09-22", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 40年 ¥0.5T", "checklist": [], "status": "scheduled", "created_at": "2026-09-08"}

@@ -1,49 +1,49 @@
 {
  "sample": false,
- "as_of": "2026-07",
+ "as_of": "2026-08",
  "rows": [
   {
    "id": "out_ss",
    "cat": "社会保障",
-   "fytd": 1384.0,
-   "fytd_prior": 1314.0
-  },
-  {
-   "id": "out_med",
-   "cat": "Medicare",
-   "fytd": 955.0,
-   "fytd_prior": 823.0
+   "fytd": 1526.0,
+   "fytd_prior": 1447.0
   },
   {
    "id": "out_int",
    "cat": "净利息",
-   "fytd": 931.0,
-   "fytd_prior": 841.0
+   "fytd": 1017.0,
+   "fytd_prior": 933.0
+  },
+  {
+   "id": "out_med",
+   "cat": "Medicare",
+   "fytd": 979.0,
+   "fytd_prior": 965.0
   },
   {
    "id": "out_mcd",
    "cat": "Health(含Medicaid)",
-   "fytd": 845.0,
-   "fytd_prior": 805.0
+   "fytd": 926.0,
+   "fytd_prior": 885.0
   },
   {
    "id": "out_def",
    "cat": "国防",
-   "fytd": 804.0,
-   "fytd_prior": 758.0
+   "fytd": 876.0,
+   "fytd_prior": 841.0
   },
   {
    "id": "out_ndd",
    "cat": "其余职能合计",
-   "fytd": 757.0,
-   "fytd_prior": 825.0
+   "fytd": 842.0,
+   "fytd_prior": 925.0
   },
   {
    "id": "out_incsec",
    "cat": "收入保障",
-   "fytd": 608.0,
-   "fytd_prior": 608.0
+   "fytd": 645.0,
+   "fytd_prior": 668.0
   }
  ],
- "fetched_at": "2026-09-11T00:29:25.174742Z"
+ "fetched_at": "2026-09-12T00:30:49.042505Z"
 }

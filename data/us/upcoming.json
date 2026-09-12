@@ -714,13 +714,93 @@
    "offering_bn": 13.0
   },
   {
+   "announce": "2026-09-15",
+   "auction_date": "2026-09-16",
+   "issue_date": "2026-09-22",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": null
+  },
+  {
    "announce": "2026-09-10",
    "auction_date": "2026-09-17",
    "issue_date": "2026-09-30",
    "type": "Note",
    "term": "9-Year 10-Month",
    "offering_bn": 19.0
+  },
+  {
+   "announce": "2026-09-15",
+   "auction_date": "2026-09-17",
+   "issue_date": "2026-09-22",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-15",
+   "auction_date": "2026-09-17",
+   "issue_date": "2026-09-22",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-17",
+   "auction_date": "2026-09-21",
+   "issue_date": "2026-09-24",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-17",
+   "auction_date": "2026-09-21",
+   "issue_date": "2026-09-24",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-17",
+   "auction_date": "2026-09-22",
+   "issue_date": "2026-09-24",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-17",
+   "auction_date": "2026-09-22",
+   "issue_date": "2026-09-30",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-17",
+   "auction_date": "2026-09-23",
+   "issue_date": "2026-09-25",
+   "type": "Note",
+   "term": "1-Year 10-Month",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-17",
+   "auction_date": "2026-09-23",
+   "issue_date": "2026-09-30",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-17",
+   "auction_date": "2026-09-24",
+   "issue_date": "2026-09-30",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": null
   }
  ],
- "fetched_at": "2026-09-11T00:24:43.620632Z"
+ "fetched_at": "2026-09-12T00:30:23.728137Z"
 }
