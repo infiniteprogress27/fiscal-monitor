@@ -14,13 +14,49 @@
    "tail_bp": null
   },
   {
+   "auction_date": "2026-09-17",
+   "type": "Bill",
+   "term": "4-Week",
+   "cusip": "912797VM6",
+   "offering_bn": 90.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-09-17",
+   "type": "Bill",
+   "term": "8-Week",
+   "cusip": "912797VX2",
+   "offering_bn": 85.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
+   "auction_date": "2026-09-16",
+   "type": "Bill",
+   "term": "17-Week",
+   "cusip": "912797WQ6",
+   "offering_bn": 72.0,
+   "high_yield": null,
+   "btc": null,
+   "pd_pct": null,
+   "indirect_pct": null,
+   "tail_bp": null
+  },
+  {
    "auction_date": "2026-09-15",
    "type": "Bond",
    "term": "19-Year 11-Month",
    "cusip": "912810UX4",
    "offering_bn": 13.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 5.42,
+   "btc": 2.57,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -31,8 +67,8 @@
    "term": "6-Week",
    "cusip": "912797SK4",
    "offering_bn": 75.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 3.921,
+   "btc": 3.16,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -1356,43 +1392,7 @@
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
-  },
-  {
-   "auction_date": "2026-06-11",
-   "type": "Bill",
-   "term": "8-Week",
-   "cusip": "912797UT2",
-   "offering_bn": 75.0,
-   "high_yield": 3.681,
-   "btc": 2.94,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-06-11",
-   "type": "Bond",
-   "term": "29-Year 11-Month",
-   "cusip": "912810UU0",
-   "offering_bn": 22.0,
-   "high_yield": 5.02,
-   "btc": 2.33,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-06-11",
-   "type": "Bill",
-   "term": "4-Week",
-   "cusip": "912797UP0",
-   "offering_bn": 70.0,
-   "high_yield": 3.655,
-   "btc": 3.13,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
   }
  ],
- "fetched_at": "2026-09-14T23:32:42.455662Z"
+ "fetched_at": "2026-09-15T20:25:36.479327Z"
 }
