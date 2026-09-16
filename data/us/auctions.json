@@ -43,8 +43,8 @@
    "term": "17-Week",
    "cusip": "912797WQ6",
    "offering_bn": 72.0,
-   "high_yield": null,
-   "btc": null,
+   "high_yield": 4.141,
+   "btc": 2.72,
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
@@ -1394,5 +1394,5 @@
    "tail_bp": null
   }
  ],
- "fetched_at": "2026-09-15T23:14:01.696664Z"
+ "fetched_at": "2026-09-16T20:25:05.436702Z"
 }
