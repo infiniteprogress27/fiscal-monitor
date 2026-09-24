@@ -5,7 +5,7 @@
    "op_date": "2026-09-24",
    "bucket": null,
    "max_bn": null,
-   "accepted_bn": null,
+   "accepted_bn": 4.08,
    "offer_to_max": null
   },
   {
@@ -261,5 +261,5 @@
    "offer_to_max": null
   }
  ],
- "fetched_at": "2026-09-23T23:15:37.934499Z"
+ "fetched_at": "2026-09-24T20:46:58.421401Z"
 }
