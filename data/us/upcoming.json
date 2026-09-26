@@ -712,7 +712,79 @@
    "type": "Bill",
    "term": "6-Week",
    "offering_bn": 85.0
+  },
+  {
+   "announce": "2026-09-29",
+   "auction_date": "2026-09-30",
+   "issue_date": "2026-10-06",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-29",
+   "auction_date": "2026-10-01",
+   "issue_date": "2026-10-06",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-09-29",
+   "auction_date": "2026-10-01",
+   "issue_date": "2026-10-06",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-01",
+   "auction_date": "2026-10-05",
+   "issue_date": "2026-10-08",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-01",
+   "auction_date": "2026-10-05",
+   "issue_date": "2026-10-08",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-01",
+   "auction_date": "2026-10-06",
+   "issue_date": "2026-10-15",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-01",
+   "auction_date": "2026-10-06",
+   "issue_date": "2026-10-08",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-01",
+   "auction_date": "2026-10-07",
+   "issue_date": "2026-10-15",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-01",
+   "auction_date": "2026-10-08",
+   "issue_date": "2026-10-15",
+   "type": "Bond",
+   "term": "29-Year 10-Month",
+   "offering_bn": null
   }
  ],
- "fetched_at": "2026-09-25T00:42:50.103870Z"
+ "fetched_at": "2026-09-26T00:47:24.965179Z"
 }
