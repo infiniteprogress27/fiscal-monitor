@@ -2,6 +2,13 @@
  "sample": false,
  "records": [
   {
+   "op_date": "2026-09-29",
+   "bucket": null,
+   "max_bn": null,
+   "accepted_bn": null,
+   "offer_to_max": null
+  },
+  {
    "op_date": "2026-09-24",
    "bucket": null,
    "max_bn": null,
@@ -261,5 +268,5 @@
    "offer_to_max": null
   }
  ],
- "fetched_at": "2026-09-24T23:36:28.340636Z"
+ "fetched_at": "2026-09-28T19:03:59.659232Z"
 }

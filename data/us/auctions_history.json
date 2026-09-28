@@ -4278,24 +4278,24 @@
    "type": "Bill",
    "term": "6-Week",
    "offering_bn": 75.0,
-   "high_yield": null,
-   "btc": null
+   "high_yield": 3.942,
+   "btc": 3.03
   },
   {
    "auction_date": "2026-09-22",
    "type": "Note",
    "term": "2-Year",
    "offering_bn": 69.0,
-   "high_yield": null,
-   "btc": null
+   "high_yield": 4.787,
+   "btc": 2.63
   },
   {
    "auction_date": "2026-09-23",
    "type": "Note",
    "term": "5-Year",
    "offering_bn": 70.0,
-   "high_yield": null,
-   "btc": null
+   "high_yield": 5.033,
+   "btc": 2.21
   },
   {
    "auction_date": "2026-09-23",
@@ -4303,16 +4303,72 @@
    "term": "1-Year 10-Month",
    "offering_bn": 28.0,
    "high_yield": null,
-   "btc": null
+   "btc": 2.63
+  },
+  {
+   "auction_date": "2026-09-23",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 72.0,
+   "high_yield": 4.251,
+   "btc": 2.81
   },
   {
    "auction_date": "2026-09-24",
    "type": "Note",
    "term": "7-Year",
    "offering_bn": 44.0,
+   "high_yield": 5.085,
+   "btc": 2.42
+  },
+  {
+   "auction_date": "2026-09-24",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 85.0,
+   "high_yield": 4.071,
+   "btc": 2.76
+  },
+  {
+   "auction_date": "2026-09-24",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 90.0,
+   "high_yield": 3.915,
+   "btc": 2.61
+  },
+  {
+   "auction_date": "2026-09-28",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.441,
+   "btc": 2.64
+  },
+  {
+   "auction_date": "2026-09-28",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.211,
+   "btc": 2.99
+  },
+  {
+   "auction_date": "2026-09-29",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": 54.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-09-29",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 85.0,
    "high_yield": null,
    "btc": null
   }
  ],
- "fetched_at": "2026-09-21T17:44:33.018328Z"
+ "fetched_at": "2026-09-28T19:04:01.323494Z"
 }

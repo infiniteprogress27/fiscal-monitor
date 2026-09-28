@@ -579,10 +579,10 @@
   },
   {
    "month": "2026-08",
-   "receipts": 360.0,
-   "outlays": 526.8,
-   "balance": -166.8
+   "receipts": 296.4,
+   "outlays": 603.4,
+   "balance": -307.0
   }
  ],
- "fetched_at": "2026-09-14T17:21:52.653081Z"
+ "fetched_at": "2026-09-28T19:03:40.842795Z"
 }
