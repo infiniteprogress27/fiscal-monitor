@@ -4358,17 +4358,41 @@
    "type": "Bill",
    "term": "52-Week",
    "offering_bn": 54.0,
-   "high_yield": null,
-   "btc": null
+   "high_yield": 4.616,
+   "btc": 3.07
   },
   {
    "auction_date": "2026-09-29",
    "type": "Bill",
    "term": "6-Week",
    "offering_bn": 85.0,
+   "high_yield": 4.044,
+   "btc": 2.82
+  },
+  {
+   "auction_date": "2026-09-30",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 75.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-10-01",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 100.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-10-01",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 95.0,
    "high_yield": null,
    "btc": null
   }
  ],
- "fetched_at": "2026-09-28T19:04:01.323494Z"
+ "fetched_at": "2026-09-30T06:27:00.758340Z"
 }
