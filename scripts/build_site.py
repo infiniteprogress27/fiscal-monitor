@@ -669,14 +669,15 @@ def v_cash_buyback(obj, ctx):
         h += f'<div class="ptitle">{esc(pg["name"])}</div>'
         h += table(["项目", "内容"], [
             ("目的", esc(pg.get("purpose", ""))),
-            ("季度总额度", f'{fmt(pg.get("envelope_bn"), 1)} bn'),
+            ("季度总额度", esc(pg["envelope_bn"]) if isinstance(pg.get("envelope_bn"), str) else f'{fmt(pg.get("envelope_bn"), 1)} bn'),
             ("季度场次", f'{pg.get("ops_per_quarter", "—")} 场'),
             ("节奏", esc(pg.get("cadence", ""))),
             ("本季已执行", f'{fmt(ex, 1)} bn')])
-        h += table(["期限篮", "#每场上限 bn"],
-                   [(bk["bucket"], fmt(bk.get("per_op_max_bn"), 1)) for bk in pg.get("buckets", [])])
+        h += table(["期限篮", "#每场上限 bn", "#季度场次"],
+                   [(bk["bucket"], fmt(bk.get("per_op_max_bn"), 2) if bk.get("per_op_max_bn") is not None else "按公告",
+                     bk.get("ops") if bk.get("ops") is not None else "按公告") for bk in pg.get("buckets", [])])
     pcts = f"{cum/mkt*100:.2f}%" if mkt else "—"
-    h += f'<div class="anchor-note">2024年启动以来累计回购 <b>{fmt(cum, 0)}bn</b> · 占marketable存量 {pcts} · 两计划均不改变久期政策含义, 与QT方向无关</div>'
+    h += f'<div class="anchor-note">2024/5启动以来累计回购约 <b>{fmt(cum, 0)}bn</b>(估, 11/4更新) · 占marketable存量 {pcts} · {esc(bs.get("as_of", ""))} · 两计划均不改变久期政策含义</div>'
     h += "<h4>近期操作</h4>"
     h += table(["日期", "类型", "bucket", "#上限", "#接纳", "#offer/max"],
                [((r.get("op_date") or "")[5:], typed.get(r.get("op_date"), "流动性支持"),
