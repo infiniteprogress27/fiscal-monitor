@@ -138,3 +138,36 @@ events:
     dtype: 法定
     label: 总统签署H.R.6500成法(CR至12/11, 含OMB规则冻结·授权延长)
     checklist: [P.L.编号, 12/11节点转法定]
+  - id: leg-warpowers-0924
+    date: "2026-09-24"
+    cat: 立法
+    owner: fiscal_expansion
+    dtype: 法定
+    label: 参院战争权力决议49-50未过(第14次); 补充拨款$87.6B仍卡
+    checklist: [民主党以授权为条件, 跛脚鸭会期再议]
+  - id: node-hegseth-0930
+    date: "2026-09-30"
+    cat: 文件
+    owner: fiscal_expansion
+    dtype: 估
+    label: Hegseth向参院交待战费与$67B用途期限
+  - id: node-fy2027-start
+    date: "2026-10-01"
+    cat: 到期
+    owner: appropriations
+    dtype: 法定
+    label: FY2027开始 · CR(H.R.6500)生效首日
+    checklist: [OMB拨款审批规则冻结生效, 授权延长生效]
+  - id: node-midterm
+    date: "2026-11-03"
+    cat: 立法
+    owner: appropriations
+    dtype: 法定
+    label: 中期选举 · 决定跛脚鸭会期议程与国防topline杠杆
+    checklist: [两院控制权, 拨款/补充拨款/NDAA排序]
+  - id: node-lameduck
+    date: "2026-11-16"
+    cat: 立法
+    owner: appropriations
+    dtype: 估
+    label: 跛脚鸭会期开始(估) · 12/11前决胜窗口
