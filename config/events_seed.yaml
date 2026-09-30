@@ -171,3 +171,22 @@ events:
     owner: appropriations
     dtype: 估
     label: 跛脚鸭会期开始(估) · 12/11前决胜窗口
+  - id: node-farmbill-lapse
+    date: "2026-09-30"
+    cat: 到期
+    owner: mandatory_legislation
+    dtype: 法定
+    label: 农业法案延长期到期(10/1起授权过期); 参院版待选举后表决
+    checklist: [CR/跛脚鸭载体是否再延长, SNAP条款谈判]
+  - id: node-buyback-longend
+    date: "2026-09-09"
+    cat: 发行
+    owner: cash_buyback
+    dtype: 法定
+    label: 长端回购加码生效(10-30y单场≥$4B, 至11/4)
+  - id: node-qra-review-bb
+    date: "2026-11-04"
+    cat: 文件
+    owner: cash_buyback
+    dtype: 法定
+    label: QRA审视回购规模(长端加码是否常态化)
