@@ -4,7 +4,7 @@
 # 本文件为定性层唯一维护点, 定量由 fetch_us.py 落至 data/us/, 渲染由 build_site.py 按 id 绑定。
 
 country: US
-updated: "2026-08-05"
+updated: "2026-09-30"
 
 # 人工锚 (卖方/官方预期, 手动维护)
 anchors:
@@ -31,7 +31,7 @@ layers:
         grp: 重要立法
         view: expiry_table
         status_line: stage
-        verified: "2026-08-06"
+        verified: "2026-09-30"
         laws: [pl119-21]
         bills:
           - {ref: 119-hr-1834, name: ACA补贴延长(H.R.1834)}
@@ -58,13 +58,13 @@ layers:
         grp: 重要立法
         view: expiry_table
         status_line: stage
-        verified: "2026-08-05"
+        verified: "2026-09-30"
         laws: [pl119-21]
         bills:
           - {ref: 119-hr-7567, name: Farm Bill(H.R.7567)}
           - {ref: 119-hr-8870, name: BUILD America 250(H.R.8870)}
         qual:
-          state: 三大授权到期堆在2026-09-30前后(Farm Bill/地面交通/财年), 信托基金耗尽在2030年代初构成远期墙
+          state: "农业法案延长期9/30到期→10/1起授权过期(商品项目已由OBBBA单独授权, CRP等受影响); 参院农委9/16党线过参院版, 全院表决在中期选举后"
           base_case: Farm Bill与地面交通在选举年大概率延长或压线通过; 信托基金问题本届无立法动能
           watch: 参院Farm Bill markup; BUILD America 250 floor排期; OBBBA的Medicaid工作要求执行时间表与州诉讼
         provisions:
@@ -87,7 +87,7 @@ layers:
         grp: 总债务结构与债务上限
         view: debt_tiers
         status_line: debt_tiers
-        verified: "2026-08-06"
+        verified: "2026-09-30"
         qual:
           state: 各口径量级见下表; 政府间债务90%为GAS(信托基金记账), 限额内≈总债务-FFB等
           watch: 公众持有/政府间的分解漂移(信托基金由盈转亏会压低政府间份额); 净金融资产口径受学生贷款政策影响
@@ -106,7 +106,7 @@ layers:
         grp: 总债务结构与债务上限
         view: debt_limit
         status_line: headroom
-        verified: "2026-08-06"
+        verified: "2026-09-30"
         laws: [pl119-21]
         qual:
           state: 有空间。限额$41.1T (P.L.119-21, 2025-07-04上调$5T), 限额内债务约$39.8T
@@ -162,7 +162,7 @@ layers:
         grp: 支出上限与财政规则
         view: caps_view
         status_line: stage
-        verified: "2026-08-06"
+        verified: "2026-09-30"
         laws: [cba, bbedca, fra]
         watch_pages:
           - {id: crs-approps-status, url: "https://crsreports.congress.gov/AppropriationsStatusTable", name: CRS拨款状态表}
@@ -190,7 +190,7 @@ layers:
         grp: 支出上限与财政规则
         view: paygo_view
         status_line: stage
-        verified: "2026-08-06"
+        verified: "2026-09-30"
         laws: [paygo2010, bbedca]
         links:
           - {name: OMB(检索PAYGO Annual Report), url: "https://www.whitehouse.gov/omb/"}
@@ -214,7 +214,7 @@ layers:
         grp: 支出上限与财政规则
         view: qual_only
         status_line: stage
-        verified: "2026-08-06"
+        verified: "2026-09-30"
         laws: [ica, ada]
         watch_pages:
           - {id: apportionment-db, url: "https://apportionment-public.max.gov/", name: Apportionment库}
@@ -244,7 +244,7 @@ layers:
         name: CBO基线与评分中枢
         view: baseline_center
         status_line: stage
-        verified: "2026-08-07"
+        verified: "2026-09-30"
         laws: [cba]
         links:
           - {name: CBO机读数据页, url: "https://www.cbo.gov/data/budget-economic-data"}
@@ -274,7 +274,7 @@ layers:
         name: 预算周期
         view: cycle_instances
         status_line: stage
-        verified: "2026-08-07"
+        verified: "2026-09-30"
         laws: [cba]
         qual:
           state: 周期对象按财年实例化, 当前活跃FY2027; 历史财年归档可回看
@@ -416,7 +416,7 @@ layers:
         name: 年度收支进度
         view: annual_widget
         status_line: fytd
-        verified: "2026-08-08"
+        verified: "2026-09-30"
         qual:
           state: 上图下表联动; 默认六线=收/支/赤绝对额+各自/NGDP; 点击表行切换为该科目双轴视图
           watch: 关税与净利息是结构变化最快的两个科目; Mandatory/Discretionary比价长期漂移
@@ -433,7 +433,7 @@ layers:
         name: 月度收支进度
         view: fytd_progress
         status_line: fytd
-        verified: "2026-08-08"
+        verified: "2026-09-30"
         qual:
           state: FYTD四类线=当年+近6财年+CBO基线路径+DTS预测点; FY2026累计略高于可比带上沿
           base_case: 全年落在CBO锚附近, 关税收入与利息支出是两侧主要变量
@@ -452,7 +452,7 @@ layers:
         view: local_widget
         status_line: text
         text_status: "州地方年度收支与央地划分; 转移支付为勾稽线"
-        verified: "2026-08-11"
+        verified: "2026-09-30"
         qual:
           state: 联邦/州地方四线对照+联邦转移支付; 点击表行切换分项双轴视图
           watch: 联邦转移占州地方收入比(依赖度); 州地方自有收入增速vs支出刚性
@@ -485,7 +485,7 @@ layers:
         name: QRA周期
         view: qra_view
         status_line: stage
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
           state: "8/5 Statement: coupon结构维持不变, 前瞻指引延续; 下一QRFE 11/2(周一)·Statement 11/4"
           base_case: coupon尺寸维持至FY27中, 增量融资靠Tbills; 卖方共识增coupon窗口在2027年8月起
@@ -504,7 +504,7 @@ layers:
         view: issuance_view
         status_line: text
         text_status: "国债月度总发行(拍卖实况) vs 企业债发行(SIFMA口径锚); 挤出效应观察窗"
-        verified: "2026-08-12"
+        verified: "2026-09-30"
         qual:
           state: 国债侧2000年起全自动; 企业债为SIFMA月度口径人工锚(对话更新)
           watch: 企业债放量月份与国债拍卖尾部的同月相关; 发债窗口对拍卖日历的避让
@@ -520,7 +520,7 @@ layers:
         view: demand_heatmap
         status_line: text
         text_status: "Coupon一级市场投资者类别配售份额, 月度×年份热力表"
-        verified: "2026-08-12"
+        verified: "2026-09-30"
         qual:
           state: 五类投资者月度配售份额; 基金持续吸收交易商让出的份额是结构主线
           watch: Investment funds份额新高; SOMA再投资月份挤占; 海外份额趋势位
@@ -534,7 +534,7 @@ layers:
         name: 财年融资预测
         view: funding_widget
         status_line: stage
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
           state: FY2026-2028三年联动模型; 基线赤字自动取CBO现行版, 八项假设可编辑, 全表实时重算
           base_case: bills为残差调节阀; coupon不加码则bills占比持续上行穿越区间
@@ -553,11 +553,11 @@ layers:
         name: TGA与回购管理
         view: cash_buyback
         status_line: tga
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
-          state: TGA目标水位附近; 回购双轨常规运行(流动性支持每季envelope约$30B+现金管理季节性)
-          base_case: TGA维持$850B-1T区间; 回购envelope随QRA微调
-          watch: TGA vs 目标偏离; offer-to-max(需求侧压力); envelope是否扩容或引入switch
+          state: "回购加码: 8/19起长端(10-30y)单场≥$4B(此前$2B), 本季流动性支持上限≥$54B; 现金管理$150B/年; 11/4 QRA审视是否常态化"
+          base_case: "长端加码大概率在11/4延续或制度化——财政部把回购当作压制长端期限溢价的准工具; TGA维持$850B-1T"
+          watch: "长端篮offer/cap倍数(8/18 20-30y达9.9x); 11/4是否扩到其他篮; 回购与coupon增发的组合信号"
           mechanism: >
             回购二分: 流动性支持回购=周度常规操作, 买入off-the-run老券缓解做市商资产负债表,
             每季度按bucket设上限(envelope); 现金管理回购=围绕缴税日的季节性操作,
@@ -577,7 +577,7 @@ layers:
         name: 债务存量
         view: debt_long
         status_line: debt_total
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
           state: 总债务约$39.9T, 约128%NGDP; 50年尺度下两次台阶=GFC与COVID
           watch: /NGDP的斜率变化(名义增长与赤字的赛跑); 公众持有/政府间分解漂移
@@ -590,7 +590,7 @@ layers:
         name: 存量结构·到期墙·WAM
         view: structure_view
         status_line: none
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
           state: WAM约71个月, 历史高位区间上沿; 均值线61.7, ±1σ带54-70
           watch: bills供给挤压WAM回落速度; 到期墙对再融资分布
@@ -603,7 +603,7 @@ layers:
         name: 供给结构
         view: supply_share
         status_line: tbills_share
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
           state: Tbills份额约22.3%, 区间上方; SOMA增持bills降低私人吸收压力
           base_case: 增coupon前bills份额缓升; SOMA bills持仓是私人口径的关键调节项
@@ -616,7 +616,7 @@ layers:
         name: 持有人结构
         view: holders_v3
         status_line: none
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
           state: "国别累计变化图可调起始基点; 近端TIC逐月自动累积, 2000-2025历史段为示例锚(TIC历史文件可一次替换为全真实)"
           watch: TIC国别月度; SOMA rollover/增持; Z.1季度全景
@@ -637,7 +637,7 @@ layers:
         name: 利息成本
         view: interest_view
         status_line: avg_rate
-        verified: "2026-08-10"
+        verified: "2026-09-30"
         qual:
           state: 存量加权利率缓升(到期低息券置换); 1Y bill发行利率为边际成本参照
           watch: 加权利率与1Y bill的裂口(置换压力方向); 月度利息支出vs CBO预测进度
