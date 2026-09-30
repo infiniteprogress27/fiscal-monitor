@@ -329,7 +329,7 @@ layers:
         name: 拨款(年度)
         view: approps_v2
         status_line: stage
-        verified: "2026-09-08"
+        verified: "2026-09-30"
         laws: [cba, ada]
         bills:
           - {ref: 119-hr-6500, name: CR(H.R.9770)}
@@ -339,9 +339,9 @@ layers:
           - {name: 众院拨款委, url: "https://appropriations.house.gov/"}
           - {name: 参院拨款委, url: "https://www.appropriations.senate.gov/"}
         qual:
-          state: "CR至12/11已于9/2成法(H.R.6500), FY27开局无关门风险; 12法案零成法, 全年案压至中期选举后跛脚鸭会期"
-          base_case: "12/11节点前omnibus难成, 大概率再CR至1-2月或全年CR; 选举结果决定杠杆, 国防topline是核心分歧"
-          watch: "12/11节点; 参院12法案会期推进(仍零markup); 国防/非国防topline; 补充拨款($87.6B)是否搭车12月载体"
+          state: "FY2027于10/1在CR(H.R.6500, 至12/11)下开局; 国会已休会至11/3中期选举; 12法案零成法, 补充拨款与NDAA一并压入跛脚鸭会期"
+          base_case: "跛脚鸭会期(11/16起)决胜: 再CR至1-2月概率最高; 补充拨款可能搭车12月载体; 选举结果决定国防topline谈判杠杆"
+          watch: "11/3选举结果→跛脚鸭议程; 12/11节点; 补充拨款($87.6B, 参院民主党以战争授权为条件)是否搭车; 国防topline"
           background: FY2026三次关门(10/1-11/12 ACA; 1/31-2/3; DHS 2/14-4/30共76天), 2026-04打包收官, ICE/BSO资金剔除改走和解
         instances:
           - fy: 2027
@@ -374,14 +374,14 @@ layers:
         name: 年度财政扩张
         view: expansion_view
         status_line: expansion
-        verified: "2026-08-07"
+        verified: "2026-09-30"
         laws: [cba]
         bills:
           - {ref: 119-hconres-113, name: FY27预算决议(H.Con.Res.113)}
         qual:
           state: "FY2027基线外扩张已提出$437.6B(国防和解$350B+补充$87.6B), 已成法$0; 另有常规topline加码(+28%国防)走12法案在基线内"
           base_case: "补充拨款年内可成法; $350B和解件中期选举前推进存疑; 常规增量随enacted入基线"
-          watch: "国防$350B是否真走和解——8/8参院搁置的党线budget bill载荷含伊朗战争资金, 意图新证据; 补充拨款载体法案号; 新扩张项提出即入表"
+          watch: "补充拨款$87.6B卡死: 众院7月经和解载体过$95B, 参院拒走和解且民主党以战争授权为条件(9/24战争权力决议49-50未过); 跛脚鸭会期能否合流入12月载体; Recon 3.0是否重启"
           mechanism: >
             对象追踪的是行为类别(基线外/预算外的年度财政扩张), 载体逐年变: 拨款加码、补充拨款(紧急指定, cap外)、
             和解(51票通道)、独立授权。和解程序机制: 每财年三类议题各一次, 参院51票+20h辩论,
