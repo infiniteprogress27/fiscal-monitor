@@ -1,34 +1,35 @@
-# 回购计划结构 (每QRA后更新)
-quarter: 2026Q3 (8-10月)
-cum_since_2024_bn: 239
+# 回购计划结构 (每QRA后更新; 现行=2026年8月refunding季, 8/19加码)
+quarter: 2026年8月refunding季 (8/6-11/4)
+as_of: "2026-08-19 财政部加码公告; 11/4 QRA审视后续规模"
+cum_since_2024_bn: 225      # 2024/5起累计买回估(TBAC口径+FiscalData逐场), 待11/4更新
 programs:
   - name: 流动性支持回购
-    purpose: 每周买入off-the-run老券, 缓解做市商资产负债表占用
-    envelope_bn: 30
-    ops_per_quarter: 13
-    cadence: 每周三一场, 按期限篮轮转
+    purpose: 买入off-the-run老券缓解做市商资产负债表; 长端加码是对30年收益率升至近20年高位的直接回应
+    envelope_bn: "基础$38B/季 → 长端加倍后本季≥$54B"
+    ops_per_quarter: 16
+    cadence: 每周1-2场; 短中期篮每季1场, 10-20y与20-30y篮每季4场
     buckets:
-      - {bucket: 名义券 0-2y, per_op_max_bn: 4.0}
-      - {bucket: 名义券 2-3y, per_op_max_bn: 4.0}
-      - {bucket: 名义券 3-5y, per_op_max_bn: 4.0}
-      - {bucket: 名义券 5-7y, per_op_max_bn: 3.5}
-      - {bucket: 名义券 7-10y, per_op_max_bn: 3.5}
-      - {bucket: 名义券 10-20y, per_op_max_bn: 2.0}
-      - {bucket: 名义券 20-30y, per_op_max_bn: 2.0}
-      - {bucket: TIPS 1-7.5y, per_op_max_bn: 0.5}
-      - {bucket: TIPS 7.5-30y, per_op_max_bn: 0.5}
+      - {bucket: 名义券 1Mo-2y, per_op_max_bn: 4.0, ops: 1}
+      - {bucket: 名义券 2-3y, per_op_max_bn: 4.0, ops: 1}
+      - {bucket: 名义券 3-5y, per_op_max_bn: 4.0, ops: 1}
+      - {bucket: 名义券 5-7y, per_op_max_bn: 4.0, ops: 1}
+      - {bucket: 名义券 7-10y, per_op_max_bn: 4.0, ops: 1}
+      - {bucket: "名义券 10-20y (9/9起≥4.0, 此前2.0)", per_op_max_bn: 4.0, ops: 4}
+      - {bucket: "名义券 20-30y (9/9起≥4.0, 此前2.0)", per_op_max_bn: 4.0, ops: 4}
+      - {bucket: TIPS 1-10y, per_op_max_bn: 0.75, ops: 2}
+      - {bucket: TIPS 10-30y, per_op_max_bn: 0.5, ops: 1}
   - name: 现金管理回购
-    purpose: 缴税季现金高峰赎回短端, 削融资峰谷
-    envelope_bn: 22.5
-    ops_per_quarter: 6
-    cadence: 集中于9月缴税日前后两周
+    purpose: 缴税日前后用现金高峰赎回短端, 平滑TGA与bills发行波动
+    envelope_bn: "上限$150B/年(2025年8月起, 此前$120B)"
+    ops_per_quarter: 0
+    cadence: 集中于季度缴税日前后两周; 本季安排以财政部暂定表为准
     buckets:
-      - {bucket: 名义券 0-2y, per_op_max_bn: 5.0}
+      - {bucket: 名义券 1Mo-2y (为主), per_op_max_bn: null, ops: null}
 ops:
-  - {date: 2026-08-12, type: 流动性支持, bucket: 名义券 7-10y, max_bn: 3.5}
-  - {date: 2026-08-19, type: 流动性支持, bucket: 名义券 3-5y, max_bn: 4.0}
-  - {date: 2026-08-26, type: 流动性支持, bucket: 名义券 10-20y, max_bn: 2.0}
-  - {date: 2026-09-02, type: 流动性支持, bucket: 名义券 0-2y, max_bn: 4.0}
-  - {date: 2026-09-09, type: 流动性支持, bucket: TIPS 1-7.5y, max_bn: 0.5}
-  - {date: 2026-09-16, type: 流动性支持, bucket: 名义券 20-30y, max_bn: 2.0}
-  - {date: 2026-09-23, type: 现金管理, bucket: 名义券 0-2y, max_bn: 5.0}
+  - {date: 2026-08-06, type: 流动性支持, bucket: 名义券 1Mo-2y, max_bn: 4.0}
+  - {date: 2026-08-11, type: 流动性支持, bucket: 名义券 10-20y, max_bn: 2.0}
+  - {date: 2026-08-18, type: 流动性支持, bucket: 名义券 20-30y, max_bn: 2.0}
+  - {date: 2026-08-20, type: 流动性支持, bucket: 名义券 3-5y, max_bn: 4.0}
+  - {date: 2026-08-25, type: 流动性支持, bucket: 名义券 5-7y, max_bn: 4.0}
+  - {date: 2026-09-09, type: 流动性支持, bucket: 名义券 10-20y, max_bn: 4.0}
+  - {date: 2026-10-07, type: 流动性支持, bucket: 名义券 20-30y, max_bn: 4.0}
