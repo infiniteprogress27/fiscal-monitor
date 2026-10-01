@@ -274,48 +274,53 @@ layers:
         name: 预算周期
         view: cycle_instances
         status_line: stage
-        verified: "2026-09-30"
+        verified: "2026-10-01"
         laws: [cba]
         qual:
-          state: 周期对象按财年实例化, 当前活跃FY2027; 历史财年归档可回看
-          base_case: FY2027无两院CBR, 302(a)以各院自设/deeming方式确立
-          watch: 参院预算决议动向; MSR(已逾7/15 DDL)发布
+          state: "FY2027于10/1在CR下开局: 无两院CBR·无全年拨款·无补充拨款·和解仅众院版, 四条线全部压入跛脚鸭会期(11/16-12/11)"
+          base_case: "12/11前再CR至1-2月概率最高; 选举结果决定参院是否启动deeming与国防topline让步; 补充拨款搭车12月载体"
+          watch: "11/3选举→跛脚鸭议程排序(拨款/补充/NDAA/农业法案); 参院deeming; MSR; 12/11载体形态"
         instances:
           - fy: 2027
             active: true
-            threea: "302(a)确立: 无两院一致CBR; 众院经H.Con.Res.113自设topline, 参院未定(deeming待观察)"
+            threea: "302(a)确立: 无两院一致CBR; 众院经H.Con.Res.113自设topline, 参院8/8搁置自家党线决议后未再动(deeming待跛脚鸭会期)"
             flow_states:
               pb1: done
               pb2: done
               pb3: done
               pb4: done
-              pb5: "pending!"        # MSR逾期
+              pb5: "pending!"        # MSR逾期(DDL 7/15), 截至10/1未见
               b0: done
               b1: done
               b2: done
-              b3: active             # 众院已过, 参院未投
+              b3: active             # 众院已过H.Con.Res.113, 参院8/8搁置
               b4: pending
               b5: pending
-              b6: pending            # deeming替代路径
+              b6: pending            # deeming替代路径(选举后)
               r1: active             # 指令仅众院版
-              r2: pending
+              r2: active             # 众院7月已按指令通过和解包($95B战费等); 参院拒走和解
               r3: pending
               a1: done
               a2: active             # 302(b)众定参无共识
-              a3: active
-              a4: active             # 众院floor进行中
+              a3: active             # 众院全委12/12(6月); 参院零markup
+              a4: active             # 众院floor部分法案
               a5: pending
               a6: pending
-              a7: pending
-              f1: active             # CR生效中
-              f2: "pending!"         # 12/4风险节点
+              a7: "pending!"         # 10/1前成法: 已失守(零法案成法)
+              sp1: done              # 6/24 $87.6B请求
+              sp2: active            # 众院经和解包过$95B; 参院卡(民主党以战争授权为条件)
+              sp3: pending
+              f1: active             # CR(H.R.6500)10/1起实际运行
+              f2: "pending!"         # 12/11到期节点
               f3: pending
             flow_note: "结构为固定模板, 每年仅状态变化; 勾稽线: 302(a)→302(b)为硬下发(可被deeming虚线替代), 和解指令自共同决议下达(无指令则改税法/强制性支出几乎不可能), 拨款未按期转入资金现实线(CR→到期节点→再CR/omnibus, 失败即关门); 和解产出详情见Reconciliation对象"
             swimlanes:
-              - {lane: President Budget, stage: "PB已提交(春); MSR逾期未发(DDL 7/15)", next: MSR发布}
-              - {lane: 预算决议(CBR), stage: "众院过H.Con.Res.113(含和解指令); 参院未动", next: 参院决议或deeming}
-              - {lane: 302(a)/(b), stage: "众院4月按党线通过302(b)打包(32-28); 参院国防/非国防分配无共识, 6月底前零markup", next: 参院302(b)共识}
-              - {lane: 和解指令, stage: 含于H.Con.Res.113 → Reconciliation 3.0, next: 参院对应决议}
+              - {lane: President Budget, stage: "PB已提交(春); MSR逾期未发(DDL 7/15, 截至10/1未见)", next: MSR发布}
+              - {lane: 预算决议(CBR), stage: "众院过H.Con.Res.113(含和解指令); 参院8/8搁置自家党线决议(载荷含伊朗战费+voter ID), 此后未动", next: 跛脚鸭会期deeming或放弃}
+              - {lane: 302(a)/(b), stage: "众院4月党线302(b)打包(32-28); 参院国防/非国防分配至今无共识, FY27零markup", next: 选举后topline谈判}
+              - {lane: 和解指令, stage: "众院7月已按指令通过和解包($95B战费+voter ID等); 参院拒走和解路径(Thune: 占用数周floor时间)", next: 参院对应决议或Recon 3.0放弃}
+              - {lane: 常规拨款, stage: "10/1 FY27在CR(H.R.6500, 至12/11)下开局; 12法案零成法, 众院全委12/12过(党线)、floor部分; 参院零", next: 12/11节点(再CR概率最高)}
+              - {lane: 补充拨款, stage: "$87.6B(6/24)卡死: 参院民主党以战争授权为条件, 9/24战争权力决议49-50未过; Hegseth 9/30交待战费", next: 跛脚鸭会期搭车12月载体}
           - fy: 2026
             active: false
             threea: "302(a): FRA cap已到期年, 以事实topline $1,639B收官"
@@ -329,7 +334,7 @@ layers:
         name: 拨款(年度)
         view: approps_v2
         status_line: stage
-        verified: "2026-09-30"
+        verified: "2026-10-01"
         laws: [cba, ada]
         bills:
           - {ref: 119-hr-6500, name: CR(H.R.9770)}
