@@ -2,16 +2,6 @@
  "sample": false,
  "series": [
   {
-   "date": "2026-08-20",
-   "deposits": 304.7,
-   "withdrawals": 320.6
-  },
-  {
-   "date": "2026-08-21",
-   "deposits": 30.0,
-   "withdrawals": 31.8
-  },
-  {
    "date": "2026-08-24",
    "deposits": 99.3,
    "withdrawals": 31.9
@@ -150,7 +140,17 @@
    "date": "2026-10-01",
    "deposits": 403.9,
    "withdrawals": 586.6
+  },
+  {
+   "date": "2026-10-02",
+   "deposits": 39.7,
+   "withdrawals": 80.0
+  },
+  {
+   "date": "2026-10-05",
+   "deposits": 57.2,
+   "withdrawals": 29.8
   }
  ],
- "fetched_at": "2026-10-04T01:54:55.615523Z"
+ "fetched_at": "2026-10-07T01:44:52.301569Z"
 }
