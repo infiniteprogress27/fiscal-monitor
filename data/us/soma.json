@@ -1393,9 +1393,14 @@
   },
   {
    "month": "2026-09",
-   "soma_bills": 554.4,
-   "soma_total": 6365.1
+   "soma_bills": 560.2,
+   "soma_total": 6358.6
+  },
+  {
+   "month": "2026-10",
+   "soma_bills": 562.2,
+   "soma_total": 6360.5
   }
  ],
- "fetched_at": "2026-09-30T06:28:18.533536Z"
+ "fetched_at": "2026-10-12T20:43:05.743313Z"
 }

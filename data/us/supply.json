@@ -1848,7 +1848,13 @@
    "tbills_share": 22.8,
    "bills_bn": 7248.0,
    "soma_bills": 542.0
+  },
+  {
+   "month": "2026-09",
+   "tbills_share": 22.4,
+   "bills_bn": 7118.0,
+   "soma_bills": 560.2
   }
  ],
- "fetched_at": "2026-09-30T06:28:24.958623Z"
+ "fetched_at": "2026-10-12T20:43:11.828357Z"
 }

@@ -4374,25 +4374,121 @@
    "type": "Bill",
    "term": "17-Week",
    "offering_bn": 75.0,
-   "high_yield": null,
-   "btc": null
+   "high_yield": 4.23,
+   "btc": 2.89
   },
   {
    "auction_date": "2026-10-01",
    "type": "Bill",
    "term": "4-Week",
    "offering_bn": 100.0,
-   "high_yield": null,
-   "btc": null
+   "high_yield": 3.956,
+   "btc": 2.83
   },
   {
    "auction_date": "2026-10-01",
    "type": "Bill",
    "term": "8-Week",
    "offering_bn": 95.0,
+   "high_yield": 4.071,
+   "btc": 2.7
+  },
+  {
+   "auction_date": "2026-10-05",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 82.0,
+   "high_yield": 4.314,
+   "btc": 2.79
+  },
+  {
+   "auction_date": "2026-10-05",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.149,
+   "btc": 2.51
+  },
+  {
+   "auction_date": "2026-10-06",
+   "type": "Note",
+   "term": "3-Year",
+   "offering_bn": 58.0,
+   "high_yield": 4.932,
+   "btc": 2.62
+  },
+  {
+   "auction_date": "2026-10-06",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": 4.018,
+   "btc": 2.78
+  },
+  {
+   "auction_date": "2026-10-07",
+   "type": "Note",
+   "term": "9-Year 10-Month",
+   "offering_bn": 39.0,
+   "high_yield": 5.3,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2026-10-07",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": 75.0,
+   "high_yield": 4.219,
+   "btc": 3.1
+  },
+  {
+   "auction_date": "2026-10-08",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": 110.0,
+   "high_yield": 4.048,
+   "btc": 2.4
+  },
+  {
+   "auction_date": "2026-10-08",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": 105.0,
+   "high_yield": 4.06,
+   "btc": 2.77
+  },
+  {
+   "auction_date": "2026-10-08",
+   "type": "Bond",
+   "term": "29-Year 10-Month",
+   "offering_bn": 22.0,
+   "high_yield": 5.618,
+   "btc": 2.54
+  },
+  {
+   "auction_date": "2026-10-13",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": 95.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-10-13",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": 82.0,
+   "high_yield": null,
+   "btc": null
+  },
+  {
+   "auction_date": "2026-10-13",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": 95.0,
    "high_yield": null,
    "btc": null
   }
  ],
- "fetched_at": "2026-09-30T06:27:00.758340Z"
+ "fetched_at": "2026-10-12T20:41:47.829267Z"
 }
