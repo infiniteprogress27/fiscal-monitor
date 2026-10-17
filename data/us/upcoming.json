@@ -714,13 +714,101 @@
    "offering_bn": 13.0
   },
   {
+   "announce": "2026-10-20",
+   "auction_date": "2026-10-21",
+   "issue_date": "2026-10-27",
+   "type": "Bill",
+   "term": "17-Week",
+   "offering_bn": null
+  },
+  {
    "announce": "2026-10-15",
    "auction_date": "2026-10-22",
    "issue_date": "2026-10-30",
    "type": "Note",
    "term": "5-Year",
    "offering_bn": 26.0
+  },
+  {
+   "announce": "2026-10-20",
+   "auction_date": "2026-10-22",
+   "issue_date": "2026-10-27",
+   "type": "Bill",
+   "term": "4-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-20",
+   "auction_date": "2026-10-22",
+   "issue_date": "2026-10-27",
+   "type": "Bill",
+   "term": "8-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-26",
+   "issue_date": "2026-11-02",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-26",
+   "issue_date": "2026-10-29",
+   "type": "Bill",
+   "term": "26-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-26",
+   "issue_date": "2026-10-29",
+   "type": "Bill",
+   "term": "13-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-27",
+   "issue_date": "2026-10-29",
+   "type": "Bill",
+   "term": "6-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-27",
+   "issue_date": "2026-10-29",
+   "type": "Bill",
+   "term": "52-Week",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-27",
+   "issue_date": "2026-11-02",
+   "type": "Note",
+   "term": "5-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-28",
+   "issue_date": "2026-11-02",
+   "type": "Note",
+   "term": "2-Year",
+   "offering_bn": null
+  },
+  {
+   "announce": "2026-10-22",
+   "auction_date": "2026-10-29",
+   "issue_date": "2026-11-02",
+   "type": "Note",
+   "term": "7-Year",
+   "offering_bn": null
   }
  ],
- "fetched_at": "2026-10-16T00:38:03.255434Z"
+ "fetched_at": "2026-10-17T00:42:14.908126Z"
 }
