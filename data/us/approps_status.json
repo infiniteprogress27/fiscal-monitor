@@ -11,6 +11,21 @@
  ],
  "rows": [
   {
+   "bill": "MilCon-VA",
+   "fy": 2027,
+   "refs": [
+    "119-hr-8469"
+   ],
+   "title": "Making appropriations for military construction, the Department of Veterans Affairs, and related agencies for the fiscal year ending September 30, 2027, and for other purposes.",
+   "stages": {
+    "House Cmte": "2026-04-23",
+    "House Floor": "2026-05-15",
+    "Senate Cmte": "2026-07-13"
+   },
+   "latest_col": "Senate Cmte",
+   "latest_val": "2026-07-13"
+  },
+  {
    "bill": "FSGG",
    "fy": 2027,
    "refs": [
@@ -22,6 +37,20 @@
    },
    "latest_col": "House Cmte",
    "latest_val": "2026-04-24"
+  },
+  {
+   "bill": "SFOPS",
+   "fy": 2027,
+   "refs": [
+    "119-hr-8595"
+   ],
+   "title": "Making appropriations for national security, Department of State, and related programs for the fiscal year ending September 30, 2027, and for other purposes.",
+   "stages": {
+    "House Cmte": "2026-04-30",
+    "House Floor": "2026-07-15"
+   },
+   "latest_col": "House Floor",
+   "latest_val": "2026-07-15"
   },
   {
    "bill": "Agriculture-FDA",
@@ -49,6 +78,19 @@
    },
    "latest_col": "House Cmte",
    "latest_val": "2026-05-15"
+  },
+  {
+   "bill": "Leg Branch",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9010"
+   ],
+   "title": "Making appropriations for the Legislative Branch for the fiscal year ending September 30, 2027, and for other purposes.",
+   "stages": {
+    "House Cmte": "2026-05-22"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-05-22"
   },
   {
    "bill": "Energy-Water",
@@ -332,5 +374,5 @@
   "119-sres-517": "A resolution expressing opposition to congressional spending on earmarks.",
   "119-sres-921": "A resolution expressing the sense of the Senate that the advertisements promoting President Donald Trump that aired in September 2026, which included the direct language \"paid for by the U.S. Government,\" should not be paid for by the United States Government."
  },
- "fetched_at": "2026-11-01T06:54:49.554563Z"
+ "fetched_at": "2026-11-01T06:57:45.627058Z"
 }
