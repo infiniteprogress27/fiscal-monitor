@@ -294,6 +294,8 @@ def main():
                    for e in feed) or '<span class="hint">近7日无入账变化</span>'
     nav = "".join(f'<a href="#{l["id"]}">{l["id"]} {esc(l["name"])}</a>' for l in cfg["layers"])
     page = bs.TEMPLATE
+    assert '<title>Fiscal Monitor · US</title>' in page
+    page = page.replace('<title>Fiscal Monitor · US</title>', '<title>Fiscal Monitor · JP</title>')
     page = page.replace('<span>/ US 美国</span>', '<span>/ JP 日本</span> <a href="../" style="font-size:12px;margin-left:12px">→ US</a>')
     rep = {"__NAV__": nav, "__FLUX__": flux,
            "__CALRULES__": f"事件账本 · 招标日程为财务省月度计划(估标待公告覆盖) · 生成 {TODAY.isoformat()}",
