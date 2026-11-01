@@ -536,7 +536,7 @@ def v_issuance_view(obj, ctx):
               [{"label": "国债coupon (年内累计)", "data": tsy_c, "color": "ink"},
                {"label": "企业债 (年内累计)", "data": corp_c, "color": "red"}], "bn",
               opts={"tall": True})
-    h += '<div class="anchor-note">年内逐月累计, 每年1月清零 · 上=国债coupon(Notes/Bonds/TIPS/FRN拍卖实况, 剔除bills短端滚动以保证与企业债同为期限债供给口径), 下=企业债(SIFMA) · 纵轴对称等比高度直接可比 · 滚轮缩放双击复位</div>'
+    h += '<div class="anchor-note">年内逐月累计, 每年1月清零 · 上=国债coupon(Notes/Bonds/TIPS/FRN拍卖实况, 剔除bills短端滚动以保证与企业债同为期限债供给口径), 下=企业债(2008-05起美联储Table 1.46 Bonds, 不含Yankee/含144A; 2025-09起SIFMA, 含Yankee/可转债/MTN, 两段口径差约-8%~+20%; 2008-04前为旧锚仅示意) · 纵轴对称等比高度直接可比 · 滚轮缩放双击复位</div>'
     return h + qual_card(obj["qual"])
 
 
