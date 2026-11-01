@@ -278,9 +278,10 @@ def v_cycle_instances(obj, ctx):
 
 
 def v_approps_v2(obj, ctx):
-    auto = {r["bill"]: r for r in (ctx.get("approps_status") or {}).get("rows", [])}
+    arows = (ctx.get("approps_status") or {}).get("rows", [])
     h = ""
     for inst in obj.get("instances", []):
+        auto = {r["bill"]: r for r in arows if r.get("fy") in (None, inst["fy"])}
         h += f'<h4>FY{inst["fy"]} 12法案矩阵 · 302(b)数额与状态</h4>'
         tl = inst.get("toplines", {})
         h += (f'<div class="anchor-note">topline: 众院 ${fmt(tl.get("house_total"))}B · '
@@ -288,13 +289,13 @@ def v_approps_v2(obj, ctx):
               f'FY26 enacted ${fmt(tl.get("fy26_enacted"))}B · 分表数额待录入(302(b)链接直达)</div>')
         rows = []
         for m in inst.get("matrix", []):
-            a = auto.get(m["bill"].split("-")[0], {})
+            a = auto.get(m["bill"]) or auto.get(m["bill"].split("-")[0], {})
             auto_txt = f'{a.get("latest_col")}: {a.get("latest_val")}' if a.get("latest_val") else "—"
             rows.append((m["bill"], fmt(m.get("h302b")), fmt(m.get("s302b")),
                          f'<span class="stg s{STAGES.index(m["house"]) if m["house"] in STAGES else 0}">{esc(m["house"])}</span>',
                          f'<span class="stg s{STAGES.index(m["senate"]) if m["senate"] in STAGES else 0}">{esc(m["senate"])}</span>',
                          f'<span class="auto">{esc(auto_txt)}</span>', m.get("note", "")))
-        h += table(["法案", "#302(b)众", "#302(b)参", "众院", "参院", "状态表自动检测", "备注"], rows)
+        h += table(["法案", "#302(b)众", "#302(b)参", "众院", "参院", "congress.gov自动检测", "备注"], rows)
         if inst.get("supplementals"):
             h += "<h4>补充拨款轨道 (紧急指定, 302(b)外)</h4>"
             h += table(["名称", "#请求(bn)", "递交", "阶段", "指定", "备注"],

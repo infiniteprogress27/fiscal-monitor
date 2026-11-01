@@ -604,9 +604,21 @@ def _spx_stooq():
     return out
 
 
-APPROPS_BILLS = ["Defense", "Labor", "MilCon", "Agriculture", "Commerce",
-                 "Energy", "Financial", "Homeland", "Interior", "Legislative",
-                 "State", "Transportation"]
+# 拨款12法案: 矩阵名(与objects_us.yaml appropriations.matrix一致) → 法案标题关键词
+APPROPS_BILLS = [
+    ("MilCon-VA", r"Military Construction"),
+    ("Defense", r"Defense Appropriations"),
+    ("Labor-HHS-Ed", r"Labor, Health and Human Services"),
+    ("Agriculture-FDA", r"Agriculture, Rural Development"),
+    ("CJS", r"Commerce, Justice, Science"),
+    ("Energy-Water", r"Energy and Water"),
+    ("FSGG", r"Financial Services and General Government"),
+    ("Homeland", r"Homeland Security Appropriations"),
+    ("Interior-Env", r"Interior, Environment"),
+    ("Leg Branch", r"Legislative Branch"),
+    ("SFOPS", r"State, Foreign Operations|National Security, Department of State"),
+    ("THUD", r"Transportation, Housing and Urban Development"),
+]
 
 ANNUAL_MAP = {  # classification_desc 关键词 → 科目id (首跑校验候选)
     "individual income": "rev_ind", "social insurance": "rev_pay", "corporation income": "rev_corp",
@@ -670,46 +682,82 @@ def fetch_annual():
             _write(name, {"sample": False, "as_of": latest[:7] if latest else None, "rows": rows})
 
 
+APPROPS_STAGES = [  # (列名, 动作文本正则) — 首跑校验候选, 校准后写结论
+    ("House Cmte", r"House Committee on Appropriations|Placed on the Union Calendar"),
+    ("House Floor", r"Passed/agreed to in House|On passage Passed"),
+    ("Senate Cmte", r"Committee on Appropriations\. (Original measure )?[Rr]eported|Placed on Senate Legislative Calendar"),
+    ("Senate Floor", r"Passed/agreed to in Senate|Passed Senate"),
+    ("Law", r"Became Public Law"),
+]
+
+
 def fetch_approps_status():
-    """CRS拨款状态表HTML解析(防御式): 提取每法案行原始单元格,
-    表结构变化时落_debug供校正 (weekly)。"""
-    import requests
-    from html.parser import HTMLParser
+    """拨款12法案进度: congress.gov API (CRS状态表封锁机房与自动化请求, 2026-11弃用)。
+    发现=众参拨款委员会(hsap00/ssap00)名下本届法案, 标题匹配"Appropriations Act, <FY>";
+    阶段=逐案actions文本匹配APPROPS_STAGES, 取每阶段最早日期。需CONGRESS_API_KEY (daily/weekly)。"""
+    import os, requests
+    key = os.environ.get("CONGRESS_API_KEY")
+    if not key:
+        print("  approps_status: 无CONGRESS_API_KEY, 跳过(保留上次)")
+        return
+    api = "https://api.congress.gov/v3"
 
-    class TP(HTMLParser):
-        def __init__(self):
-            super().__init__(); self.rows, self.row, self.cell, self.in_td = [], [], "", False
-        def handle_starttag(self, tag, attrs):
-            if tag in ("td", "th"): self.in_td, self.cell = True, ""
-            if tag == "tr": self.row = []
-        def handle_endtag(self, tag):
-            if tag in ("td", "th"): self.in_td = False; self.row.append(self.cell.strip())
-            if tag == "tr" and self.row: self.rows.append(self.row)
-        def handle_data(self, d):
-            if self.in_td: self.cell += d
+    def get(path, **params):
+        r = requests.get(api + path, params=dict(params, api_key=key, format="json"), timeout=60)
+        r.raise_for_status(); return r.json()
 
-    r = requests.get("https://crsreports.congress.gov/AppropriationsStatusTable",
-                     headers={"User-Agent": "Mozilla/5.0 fiscal-monitor"}, timeout=60)
-    r.raise_for_status()
-    p = TP(); p.feed(r.text)
-    header, out = None, []
-    for row in p.rows:
-        joined = " ".join(row)
-        if header is None and "House" in joined and "Senate" in joined:
-            header = row
-            continue
-        for kw in APPROPS_BILLS:
-            if row and kw.lower() in row[0].lower():
-                filled = [i for i, c in enumerate(row[1:], 1) if c and c not in ("--", "—")]
-                refs = sorted({f"119-{t.replace('.', '').lower().replace(' ', '')[:2].replace('hr', 'hr').replace('s', 's') if False else ('hr' if 'h' in t.lower() else 's')}-{n}"
-                               for t, n in re.findall(r"(H\.?\s?R\.?|S\.?)\s*(\d{3,5})", " ".join(row))})
-                out.append({"bill": kw, "cells": row, "refs": refs,
-                            "latest_col": header[max(filled)] if (header and filled and max(filled) < len(header)) else None,
-                            "latest_val": row[max(filled)] if filled else None})
-    if not out:
-        (OUT / "_debug_approps_status.html").write_text(r.text[:20000], encoding="utf-8")
-        print("  !! 状态表解析为空, 原文样本已落盘")
-    _write("approps_status", {"sample": False, "header": header, "rows": out})
+    today = date.today()
+    cur_fy = today.year + (1 if today.month >= 10 else 0)
+    congress = (today.year - 1789) // 2 + 1
+    old = json.loads((OUT / "approps_status.json").read_text(encoding="utf-8")) \
+        if (OUT / "approps_status.json").exists() else {}
+    titles = dict(old.get("titles") or {})   # ref → 标题缓存, 避免重复查询
+    cands, raw = set(), []
+    for chamber, code in (("house", "hsap00"), ("senate", "ssap00")):
+        off = 0
+        while off < 2000:
+            d = get(f"/committee/{chamber}/{code}/bills", limit=250, offset=off,
+                    fromDateTime=f"{cur_fy-2}-01-01T00:00:00Z")
+            bl = (d.get("committee-bills") or {}).get("bills") or []
+            raw += bl[:20] if off == 0 else []
+            for b in bl:
+                if str(b.get("congress")) == str(congress):
+                    cands.add(f"{congress}-{(b.get('billType') or '').lower()}-{b.get('billNumber')}")
+            if len(bl) < 250: break
+            off += 250
+    for ref in sorted(cands - set(titles)):
+        c, t, n = ref.split("-")
+        titles[ref] = ((get(f"/bill/{c}/{t}/{n}").get("bill") or {}).get("title") or "")
+        time.sleep(0.2)
+    rows, actions_dbg = [], {}
+    for ref, title in sorted(titles.items()):
+        m = re.search(r"Appropriations Act, (20\d\d)", title)
+        if not m or int(m.group(1)) not in (cur_fy, cur_fy + 1): continue
+        name = next((nm for nm, pat in APPROPS_BILLS if re.search(pat, title)), None)
+        if name is None:
+            name = "其他: " + title[:60]
+        c, t, n = ref.split("-")
+        acts = (get(f"/bill/{c}/{t}/{n}/actions", limit=250).get("actions") or [])
+        stages = {}
+        for col, pat in APPROPS_STAGES:
+            ds = sorted(a.get("actionDate") for a in acts if a.get("actionDate") and re.search(pat, a.get("text") or ""))
+            if ds: stages[col] = ds[0]
+        if not stages:
+            actions_dbg[ref] = [{"date": a.get("actionDate"), "type": a.get("type"), "text": (a.get("text") or "")[:200]} for a in acts[:40]]
+        last = next((col for col, _ in reversed(APPROPS_STAGES) if col in stages), None)
+        rows.append({"bill": name, "fy": int(m.group(1)), "refs": [ref], "title": title,
+                     "stages": stages, "latest_col": last, "latest_val": stages.get(last) if last else None})
+        time.sleep(0.2)
+    if not rows:
+        _debug("approps_status", raw)
+        print("  !! approps_status: 未匹配到拨款法案, 委员会法案样本已落debug")
+        return
+    if actions_dbg:
+        _debug("approps_actions", [{"ref": k, "actions": v} for k, v in actions_dbg.items()])
+    _write("approps_status", {"sample": False, "source": "congress.gov API",
+                              "header": ["Bill"] + [c for c, _ in APPROPS_STAGES],
+                              "rows": rows, "titles": titles})
+    print(f"  approps_status: {len(rows)}个法案 (FY{cur_fy}/{cur_fy+1})")
 
 
 LOCAL_SERIES = {  # FRED/NIPA候选id, 首个命中生效
