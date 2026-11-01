@@ -39,6 +39,51 @@
    "date": "2026-09-02",
    "text": "Became Public Law No: 119-103.",
    "cbo": "2026-01-20T21:39:00Z"
+  },
+  "119-hr-8495": {
+   "date": "2026-04-24",
+   "text": "Placed on the Union Calendar, Calendar No. 540.",
+   "cbo": null
+  },
+  "119-hr-8646": {
+   "date": "2026-06-08",
+   "text": "Received in the Senate.",
+   "cbo": null
+  },
+  "119-hr-8845": {
+   "date": "2026-05-15",
+   "text": "Placed on the Union Calendar, Calendar No. 567.",
+   "cbo": null
+  },
+  "119-hr-9022": {
+   "date": "2026-06-23",
+   "text": "Rules Committee Resolution H. Res. 1377 Reported to House. Rule provides for consideration of H.R. 1181, H.R. 9022, H.R. 8595 and H.R. 9237. The resolution provides for consideration of H.R. 1181 and H.R. 9237 under a closed rule and H.R. 9022 and H.R. 8595 under a structured rule. The resolution provides for one hour of general debate and one motion to recommit on each bill.",
+   "cbo": null
+  },
+  "119-hr-9170": {
+   "date": "2026-06-05",
+   "text": "Placed on the Union Calendar, Calendar No. 598.",
+   "cbo": null
+  },
+  "119-hr-9171": {
+   "date": "2026-06-05",
+   "text": "Placed on the Union Calendar, Calendar No. 599.",
+   "cbo": null
+  },
+  "119-hr-9260": {
+   "date": "2026-06-11",
+   "text": "Placed on the Union Calendar, Calendar No. 604.",
+   "cbo": null
+  },
+  "119-hr-9310": {
+   "date": "2026-06-12",
+   "text": "Placed on the Union Calendar, Calendar No. 605.",
+   "cbo": null
+  },
+  "119-hr-9495": {
+   "date": "2026-06-26",
+   "text": "Placed on the Union Calendar, Calendar No. 621.",
+   "cbo": null
   }
  },
  "pages": {
@@ -51,7 +96,7 @@
    "ok": false
   },
   "apportionment-db": {
-   "hash": "fadabc1e63dcb612",
+   "hash": "0cadbe2444328820",
    "ok": true
   },
   "cbo-data-page": {
@@ -62,7 +107,7 @@
  "obj_last_change": {
   "mandatory_legislation": "2026-08-06",
   "caps_sequestration": "2026-08-10",
-  "impoundment": "2026-10-26",
+  "impoundment": "2026-11-01",
   "cbo_baseline": "2026-08-10",
   "tax_legislation": "2026-02-10",
   "appropriations": "2026-09-02",

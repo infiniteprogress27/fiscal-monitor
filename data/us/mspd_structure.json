@@ -23,8 +23,37 @@
    "out_bn": 708.0
   }
  ],
- "maturity_wall": [],
- "wam_months": null,
- "note": "到期墙待mspd_table_3接入",
- "fetched_at": "2026-10-26T18:01:48.096975Z"
+ "maturity_wall": [
+  {
+   "bucket": "<1y",
+   "bn": 10640.0
+  },
+  {
+   "bucket": "1-2y",
+   "bn": 3804.0
+  },
+  {
+   "bucket": "2-3y",
+   "bn": 2914.0
+  },
+  {
+   "bucket": "3-5y",
+   "bn": 4344.0
+  },
+  {
+   "bucket": "5-7y",
+   "bn": 2326.0
+  },
+  {
+   "bucket": "7-10y",
+   "bn": 1974.0
+  },
+  {
+   "bucket": "10y+",
+   "bn": 5828.0
+  }
+ ],
+ "wam_months": 69.7,
+ "note": "到期墙=MSPD表3逐券剩余期限分桶",
+ "fetched_at": "2026-11-01T06:41:40.858830Z"
 }

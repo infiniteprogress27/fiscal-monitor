@@ -1,8 +1,8 @@
 {
- "sample": true,
+ "sample": false,
+ "source": "congress.gov API",
  "header": [
   "Bill",
-  "House Sub",
   "House Cmte",
   "House Floor",
   "Senate Cmte",
@@ -11,23 +11,326 @@
  ],
  "rows": [
   {
-   "bill": "Defense",
-   "latest_col": "House Cmte",
-   "latest_val": "6/24/26 (35-27)",
+   "bill": "FSGG",
+   "fy": 2027,
    "refs": [
-    "119-hr-9105"
-   ]
+    "119-hr-8495"
+   ],
+   "title": "Financial Services and General Government Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-04-24"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-04-24"
   },
   {
-   "bill": "MilCon",
+   "bill": "Agriculture-FDA",
+   "fy": 2027,
+   "refs": [
+    "119-hr-8646"
+   ],
+   "title": "Agriculture, Rural Development, Food and Drug Administration, and Related Agency Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-05-01",
+    "House Floor": "2026-06-04"
+   },
    "latest_col": "House Floor",
-   "latest_val": "7/22/26 (219-207)"
+   "latest_val": "2026-06-04"
   },
   {
-   "bill": "Energy",
+   "bill": "CJS",
+   "fy": 2027,
+   "refs": [
+    "119-hr-8845"
+   ],
+   "title": "Commerce, Justice, Science, and Related Agencies Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-05-15"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-05-15"
+  },
+  {
+   "bill": "Energy-Water",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9022"
+   ],
+   "title": "Energy and Water Development and Related Agencies Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-05-22"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-05-22"
+  },
+  {
+   "bill": "THUD",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9170"
+   ],
+   "title": "Transportation, Housing and Urban Development, and Related Agencies Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-06-05"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-06-05"
+  },
+  {
+   "bill": "Interior-Env",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9171"
+   ],
+   "title": "Department of the Interior, Environment, and Related Agencies Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-06-05"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-06-05"
+  },
+  {
+   "bill": "Labor-HHS-Ed",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9260"
+   ],
+   "title": "Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-06-11"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-06-11"
+  },
+  {
+   "bill": "Homeland",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9310"
+   ],
+   "title": "Department of Homeland Security Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-06-12"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-06-12"
+  },
+  {
+   "bill": "Defense",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9495"
+   ],
+   "title": "Department of Defense Appropriations Act, 2027",
+   "stages": {
+    "House Cmte": "2026-06-26"
+   },
+   "latest_col": "House Cmte",
+   "latest_val": "2026-06-26"
+  },
+  {
+   "bill": "其他: Continuing Appropriations Act, 2027",
+   "fy": 2027,
+   "refs": [
+    "119-hr-9770"
+   ],
+   "title": "Continuing Appropriations Act, 2027",
+   "stages": {
+    "House Floor": "2026-07-21"
+   },
    "latest_col": "House Floor",
-   "latest_val": "7/29/26 (214-209)"
+   "latest_val": "2026-07-21"
   }
  ],
- "fetched_at": "2026-08-10T03:33:15.362236Z"
+ "titles": {
+  "119-hjres-143": "Resolution Act.",
+  "119-hr-10062": "Promoting National Service and Reducing Unemployment Act",
+  "119-hr-10106": "VISITOR Act",
+  "119-hr-1029": "To abolish the United States Agency for International Development.",
+  "119-hr-10498": "Illegal War Refund Act",
+  "119-hr-1052": "UNPLUG EVs Act",
+  "119-hr-10587": "American Homes First Act",
+  "119-hr-10697": "No Troops in Our Streets Act of 2026",
+  "119-hr-10780": "Congressional Budget Reform Act",
+  "119-hr-10803": "Reimagining Safety Act",
+  "119-hr-1123": "To abolish the United States Agency for International Development, and for other purposes.",
+  "119-hr-114": "Responsible Path to Full Obamacare Repeal Act",
+  "119-hr-115": "No Free Rent for Freeloaders Act of 2025",
+  "119-hr-1211": "No Propaganda Act",
+  "119-hr-1370": "USA FIRST Act",
+  "119-hr-1485": "Alien Removal Not Resort Stays Act",
+  "119-hr-1654": "CUTS Act",
+  "119-hr-1668": "End FEMA Benefits for Illegal Immigrants Act",
+  "119-hr-1834": "To advance policy priorities that will break the gridlock.",
+  "119-hr-185": "Responsible Legislating Act",
+  "119-hr-1916": "Pay Our Border Patrol and Customs Agents Act of 2025",
+  "119-hr-1932": "Pay Our Troops Act of 2025",
+  "119-hr-1968": "Full-Year Continuing Appropriations and Extensions Act, 2025",
+  "119-hr-1974": "Further Additional Continuing Appropriations and Other Extensions Act, 2025",
+  "119-hr-199": "Implementing DOGE Act",
+  "119-hr-2016": "Feed Our Families Act of 2025",
+  "119-hr-2017": "Pay Our Military Act",
+  "119-hr-2050": "Homeland Heroes Pay Act",
+  "119-hr-2083": "Veterans First Act of 2025",
+  "119-hr-2266": "RETIREES FIRST Act",
+  "119-hr-23": "Illegitimate Court Counteraction Act",
+  "119-hr-2401": "Urban Waters Federal Partnership Act of 2025",
+  "119-hr-2432": "Southwestern Power Administration Fund Establishment Act",
+  "119-hr-2631": "Protecting Gold Star Spouses Act of 2025",
+  "119-hr-3001": "To advance commonsense priorities.",
+  "119-hr-3119": "ReConnecting Rural America Act of 2025",
+  "119-hr-374": "DIRECT Act",
+  "119-hr-3785": "Forgotten Funds Act",
+  "119-hr-3838": "Streamlining Procurement for Effective Execution and Delivery and National Defense Authorization Act for Fiscal Year 2026",
+  "119-hr-3873": "KO Cancer Act",
+  "119-hr-3906": "Medical Research for Our Troops Act",
+  "119-hr-3944": "Military Construction and Veterans Affairs, Agriculture, and Legislative Branch Appropriations Act, 2026",
+  "119-hr-4": "Rescissions Act of 2025",
+  "119-hr-4001": "Prohibition on Funding to CECOT Act",
+  "119-hr-4016": "Department of Defense Appropriations Act, 2026",
+  "119-hr-4024": "Filling Public Safety Vacancies Act",
+  "119-hr-4121": "Agriculture, Rural Development, Food and Drug Administration, and Related Agencies Appropriations Act, 2026",
+  "119-hr-4213": "Department of Homeland Security Appropriations Act, 2026",
+  "119-hr-4249": "Legislative Branch Appropriations Act, 2026",
+  "119-hr-4552": "Transportation, Housing and Urban Development, and Related Agencies Appropriations Act, 2026",
+  "119-hr-4553": "Energy and Water Development and Related Agencies Appropriations Act, 2026",
+  "119-hr-4685": "ICBM Act",
+  "119-hr-4714": "End Polluter Welfare Act of 2025",
+  "119-hr-4749": "Texas Flood Emergency Supplemental Appropriations Act of 2025",
+  "119-hr-4754": "Department of the Interior, Environment, and Related Agencies Appropriations Act, 2026",
+  "119-hr-4779": "National Security, Department of State, and Related Programs Appropriations Act, 2026",
+  "119-hr-5026": "ALCATRAZ Act",
+  "119-hr-5126": "HIV Prevention Now Act",
+  "119-hr-5130": "Prevent Government Shutdowns Act of 2025",
+  "119-hr-5166": "Financial Services and General Government Appropriations Act, 2026",
+  "119-hr-5260": "Pay Our Border Patrol and Customs Agents Act",
+  "119-hr-5304": "Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2026",
+  "119-hr-5307": "Learn and Serve America Reinvestment Act",
+  "119-hr-5342": "Commerce, Justice, Science, and Related Agencies Appropriations Act, 2026",
+  "119-hr-5371": "Continuing Appropriations, Agriculture, Legislative Branch, Military Construction and Veterans Affairs, and Extensions Act, 2026",
+  "119-hr-5398": "Pay Our Homeland Defenders Act of 2026",
+  "119-hr-5401": "Pay Our Troops Act of 2026",
+  "119-hr-5405": "Government Shutdown Prevention Act of 2025",
+  "119-hr-5450": "Continuing Appropriations and Extensions and Other Matters Act, 2026",
+  "119-hr-5542": "End Government Shutdowns Act",
+  "119-hr-5552": "Eliminate Shutdowns Act",
+  "119-hr-5568": "Funding Small Businesses During Shutdown Act",
+  "119-hr-5619": "Federal Firefighter Paycheck Protection Act",
+  "119-hr-5648": "Disaster Relief Continuity Act of 2025",
+  "119-hr-5654": "To provide for interim appropriations for the District of Columbia courts and related agencies with respect to any fiscal year for which appropriations are not otherwise provided for such courts and agencies.",
+  "119-hr-5657": "Fair Pay for Federal Contractors Act of 2025",
+  "119-hr-5660": "Pay Our Military Act",
+  "119-hr-5666": "To provide for continued operation of the Coast Guard in the event of a lapse in appropriation.",
+  "119-hr-5667": "To provide for continued operation of the Federal Aviation Administration in the event of a lapse in appropriations.",
+  "119-hr-5680": "Pay Our Public Shipyard Workers Act",
+  "119-hr-5687": "Keep the Heat On Act of 2025",
+  "119-hr-5719": "To provide for interim appropriations for the National Capital Planning Commission and the Commission of Fine Arts with respect to any fiscal year for which appropriations are not otherwise provided for the commissions.",
+  "119-hr-5731": "School Food Modernization Act",
+  "119-hr-5742": "BOPEN Act of 2025",
+  "119-hr-5756": "HEATS Act",
+  "119-hr-5757": "Tribal Housing Continuity Act of 2025",
+  "119-hr-5801": "Shutdown Fairness Act",
+  "119-hr-5802": "MAGA Act",
+  "119-hr-5822": "Keep SNAP Funded Act of 2025",
+  "119-hr-5827": "To advance bipartisan, common sense solutions.",
+  "119-hr-5836": "Keep WIC Working Act",
+  "119-hr-5849": "USCP Act",
+  "119-hr-5851": "Keep America Flying Act of 2026",
+  "119-hr-5860": "SNAP BACK Act.",
+  "119-hr-5870": "Prevent Government Shutdowns Act",
+  "119-hr-5893": "GUARD Act",
+  "119-hr-5924": "Pay Our Capitol Police Act",
+  "119-hr-5937": "MAMDANI Act",
+  "119-hr-5950": "Keep SNAP and WIC Funded Act of 2025",
+  "119-hr-5974": "Bureau of Prisons Pay Protection Act",
+  "119-hr-6039": "Commonsense Legislating Act",
+  "119-hr-6044": "Pay Our Patriots Act",
+  "119-hr-6050": "HEALTH Act",
+  "119-hr-6202": "Brand USA Restoration Act",
+  "119-hr-6271": "Food Bank Emergency Support Act of 2025",
+  "119-hr-6337": "ROAD to Housing Act of 2025",
+  "119-hr-6632": "El Paso Air Traffic Control Tower Modernization Act",
+  "119-hr-6636": "To advance sensible priorities.",
+  "119-hr-6637": "To advance bipartisan priorities.",
+  "119-hr-6771": "Housing Crisis Response Act of 2025",
+  "119-hr-6932": "IDEAL Act",
+  "119-hr-6938": "Commerce, Justice, Science; Energy and Water Development; and Interior and Environment Appropriations Act, 2026",
+  "119-hr-7006": "Financial Services and General Government and National Security, Department of State, and Related Programs Appropriations Act, 2026",
+  "119-hr-7007": "Governing for the People Act",
+  "119-hr-7137": "Shutdown Fairness Act",
+  "119-hr-7147": "Homeland Security and Further Additional Continuing Appropriations Act, 2026.",
+  "119-hr-7148": "Consolidated Appropriations Act, 2026",
+  "119-hr-7163": "PUBLIC SAFETY Act",
+  "119-hr-7314": "Advancing Commonsense Policies Act",
+  "119-hr-7315": "Advancing Policy Priorities Act",
+  "119-hr-7322": "True Shutdown Fairness Act",
+  "119-hr-7481": "Department of Homeland Security Appropriations Act, 2026",
+  "119-hr-76": "Fund and Complete the Border Wall Act",
+  "119-hr-7617": "To provide funding for administrative expenses of the Department of Homeland Security during any lapse in appropriations during fiscal year 2026, to require that the Department be responsive to congressional offices during such a lapse in appropriations, and for other purposes.",
+  "119-hr-7744": "Department of Homeland Security Appropriations Act, 2026",
+  "119-hr-7774": "FERRIES Act",
+  "119-hr-8029": "Pay Our Homeland Defenders Act",
+  "119-hr-8171": "FAST Housing Act",
+  "119-hr-8173": "Reforming ICE and Protecting America Act",
+  "119-hr-8206": "Homeland Security and Further Additional Continuing Appropriations Act, 2026",
+  "119-hr-8291": "Reforming Disaster Recovery Act",
+  "119-hr-8368": "To appropriate funds for the Federal Emergency Management Agency's Disaster Relief Fund, and for other purposes.",
+  "119-hr-8469": "Making appropriations for military construction, the Department of Veterans Affairs, and related agencies for the fiscal year ending September 30, 2027, and for other purposes.",
+  "119-hr-8495": "Financial Services and General Government Appropriations Act, 2027",
+  "119-hr-8595": "Making appropriations for national security, Department of State, and related programs for the fiscal year ending September 30, 2027, and for other purposes.",
+  "119-hr-8646": "Agriculture, Rural Development, Food and Drug Administration, and Related Agency Appropriations Act, 2027",
+  "119-hr-8800": "National Defense Authorization Act for Fiscal Year 2027",
+  "119-hr-8845": "Commerce, Justice, Science, and Related Agencies Appropriations Act, 2027",
+  "119-hr-8902": "WATCH Personnel Act of 2026",
+  "119-hr-9010": "Making appropriations for the Legislative Branch for the fiscal year ending September 30, 2027, and for other purposes.",
+  "119-hr-9022": "Energy and Water Development and Related Agencies Appropriations Act, 2027",
+  "119-hr-9094": "Florida Freeze Disaster Assistance Act of 2026",
+  "119-hr-9170": "Transportation, Housing and Urban Development, and Related Agencies Appropriations Act, 2027",
+  "119-hr-9171": "Department of the Interior, Environment, and Related Agencies Appropriations Act, 2027",
+  "119-hr-9260": "Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2027",
+  "119-hr-9310": "Department of Homeland Security Appropriations Act, 2027",
+  "119-hr-9313": "Water Access Act",
+  "119-hr-9358": "Improving the Lives of the American People Act",
+  "119-hr-9495": "Department of Defense Appropriations Act, 2027",
+  "119-hr-9586": "Delivering Priority Legislation Act",
+  "119-hr-9736": "Stop CHEATERS Act",
+  "119-hr-9770": "Continuing Appropriations Act, 2027",
+  "119-hr-9821": "Shared Values Act",
+  "119-hr-9824": "Daycare Not Detentions Act of 2026",
+  "119-hres-19": "Providing the sense of the House of Representatives that the House should not adjourn until the annual appropriation bills within the jurisdiction of all the subcommittees of the Committee on Appropriations for the current fiscal year are enacted into law.",
+  "119-s-2067": "Rescissions Act of 2025",
+  "119-s-2187": "Pay Down the Debt Act",
+  "119-s-2256": "Agriculture, Rural Development, Food and Drug Administration, and Related Agencies Appropriations Act, 2026",
+  "119-s-2257": "Legislative Branch Appropriations Act, 2026",
+  "119-s-2354": "Commerce, Justice, Science, and Related Agencies Appropriations Act, 2026",
+  "119-s-2431": "Department of the Interior, Environment, and Related Agencies Appropriations Act, 2026",
+  "119-s-2465": "Transportation, Housing and Urban Development, and Related Agencies Appropriations Act, 2026",
+  "119-s-2572": "Department of Defense Appropriations Act, 2026",
+  "119-s-2587": "Departments of Labor, Health and Human Services, and Education, and Related Agencies Appropriations Act, 2026",
+  "119-s-3001": "Shutdown Fairness Act",
+  "119-s-3002": "Pay Our Military Act of 2025",
+  "119-s-3024": "Keep SNAP Funded Act of 2025",
+  "119-s-3025": "Fund Farm Programs Act of 2025",
+  "119-s-3043": "Military and Federal Employee Protection Act",
+  "119-s-3060": "Paychecks for Patriots Act of 2025",
+  "119-s-3066": "Pay the People Act",
+  "119-s-3071": "Keep SNAP and WIC Funded Act of 2025",
+  "119-s-3073": "Pay Our Capitol Police Act",
+  "119-s-3079": "Armed Forces Pay Act of 2025",
+  "119-s-3094": "Pay Our Capitol Police Act",
+  "119-s-3147": "Keep Head Start Funded Act of 2025",
+  "119-s-3290": "Financial Services and General Government Appropriations Act, 2026",
+  "119-s-3293": "Energy and Water Development and Related Agencies Appropriations Act, 2026",
+  "119-s-360": "A bill to provide for across-the-board rescissions of nonsecurity discretionary spending.",
+  "119-s-4073": "Transportation Security Administration Pay Act of 2026",
+  "119-s-4074": "Fund CISA Personnel Act of 2026",
+  "119-s-4075": "Pay FEMA Personnel Act of 2026",
+  "119-s-4494": "American Cures Act",
+  "119-s-499": "Government Shutdown Prevention Act of 2025",
+  "119-s-5670": "A bill to ensure the prudent obligation of budget authority, and for other purposes.",
+  "119-s-802": "Pay Our Coast Guard Act",
+  "119-sres-517": "A resolution expressing opposition to congressional spending on earmarks.",
+  "119-sres-921": "A resolution expressing the sense of the Senate that the advertisements promoting President Donald Trump that aired in September 2026, which included the direct language \"paid for by the U.S. Government,\" should not be paid for by the United States Government."
+ },
+ "fetched_at": "2026-11-01T06:50:08.009432Z"
 }
