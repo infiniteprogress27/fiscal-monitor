@@ -801,7 +801,10 @@ def _fetch_qtax():
         return {}
     r = requests.get("https://api.census.gov/data/timeseries/eits/qtax",
                      params={"get": "CELL_VALUE,DATA_TYPE_CODE,CATEGORY_CODE",
-                             "for": "us:*", "time": "from 2014", "key": key}, timeout=60)
+                             "for": "us:*", "time": "from 2014", "key": key},
+                     timeout=60, allow_redirects=False)
+    if r.is_redirect:  # Census对缺/错/未激活key不报4xx, 而是302到说明页
+        raise RuntimeError(f"Census拒绝key -> {r.headers.get('Location')} (新key需先点邮件里的激活链接)")
     r.raise_for_status()
     rows = r.json()
     hdr = [h.lower() for h in rows[0]]
