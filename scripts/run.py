@@ -120,7 +120,24 @@ def jp(mode):
         print(f"!! jp流水失败(不阻塞): {e}")
 
 
+def sample_sandbox():
+    """sample模式不碰仓库: 复制到.sample/(不进git)再在副本里跑, 页面在.sample/docs/。
+    各脚本ROOT均按自身位置推算, 整体复制即可隔离。"""
+    import shutil
+    box = ROOT / ".sample"
+    shutil.rmtree(box, ignore_errors=True)
+    box.mkdir()
+    for name in ("scripts", "config", "data", "docs"):
+        shutil.copytree(ROOT / name, box / name)
+    rc = subprocess.run([sys.executable, str(box / "scripts/run.py"), "--mode", "sample"]).returncode
+    if rc == 0:
+        print(f"sample页面: {box / 'docs/index.html'} · {box / 'docs/jp/index.html'}")
+    sys.exit(rc)
+
+
 if __name__ == "__main__":
+    if "sample" in sys.argv and ROOT.name != ".sample":
+        sample_sandbox()
     main()
     _mode = next((a.split("=")[1] if "=" in a else sys.argv[i+1]
                   for i, a in enumerate(sys.argv) if a.startswith("--mode")), "daily")

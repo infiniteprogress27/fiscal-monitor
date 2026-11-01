@@ -1,0 +1,19 @@
+#!/bin/sh
+# 本地提交守门: data/ docs/ 只由Actions bot写入, 本地只准提交人工锚。
+# 启用: git config core.hooksPath scripts/hooks   (确需绕过: git commit --no-verify)
+ANCHORS="data/us/qra_history.json data/us/wam.json data/us/cbo_matrix.json data/us/approps_status.json data/us/allotments.json data/us/corp_issuance.json"
+bad=""
+for f in $(git diff --cached --name-only); do
+  case "$f" in
+    docs/*) bad="$bad\n  $f  (构建产物)" ;;
+    data/*)
+      case " $ANCHORS " in
+        *" $f "*) ;;
+        *) bad="$bad\n  $f  (抓取数据)" ;;
+      esac ;;
+  esac
+done
+if [ -n "$bad" ]; then
+  printf "拒绝提交: 以下文件只由Actions写入$bad\n人工锚白名单: $ANCHORS\n"
+  exit 1
+fi

@@ -36,8 +36,13 @@ US站约24个对象、13张图, 28/34数据集真实自动更新。JP站16个对
 | weekly | 12:00 周一 | 慢频全量: MSPD/供给/coupon深抓/TIC/SOMA/债务长史/市场日频/MTS套件bootstrap/annual/地方/总发行/SIFMA尝试/JP宏观+TIC历史 |
 | sample | 手动 | 全样例数据, 本地开发用 |
 
-本地: `pip install -r requirements.txt && python scripts/run.py --mode sample` 后打开 `docs/index.html`。
+本地: 需Python 3.12+(build_site用了3.12的f-string写法)。`python scripts/run.py --mode sample` 自动复制到`.sample/`(不进git)里跑, 页面在`.sample/docs/`, 仓库data/docs不受影响。
 构建会在任一模式执行, 改视图后跑daily即可看到页面变化(不需要weekly)。
+
+分工: 本地=开发与预览, Actions=唯一数据生产者。
+1. 本地只提交代码/配置/人工锚; data/与docs/只由fiscal-bot写入。守门hook `scripts/hooks/pre-commit`(新克隆需 `git config core.hooksPath scripts/hooks`), 人工锚白名单写在hook里。
+2. 流程: 改 → sample预览 → `git pull --rebase` → push → `gh workflow run update-dashboard -f mode=daily` → `gh run watch` 看真实数据结果。
+3. bot每天往main提交, push前必须先rebase。
 Actions日志的下载重定向到对象存储域名, 容器内不可读, 用`data/*/_debug_*`文件取证。
 
 ## 4. 数据流与机制
