@@ -736,7 +736,9 @@ def fetch_approps_status():
         time.sleep(0.2)
     rows, actions_dbg = [], {}
     for ref, title in sorted(titles.items()):
-        m = re.search(r"Appropriations Act, (20\d\d)", title)
+        # 简称"...Appropriations Act, 2027"; 未定简称时为正式标题"Making appropriations for ... fiscal year ending September 30, 2027"
+        m = re.search(r"Appropriations Act, (20\d\d)", title) or \
+            re.search(r"^Making appropriations .*fiscal year ending September 30, (20\d\d)", title)
         if not m or int(m.group(1)) not in (cur_fy, cur_fy + 1): continue
         name = next((nm for nm, pat in APPROPS_BILLS if re.search(pat, title)), None)
         if name is None:
