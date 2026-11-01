@@ -1133,25 +1133,48 @@ def fetch_corp():
 
 
 def load_corp_xlsx(path):
-    """用户提供SIFMA US Corporate Bonds xls(网页填表下载)时手动调用, 回填历史月度发行。"""
+    """用户提供SIFMA xls(网页填表下载)时手动调用, 回填历史月度发行。
+    按表头定位"Corporates"列(首个块, 即$bn而非%/同比); 兼容公司债专表与固收汇总表。
+    返回 (月度{YYYY-MM: bn}, 年度{YYYY: bn})。"""
     from openpyxl import load_workbook
     from datetime import date as _date
     wb = load_workbook(path, data_only=True, read_only=True)
-    bym = {}
+    bym, byy = {}, {}
     for ws in wb.worksheets:
         if "issuance" not in ws.title.lower(): continue
+        col = None
         for row in ws.iter_rows(values_only=True):
-            if not row or row[0] is None: continue
-            d0, ym = row[0], None
-            if isinstance(d0, (datetime, _date)): ym = f"{d0.year}-{d0.month:02d}"
-            elif isinstance(d0, str):
-                m2 = re.match(r"(20\d\d)[-/\.](\d{1,2})", d0.strip())
-                if m2: ym = f"{m2.group(1)}-{int(m2.group(2)):02d}"
-            if not ym: continue
-            nums = [v for v in row[1:8] if isinstance(v, (int, float)) and v > 0]
-            if nums:
-                bym[ym] = round(sum(nums[:2]), 1)
-    return bym
+            if not row: continue
+            if col is None:
+                hdr = [str(c).strip().lower() if c is not None else "" for c in row]
+                hit = [k for k, h in enumerate(hdr) if h in ("corporates", "corporate", "total corporate", "total")]
+                if hit and "corporates" in hdr: col = hdr.index("corporates")
+                elif hit: col = hit[0]
+                continue
+            d0, v = row[0], row[col] if col < len(row) else None
+            if not isinstance(v, (int, float)): continue
+            if isinstance(d0, (datetime, _date)):
+                bym[f"{d0.year}-{d0.month:02d}"] = round(v, 1)
+            elif isinstance(d0, int) and 1990 <= d0 <= 2100:
+                byy[d0] = round(v, 1)
+        assert col is not None, f"{ws.title}: 未找到Corporates表头"
+    return bym, byy
+
+
+def apply_corp_xlsx(path):
+    """load_corp_xlsx结果并入corp_issuance锚: xls月份覆盖旧锚并记入real_months; 年度值存annual_obs供核对。"""
+    bym, byy = load_corp_xlsx(path)
+    p = OUT / "corp_issuance.json"
+    d = json.loads(p.read_text(encoding="utf-8"))
+    d.pop("fetched_at", None)
+    series = {x["month"]: x["bn"] for x in d.get("series", [])}
+    series.update(bym)
+    real = set(d.get("real_months") or []) | set(bym)
+    ann = dict(d.get("annual_obs") or {}); ann.update({str(y): v for y, v in byy.items()})
+    _write("corp_issuance", dict(d, sample=False, real_months=sorted(real), annual_obs=ann,
+                                 note="real_months=SIFMA xls月度 + 统计页YTD差分; 其余月份为旧锚(待公司债专表xls回填)",
+                                 series=[{"month": k, "bn": series[k]} for k in sorted(series)]))
+    return bym, byy
 
 
 def fetch_gross():
