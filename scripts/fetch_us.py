@@ -365,9 +365,66 @@ def fetch_mspd():
             if v is not None:
                 mix.append({"type": c2, "out_bn": round(v/1e3, 0)})
     if not mix and recs: _debug("mspd", recs)
+    wall, wam_now = [], None
+    if latest:
+        wall, wam_now = _mspd3_month(_mspd3({"filter": f"record_date:eq:{latest}"}), latest)
     _write("mspd_structure", {"sample": False, "as_of": latest, "mix": mix,
-                              "maturity_wall": [], "wam_months": None,
-                              "note": "到期墙待mspd_table_3接入"})
+                              "maturity_wall": wall, "wam_months": wam_now,
+                              "note": "到期墙=MSPD表3逐券剩余期限分桶"})
+    _wam_history()
+
+
+# MSPD表3字段校准(2026-11): 每CUSIP多行(首发+续发), outstanding_amt只在首行, 续发行为"null";
+# 合计行security_class1_desc="Total Marketable"; FFB行无到期日; 逐券合计+FFB=Total Marketable。
+# TIPS的outstanding_amt已含通胀调整。数据始于2001-01。
+MSPD3_FIELDS = "record_date,security_class1_desc,maturity_date,outstanding_amt"
+WALL_BUCKETS = [(1, "<1y"), (2, "1-2y"), (3, "2-3y"), (5, "3-5y"), (7, "5-7y"), (10, "7-10y"), (999, "10y+")]
+
+
+def _mspd3(params, max_pages=2):
+    q = dict(params, fields=MSPD3_FIELDS)
+    q["page[size]"] = 10000
+    return api_get("/v1/debt/mspd/mspd_table_3_market", q, max_pages=max_pages)
+
+
+def _mspd3_month(rows, rec_date):
+    """单月逐券 → (到期墙[{bucket,bn}], WAM月)。"""
+    rd = date.fromisoformat(rec_date)
+    sums, tot, wsum = {b: 0.0 for _, b in WALL_BUCKETS}, 0.0, 0.0
+    for r in rows:
+        if r.get("record_date") != rec_date: continue
+        if r.get("security_class1_desc") in ("Total Marketable", "Federal Financing Bank"): continue
+        v, md = r.get("outstanding_amt"), r.get("maturity_date")
+        if v in (None, "null", "") or md in (None, "null", ""): continue
+        v, yrs = float(v), (date.fromisoformat(md) - rd).days / 365.25
+        tot += v; wsum += v * yrs * 12
+        sums[next(b for lim, b in WALL_BUCKETS if yrs < lim)] += v
+    if not tot:
+        if rows: _debug("mspd3", rows)
+        return [], None
+    return [{"bucket": b, "bn": round(sums[b]/1e3, 0)} for _, b in WALL_BUCKETS], round(wsum/tot, 1)
+
+
+def _wam_history():
+    """WAM月度序列: 2001+由MSPD表3逐券计算, 首跑回填全史, 之后只补新月份。
+    2001前保留TBAC节点插值(旧锚), 以real_from分界。"""
+    p = OUT / "wam.json"
+    old = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    series = {x["month"]: x["wam"] for x in old.get("series", [])}
+    last = old.get("last_record") if old.get("real_from") else None
+    flt = f"record_date:gt:{last}" if last else "record_date:gte:2001-01-01"
+    rows = _mspd3({"filter": flt, "sort": "record_date"}, max_pages=25)
+    new = 0
+    for d in sorted({r["record_date"] for r in rows}):
+        _, w = _mspd3_month(rows, d)
+        if w is not None:
+            series[d[:7]] = w; new += 1; last = d
+    if not new: return
+    real = sorted(m for m in series if m >= "2001-01")
+    _write("wam", {"sample": False, "real_from": "2001-01", "real_to": real[-1], "last_record": last,
+                   "note": "2001+ MSPD表3逐券存量加权剩余期限(不含FFB); 2001前为TBAC节点插值",
+                   "series": [{"month": m, "wam": series[m]} for m in sorted(series)]})
+    print(f"  wam: +{new}月, 至{real[-1]}")
 
 
 def fetch_supply():

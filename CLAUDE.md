@@ -55,8 +55,8 @@ Actions日志的下载重定向到对象存储域名, 容器内不可读, 用`da
 
 ## 5. 数据集成色
 
-US真实自动(28): MTS表1(96月)与分科目(表4收入/表9支出)、年度分科目(FY2025赤字=官方-1775B)、DTS/TGA/债限(组件透视)/债限史(DTS精确+DTP近似)、债务长史+NGDP、MSPD结构、供给结构2001+、coupon尺寸2007+(新发/续发分列)、52周bill利率、拍卖与历史、buybacks(`/v1/accounting/od/buybacks_operations`)、SOMA(NY Fed)、TIC国别2000+(mfhhis回填+mfh逐月累积)、利率与利息10年、地方收支五序列(FRED: FGRECPT/FGEXPND/W077RC1Q027SBEA/W079RCQ027SBEA/FGSL)、总发行(全口径+coupon口径)、市场日频(SPX=FRED拼接, 10Y=FRED)。
-US锚/样例(6): qra_history, wam, cbo_matrix(2月版), approps_status(CRS封锁), allotments(投资者类别XLS无API), corp_issuance(SIFMA直链全失败)。
+US真实自动(29): MTS表1(96月)与分科目(表4收入/表9支出)、年度分科目(FY2025赤字=官方-1775B)、DTS/TGA/债限(组件透视)/债限史(DTS精确+DTP近似)、债务长史+NGDP、MSPD结构(含表3到期墙)、WAM(2001+由MSPD表3逐券计算, 之前为TBAC节点插值)、供给结构2001+、coupon尺寸2007+(新发/续发分列)、52周bill利率、拍卖与历史、buybacks(`/v1/accounting/od/buybacks_operations`)、SOMA(NY Fed)、TIC国别2000+(mfhhis回填+mfh逐月累积)、利率与利息10年、地方收支五序列(FRED: FGRECPT/FGEXPND/W077RC1Q027SBEA/W079RCQ027SBEA/FGSL)、总发行(全口径+coupon口径)、市场日频(SPX=FRED拼接, 10Y=FRED)。
+US锚/样例(5): qra_history, cbo_matrix(2月版), approps_status(CRS封锁), allotments(投资者类别XLS无API), corp_issuance(SIFMA直链全失败)。
 JP真实(2): jgb_yields(财务省CSV 1974+, 英文站历史文件+当月文件累积), macro_jp(FRED JPNNGDP/JPNASSETS/IRLTLT01JPM156N + IMF WEO债务/收支/PB)。
 JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期限史、税收进度、国库收支、地方、债务长史、持有者、利息、日银减购、招标。
 
@@ -81,6 +81,7 @@ JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期
 - MSPD表1: `Total Marketable`在`security_type_desc`层, 品种在`security_class_desc`。
 - auctions_query: TIPS的`security_type`也是Note/Bond, 旗标列`inflation_index_security`=Yes; 10/20/30年名义新发仅在2/5/8/11月, 图用新发前向填充+异类场次护栏(低于近3次中位数60%剔除)。
 - buybacks端点 `/v1/accounting/od/buybacks_operations`。
+- MSPD表3 `/v1/debt/mspd/mspd_table_3_market`: 每CUSIP多行, outstanding_amt仅首行(续发行为null), 剔除Total Marketable与FFB行; 逐券合计+FFB=Total Marketable。
 - Census QTAX: 需`CENSUS_API_KEY`, 字段名大写, 必带`for=us:*`。
 - TIC: mfh.txt白名单国别×13月矩阵; 历史文件`mfhhis01-05.txt`通用解析器。
 - 财务省利率CSV: `jgbcm.csv`当月(和历R8.9.1, Shift-JIS), 历史全量在英文站`english/policy/jgbs/reference/interest_rate/historical/jgbcme_all.csv`。
@@ -91,7 +92,7 @@ JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期
 
 | 锚 | 文件 | 节奏 | 触发 |
 |---|---|---|---|
-| QRFE历史/WAM/回购结构 | data/us/qra_history.json, wam.json, config/buyback_schedule.yaml | 每季QRA(11/2·11/4最近) | 对话转换 |
+| QRFE历史/回购结构 | data/us/qra_history.json, config/buyback_schedule.yaml | 每季QRA(11/2·11/4最近) | 对话转换 |
 | CBO基线矩阵 | data/us/cbo_matrix.json | CBO每版(夏季更新截至10月未见) | xlsx对话转换 |
 | 拨款状态/302(b)/CR链/预算周期节点 | objects_us.yaml appropriations·budget_cycle实例 | 每周核 | 对话 |
 | 事件种子 | config/events_seed*.yaml | 每周 | 对话 |
@@ -108,14 +109,14 @@ JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期
 ## 10. 待办
 
 US
-1. 11/2 QRFE录qra_history一行, 11/4 Statement后校WAM与回购结构(长端加码是否常态化)。
+1. 11/2 QRFE录qra_history一行, 11/4 Statement后校回购结构(长端加码是否常态化)。WAM已自动。
 2. CBO夏季/秋季基线出来转cbo_matrix。
 3. 11/3中期选举后: 预算周期FY2027节点、拨款12/11节点、补充拨款$87.6B、农业法案(9/30已过期)、NDAA全部重核。
 4. Z.1 2026Q2/Q3持有者锚(货基/银行/家庭/养老)录入。
 5. 投资者类别配售XLS转allotments.json(用户手上有数据)。
 6. CENSUS_API_KEY配置; SIFMA直链换源或改锚节奏。
 7. 债务限制卡头恢复实时headroom读数(合并时丢失)。
-8. 变化提醒规则细化, mspd_table_3到期墙接入。
+8. 变化提醒规则细化。(mspd_table_3到期墙已接入)
 
 JP
 1. 尽力自动三项首跑校验: 招标结果HTML, 税收月度Excel(収入額調), 资金循环CSV。
