@@ -740,7 +740,7 @@ def fetch_approps_status():
         m = re.search(r"Appropriations Act, (20\d\d)", title) or \
             re.search(r"^Making appropriations .*fiscal year ending September 30, (20\d\d)", title)
         if not m or int(m.group(1)) not in (cur_fy, cur_fy + 1): continue
-        name = next((nm for nm, pat in APPROPS_BILLS if re.search(pat, title)), None)
+        name = next((nm for nm, pat in APPROPS_BILLS if re.search(pat, title, re.I)), None)
         if name is None:
             name = "其他: " + title[:60]
         c, t, n = ref.split("-")
