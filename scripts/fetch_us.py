@@ -1132,6 +1132,75 @@ def fetch_corp():
     print(f"  corp: YTD {ym} ${ytd}B, 真实月{len(real)}个")
 
 
+FED_CORP = ["https://www.federalreserve.gov/data/corpsecure/",
+            "https://www.federalreserve.gov/econresdata/releases/corpsecure/"]
+
+
+def _fed_corp_parse(raw):
+    """美联储Table 1.46: 表头=若干年度+8个月度列; 取第2行Bonds(百万美元)的月度列 -> {YYYY-MM: bn}。"""
+    import html as _html
+    t = re.sub(r"\s+", " ", _html.unescape(re.sub(r"<[^>]+>", " ", raw)))
+    i, j = t.find("Type of issue or issuer, or use"), t.find("All issues, new and refunding")
+    k, e = t.find("Bonds", j), t.find("By type of offering", j)
+    assert -1 not in (i, j, k, e), "Table 1.46结构变了"
+    cols = re.findall(r"(?:([A-Z][a-z]{2}) )?(\b(?:19|20)\d\d\b)", t[i:j])
+    nums = [float(x.replace(",", "")) for x in re.findall(r"\d[\d,]*", t[k:e])][-len(cols):]
+    assert len(nums) == len(cols), f"Bonds行列数不符 {len(nums)}/{len(cols)}"
+    out = {}
+    for (mon, yr), v in zip(cols, nums):
+        if mon:
+            out[f"{yr}-{datetime.strptime(mon, '%b').month:02d}"] = round(v / 1e3, 1)
+    return out
+
+
+def _corp_merge(d, fed):
+    """美联储月度并入corp_issuance: SIFMA真实月(real_months)优先, 其余月份用美联储覆盖旧锚。"""
+    d.pop("fetched_at", None)
+    fm = dict(d.get("fed_months") or {}); fm.update(fed)
+    series = {x["month"]: x["bn"] for x in d.get("series", [])}
+    real = set(d.get("real_months") or [])
+    for k, v in fm.items():
+        if k not in real: series[k] = v
+    return dict(d, sample=False, fed_months=dict(sorted(fm.items())),
+                note="real_months=SIFMA(xls+统计页YTD差分); fed_months=美联储Table 1.46 Bonds(不含Yankee, 含144A), 非SIFMA月份用它; 其余为旧锚",
+                series=[{"month": k, "bn": series[k]} for k in sorted(series)])
+
+
+def fetch_fed_corp():
+    """美联储Table 1.46当期页(最近8个月, 含修订), 并入corp_issuance (weekly)。"""
+    import requests
+    r = requests.get(FED_CORP[0] + "current.htm", timeout=60)
+    r.raise_for_status()
+    fed = _fed_corp_parse(r.text)
+    p = OUT / "corp_issuance.json"
+    _write("corp_issuance", _corp_merge(json.loads(p.read_text(encoding="utf-8")), fed))
+    print(f"  fed_corp: {min(fed)}~{max(fed)}")
+
+
+def backfill_fed_corp(start=2009):
+    """一次性手动: 逐月存档页(2009-01起; 2017-08前在econresdata路径), 按发布顺序覆盖以取最新修订。"""
+    import requests, calendar, time
+    fed = {}
+    today = datetime.utcnow()
+    for y in range(start, today.year + 1):
+        for m in range(1, 13):
+            if (y, m) > (today.year, today.month): break
+            fn = f"corpsecure{y}{m:02d}{calendar.monthrange(y, m)[1]:02d}.htm"
+            for base in FED_CORP:
+                for k in range(4):  # 偶发SSL断连, 退避重试
+                    try:
+                        r = requests.get(base + fn, timeout=60); break
+                    except requests.exceptions.RequestException:
+                        if k == 3: raise
+                        time.sleep(3 * (k + 1))
+                if r.status_code == 200:
+                    fed.update(_fed_corp_parse(r.text)); break
+            time.sleep(0.3)
+    p = OUT / "corp_issuance.json"
+    _write("corp_issuance", _corp_merge(json.loads(p.read_text(encoding="utf-8")), fed))
+    return fed
+
+
 def load_corp_xlsx(path):
     """用户提供SIFMA xls(网页填表下载)时手动调用, 回填历史月度发行。
     按表头定位"Corporates"列(首个块, 即$bn而非%/同比); 兼容公司债专表与固收汇总表。
@@ -1390,7 +1459,7 @@ FETCHERS = {
                  fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
                  fetch_debt_limit_history, fetch_market, fetch_approps_status,
                  fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
-                 fetch_local, fetch_tic, fetch_tic_history, fetch_gross, fetch_corp, fetch_allotments,
+                 fetch_local, fetch_tic, fetch_tic_history, fetch_gross, fetch_corp, fetch_fed_corp, fetch_allotments,
                  fetch_annual],
     "due:mts":  [fetch_mts, fetch_avg_rates, fetch_interest,
                  fetch_annual],
