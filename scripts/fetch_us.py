@@ -720,14 +720,18 @@ def fetch_approps_status():
                     fromDateTime=f"{cur_fy-2}-01-01T00:00:00Z")
             bl = (d.get("committee-bills") or {}).get("bills") or []
             raw += bl[:20] if off == 0 else []
-            for b in bl:
-                if str(b.get("congress")) == str(congress):
-                    cands.add(f"{congress}-{(b.get('billType') or '').lower()}-{b.get('billNumber')}")
+            for b in bl:   # 字段名不稳(billType/type, billNumber/number), 以url为准: .../bill/119/hr/9105
+                mu = re.search(r"/bill/(\d+)/([a-z]+)/(\d+)", (b.get("url") or "").lower())
+                if mu and mu.group(1) == str(congress):
+                    cands.add(f"{mu.group(1)}-{mu.group(2)}-{mu.group(3)}")
             if len(bl) < 250: break
             off += 250
     for ref in sorted(cands - set(titles)):
         c, t, n = ref.split("-")
-        titles[ref] = ((get(f"/bill/{c}/{t}/{n}").get("bill") or {}).get("title") or "")
+        try:
+            titles[ref] = ((get(f"/bill/{c}/{t}/{n}").get("bill") or {}).get("title") or "")
+        except Exception as e:
+            print(f"    {ref} 标题失败: {e}")
         time.sleep(0.2)
     rows, actions_dbg = [], {}
     for ref, title in sorted(titles.items()):
@@ -737,7 +741,10 @@ def fetch_approps_status():
         if name is None:
             name = "其他: " + title[:60]
         c, t, n = ref.split("-")
-        acts = (get(f"/bill/{c}/{t}/{n}/actions", limit=250).get("actions") or [])
+        try:
+            acts = (get(f"/bill/{c}/{t}/{n}/actions", limit=250).get("actions") or [])
+        except Exception as e:
+            print(f"    {ref} actions失败: {e}"); acts = []
         stages = {}
         for col, pat in APPROPS_STAGES:
             ds = sorted(a.get("actionDate") for a in acts if a.get("actionDate") and re.search(pat, a.get("text") or ""))
