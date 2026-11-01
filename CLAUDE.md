@@ -55,8 +55,8 @@ Actions日志的下载重定向到对象存储域名, 容器内不可读, 用`da
 
 ## 5. 数据集成色
 
-US真实自动(29): MTS表1(96月)与分科目(表4收入/表9支出)、年度分科目(FY2025赤字=官方-1775B)、DTS/TGA/债限(组件透视)/债限史(DTS精确+DTP近似)、债务长史+NGDP、MSPD结构(含表3到期墙)、WAM(2001+由MSPD表3逐券计算, 之前为TBAC节点插值)、供给结构2001+、coupon尺寸2007+(新发/续发分列)、52周bill利率、拍卖与历史、buybacks(`/v1/accounting/od/buybacks_operations`)、SOMA(NY Fed)、TIC国别2000+(mfhhis回填+mfh逐月累积)、利率与利息10年、地方收支五序列(FRED: FGRECPT/FGEXPND/W077RC1Q027SBEA/W079RCQ027SBEA/FGSL)、总发行(全口径+coupon口径)、市场日频(SPX=FRED拼接, 10Y=FRED)。
-US锚/样例(5): qra_history, cbo_matrix(2月版), approps_status(CRS封锁), allotments(投资者类别XLS无API), corp_issuance(SIFMA直链全失败)。
+US真实自动(31): MTS表1(96月)与分科目(表4收入/表9支出)、年度分科目(FY2025赤字=官方-1775B)、DTS/TGA/债限(组件透视)/债限史(DTS精确+DTP近似)、债务长史+NGDP、MSPD结构(含表3到期墙)、WAM(2001+由MSPD表3逐券计算, 之前为TBAC节点插值)、供给结构2001+、coupon尺寸2007+(新发/续发分列)、52周bill利率、拍卖与历史、buybacks(`/v1/accounting/od/buybacks_operations`)、SOMA(NY Fed)、TIC国别2000+(mfhhis回填+mfh逐月累积)、利率与利息10年、地方收支五序列(FRED: FGRECPT/FGEXPND/W077RC1Q027SBEA/W079RCQ027SBEA/FGSL)、总发行(全口径+coupon口径)、市场日频(SPX=FRED拼接, 10Y=FRED)、拨款12法案进度(congress.gov API, 2026-11起替代被封的CRS表)、投资者类别配售(财政部IC-Coupons.xls, 2009-10+)。
+US锚/样例(3): qra_history, cbo_matrix(2月版, CBO封机房), corp_issuance(SIFMA xls需填表无法自动; 统计页YTD差分自2026-10起逐月累积真实值, 历史待用户提供xls经load_corp_xlsx回填)。
 JP真实(2): jgb_yields(财务省CSV 1974+, 英文站历史文件+当月文件累积), macro_jp(FRED JPNNGDP/JPNASSETS/IRLTLT01JPM156N + IMF WEO债务/收支/PB)。
 JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期限史、税收进度、国库收支、地方、债务长史、持有者、利息、日银减购、招标。
 
@@ -81,6 +81,9 @@ JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期
 - MSPD表1: `Total Marketable`在`security_type_desc`层, 品种在`security_class_desc`。
 - auctions_query: TIPS的`security_type`也是Note/Bond, 旗标列`inflation_index_security`=Yes; 10/20/30年名义新发仅在2/5/8/11月, 图用新发前向填充+异类场次护栏(低于近3次中位数60%剔除)。
 - buybacks端点 `/v1/accounting/od/buybacks_operations`。
+- congress.gov委员会法案列表(hsap00/ssap00): 条目字段名不稳, 以url解析congress/type/number; 拨款阶段正则APPROPS_STAGES为首跑候选。
+- 投资者类别: 页面href无引号, 表头第4行, 列序见ALLOT_COLS注释; .xls需xlrd。
+- SIFMA统计页正文: "YTD <年> statistics include: Issuance (through <月>) $X billion"。
 - MSPD表3 `/v1/debt/mspd/mspd_table_3_market`: 每CUSIP多行, outstanding_amt仅首行(续发行为null), 剔除Total Marketable与FFB行; 逐券合计+FFB=Total Marketable。
 - Census QTAX: 需`CENSUS_API_KEY`, 字段名大写, 必带`for=us:*`。
 - TIC: mfh.txt白名单国别×13月矩阵; 历史文件`mfhhis01-05.txt`通用解析器。
@@ -96,8 +99,7 @@ JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期
 | CBO基线矩阵 | data/us/cbo_matrix.json | CBO每版(夏季更新截至10月未见) | xlsx对话转换 |
 | 拨款状态/302(b)/CR链/预算周期节点 | objects_us.yaml appropriations·budget_cycle实例 | 每周核 | 对话 |
 | 事件种子 | config/events_seed*.yaml | 每周 | 对话 |
-| 拍卖需求热力表(投资者类别) | data/us/allotments.json | 财政部月度XLS | 用户提供xls即转 |
-| 企业债SIFMA | data/us/corp_issuance.json | 月 | 直链失败则对话 |
+| 企业债SIFMA历史 | data/us/corp_issuance.json | 一次性 | 用户网页填表下载xls → load_corp_xlsx |
 | JP全部锚 | data/jp/*.json(由fetch_jp.py SEEDS生成, 改数字改代码) | 发行计划12月+改定, 补充预算, 中长期测算1/7月, 骨太6月 | 对话 |
 
 ## 9. 凭据与权限
@@ -113,8 +115,8 @@ US
 2. CBO夏季/秋季基线出来转cbo_matrix。
 3. 11/3中期选举后: 预算周期FY2027节点、拨款12/11节点、补充拨款$87.6B、农业法案(9/30已过期)、NDAA全部重核。
 4. Z.1 2026Q2/Q3持有者锚(货基/银行/家庭/养老)录入。
-5. 投资者类别配售XLS转allotments.json(用户手上有数据)。
-6. CENSUS_API_KEY配置; SIFMA直链换源或改锚节奏。
+5. 拨款首跑校准: MilCon-VA/Leg Branch/SFOPS与参院侧未识别, 看日志扫描条数与_debug_approps_actions。
+6. CENSUS_API_KEY配置(用户注册); SIFMA历史xls回填。
 7. 债务限制卡头恢复实时headroom读数(合并时丢失)。
 8. 变化提醒规则细化。(mspd_table_3到期墙已接入)
 

@@ -714,8 +714,8 @@ def fetch_approps_status():
     titles = dict(old.get("titles") or {})   # ref → 标题缓存, 避免重复查询
     cands, raw = set(), []
     for chamber, code in (("house", "hsap00"), ("senate", "ssap00")):
-        off = 0
-        while off < 2000:
+        off, n0 = 0, len(cands)
+        while off < 5000:
             d = get(f"/committee/{chamber}/{code}/bills", limit=250, offset=off,
                     fromDateTime=f"{cur_fy-2}-01-01T00:00:00Z")
             bl = (d.get("committee-bills") or {}).get("bills") or []
@@ -726,6 +726,7 @@ def fetch_approps_status():
                     cands.add(f"{mu.group(1)}-{mu.group(2)}-{mu.group(3)}")
             if len(bl) < 250: break
             off += 250
+        print(f"    {code}: 扫描{off + len(bl)}条, 本届候选+{len(cands) - n0}")
     for ref in sorted(cands - set(titles)):
         c, t, n = ref.split("-")
         try:
@@ -1096,28 +1097,41 @@ def fetch_allotments():
 
 
 def fetch_corp():
-    """SIFMA公司债月度发行: xlsx候选+防御解析 (weekly), 失败保留上一版。"""
-    import requests, io
-    try:
-        from openpyxl import load_workbook
-    except ImportError:
-        print("  corp跳过: openpyxl未装"); return
-    URLS = ["https://www.sifma.org/wp-content/uploads/2017/06/US-Corporate-Bonds-SIFMA.xlsx",
-            "https://www.sifma.org/wp-content/uploads/2021/10/US-Corporate-Bonds-SIFMA.xlsx",
-            "https://www.sifma.org/wp-content/uploads/2017/06/Corporate-US-Corporate-SIFMA.xlsx"]
-    wb = None
-    for u in URLS:
-        try:
-            r = requests.get(u, headers={"User-Agent": "Mozilla/5.0"}, timeout=90)
-            if r.status_code == 200 and len(r.content) > 20000:
-                wb = load_workbook(io.BytesIO(r.content), data_only=True, read_only=True)
-                print(f"  corp源: {u.rsplit('/', 1)[-1]}")
-                break
-        except Exception as e:
-            print(f"  corp {u.rsplit('/', 1)[-1]} 失败: {e}")
-    if wb is None:
-        print("  !! corp全候选失败, 保留上一版"); return
-    from datetime import datetime, date as _date
+    """SIFMA公司债发行: xls下载需填表(无法自动), 改读统计页正文"YTD <年> ... Issuance (through <月>) $X billion",
+    每月记一次YTD, 相邻月相减=当月发行, 覆盖到series (weekly)。历史由load_corp_xlsx(用户提供xls)回填。"""
+    import requests, html as _html
+    r = requests.get("https://www.sifma.org/research/statistics/us-corporate-bonds-statistics/", timeout=60)
+    r.raise_for_status()
+    txt = re.sub(r"\s+", " ", _html.unescape(re.sub(r"<[^>]+>", " ", r.text)))
+    m = re.search(r"YTD (20\d\d) statistics include: Issuance \(through (\w+)\) \$([\d,\.]+) billion", txt)
+    if not m:
+        (OUT / "_debug_corp.html").write_text(r.text[:20000], encoding="utf-8")
+        print("  !! corp: 统计页未找到YTD发行额, 样本已落盘"); return
+    mon = datetime.strptime(m.group(2)[:3], "%b").month
+    ym, ytd = f"{m.group(1)}-{mon:02d}", float(m.group(3).replace(",", ""))
+    p = OUT / "corp_issuance.json"
+    d = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {"series": []}
+    d.pop("fetched_at", None)
+    obs = dict(d.get("ytd_obs") or {}); obs[ym] = ytd
+    series = {x["month"]: x["bn"] for x in d.get("series", [])}
+    real = set(d.get("real_months") or [])
+    for k, v in obs.items():
+        y, mm = int(k[:4]), int(k[5:])
+        prev = None if mm == 1 else obs.get(f"{y}-{mm-1:02d}")
+        if mm == 1: series[k] = v; real.add(k)
+        elif prev is not None: series[k] = round(v - prev, 1); real.add(k)
+    _write("corp_issuance", dict(d, sample=d.get("sample", True) and not real, ytd_obs=obs,
+                                 real_months=sorted(real),
+                                 note="real_months=SIFMA统计页YTD差分; 其余月份为旧锚(待xls回填)",
+                                 series=[{"month": k, "bn": series[k]} for k in sorted(series)]))
+    print(f"  corp: YTD {ym} ${ytd}B, 真实月{len(real)}个")
+
+
+def load_corp_xlsx(path):
+    """用户提供SIFMA US Corporate Bonds xls(网页填表下载)时手动调用, 回填历史月度发行。"""
+    from openpyxl import load_workbook
+    from datetime import date as _date
+    wb = load_workbook(path, data_only=True, read_only=True)
     bym = {}
     for ws in wb.worksheets:
         if "issuance" not in ws.title.lower(): continue
@@ -1126,17 +1140,13 @@ def fetch_corp():
             d0, ym = row[0], None
             if isinstance(d0, (datetime, _date)): ym = f"{d0.year}-{d0.month:02d}"
             elif isinstance(d0, str):
-                import re as _re
-                m2 = _re.match(r"(20\d\d)[-/\.](\d{1,2})", d0.strip())
+                m2 = re.match(r"(20\d\d)[-/\.](\d{1,2})", d0.strip())
                 if m2: ym = f"{m2.group(1)}-{int(m2.group(2)):02d}"
             if not ym: continue
             nums = [v for v in row[1:8] if isinstance(v, (int, float)) and v > 0]
             if nums:
                 bym[ym] = round(sum(nums[:2]), 1)
-    if len(bym) < 60:
-        print(f"  !! corp解析月数不足({len(bym)}), 保留上一版"); return
-    _write("corp_issuance", {"sample": False, "series": [
-        {"month": m3, "bn": v} for m3, v in sorted(bym.items())]})
+    return bym
 
 
 def fetch_gross():
