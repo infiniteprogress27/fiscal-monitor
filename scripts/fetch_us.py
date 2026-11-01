@@ -1045,6 +1045,49 @@ def fetch_tic_history():
     print(f"  TIC历史回填: {hit}个文件, {len(allm)}个月")
 
 
+# Investor Class XLS字段校准(2026-11): 页面链接无引号 href=/system/files/276/<日期>-IC-Coupons.xls;
+# 表头在第4行, 列=Issue date(Excel序列日)|Security type|Coupon|Cusip|Maturity|Total issue|SOMA|Depository|
+# Individuals|Dealers|Pension+Ins|Investment funds|Foreign|Other, 单位$bn; 末行为脚注。
+ALLOT_COLS = {"SOMA": 6, "Individuals": 8, "Dealers and brokers": 9,
+              "Investment funds": 11, "Foreign and international": 12}
+
+
+def fetch_allotments():
+    """Treasury Investor Class Auction Allotments(coupon, 2009-10+): 按发行月汇总各类别占总发行% (weekly)。"""
+    import requests, xlrd
+    page = requests.get("https://home.treasury.gov/data/investor-class-auction-allotments", timeout=60)
+    page.raise_for_status()
+    m = re.search(r'href="?([^\s">]+IC-Coupons\.xlsx?)', page.text)
+    if not m:
+        (OUT / "_debug_allotments.html").write_text(page.text[:20000], encoding="utf-8")
+        print("  !! allotments: 页面未找到Coupons XLS链接, 样本已落盘"); return
+    url = m.group(1) if m.group(1).startswith("http") else "https://home.treasury.gov" + m.group(1)
+    r = requests.get(url, timeout=90); r.raise_for_status()
+    wb = xlrd.open_workbook(file_contents=r.content)
+    ws = wb.sheet_by_index(0)
+    agg = {}   # (年,月) → [总发行, {类别: 金额}]
+    for i in range(ws.nrows):
+        row = ws.row_values(i)
+        if not isinstance(row[0], float) or not isinstance(row[5], float) or row[5] <= 0: continue
+        d = xlrd.xldate_as_datetime(row[0], wb.datemode)
+        a = agg.setdefault((d.year, d.month), [0.0, {c: 0.0 for c in ALLOT_COLS}])
+        a[0] += row[5]
+        for c, j in ALLOT_COLS.items():
+            if isinstance(row[j], float): a[1][c] += row[j]
+    if not agg:
+        _debug("allotments", [ws.row_values(i) for i in range(min(ws.nrows, 20))]); return
+    classes = {c: {} for c in ALLOT_COLS}
+    for (y, mm), (tot, amt) in sorted(agg.items()):
+        for c in ALLOT_COLS:
+            classes[c].setdefault(str(y), {})[str(mm)] = round(100 * amt[c] / tot, 1)
+    last = max(agg)
+    _write("allotments", {"sample": False, "source": url.rsplit("/", 1)[-1],
+                          "as_of": f"{last[0]}-{last[1]:02d}",
+                          "note": "coupon全品种(名义/TIPS/FRN)按发行月, 各类别配售额/总发行额(含SOMA)",
+                          "classes": classes})
+    print(f"  allotments: {len(agg)}个月, 至{last[0]}-{last[1]:02d}")
+
+
 def fetch_corp():
     """SIFMA公司债月度发行: xlsx候选+防御解析 (weekly), 失败保留上一版。"""
     import requests, io
@@ -1302,7 +1345,7 @@ FETCHERS = {
                  fetch_mspd, fetch_buybacks, fetch_auctions, fetch_auctions_history,
                  fetch_debt_limit_history, fetch_market, fetch_approps_status,
                  fetch_soma, fetch_debt_long, fetch_supply, fetch_coupon_deep,
-                 fetch_local, fetch_tic, fetch_tic_history, fetch_gross, fetch_corp,
+                 fetch_local, fetch_tic, fetch_tic_history, fetch_gross, fetch_corp, fetch_allotments,
                  fetch_annual],
     "due:mts":  [fetch_mts, fetch_avg_rates, fetch_interest,
                  fetch_annual],
