@@ -1088,8 +1088,6 @@ background:#FBFCFA;flex-wrap:wrap}
 .osum b{color:var(--muted);font-weight:600;font-size:12px}
 .srow .oname{flex:0 0 168px}
 .srow{cursor:pointer;user-select:none}
-.srow .oname::before{content:'▼';display:inline-block;width:16px;color:var(--ink);font-size:10px}
-.obj.closed .srow .oname::before{content:'▶'}
 .srow:hover{background:#F2F5F0}
 .obj.closed .srow{border-bottom:none}
 .obj.closed > .work, .obj.closed > details.dossier{display:none}
