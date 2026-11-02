@@ -1132,6 +1132,48 @@ def fetch_corp():
     print(f"  corp: YTD {ym} ${ytd}B, 真实月{len(real)}个")
 
 
+QRA_ARCH = "https://home.treasury.gov/policy-issues/financing-the-government/quarterly-refunding/"
+QRA_DOC_PAGES = {"qrfe": "quarterly-refunding-archives/quarterly-refunding-financing-estimates-by-calendar-year",
+                 "statement": "quarterly-refunding-archives/official-remarks-on-quarterly-refunding-by-calendar-year",
+                 "tbac": "quarterly-refunding-archives/treasury-borrowing-advisory-committee-discussion-charts-by-calendar-year"}
+QRA_RECENT = {"qrfe": r"^Financing Estimates", "statement": r"^Policy Statement", "tbac": r"^Archives$"}
+
+
+def _qra_abs(href):
+    import html as _html
+    href = _html.unescape(href)
+    return href if href.startswith("http") else "https://home.treasury.gov" + href
+
+
+def fetch_qra_docs():
+    """QRA历史文件链接: 三个按年存档页(表格单元headers=年份, 文本"Nth Quarter") + 最新文件页补当季 (daily)。
+    季度标签=财政部存档口径(refunding所在日历季: 2月=Q1, 5月=Q2, 8月=Q3, 11月=Q4)。"""
+    import requests, html as _html
+    docs = {}
+    for kind, path in QRA_DOC_PAGES.items():
+        t = requests.get(QRA_ARCH + path, timeout=60).text
+        n = 0
+        for m in re.finditer(r'<t[hd][^>]*headers="?((?:19|20)\d\d)"?[^>]*>(.*?)</t[hd]>', t, re.S):
+            a = re.search(r'href="?([^\s">]+)"?', m.group(2))
+            q = re.search(r"([1-4])(?:st|nd|rd|th)\s*Quarter", re.sub(r"<[^>]+>|\u200b", "", _html.unescape(m.group(2))))
+            if a and q:
+                docs.setdefault(f"{m.group(1)}Q{q.group(1)}", {}).setdefault(kind, _qra_abs(a.group(1))); n += 1
+        if n < 50:
+            raise RuntimeError(f"QRA存档{kind}只解析到{n}条, 页面结构可能变了")
+    t = requests.get(QRA_ARCH + "most-recent-quarterly-refunding-documents", timeout=60).text
+    for m in re.finditer(r'<a [^>]*href="?([^\s">]+)"?[^>]*>(.*?)</a>', t, re.S):
+        txt = re.sub(r"<[^>]+>|\u200b|\s+", " ", _html.unescape(m.group(2))).strip()
+        for kind, pat in QRA_RECENT.items():
+            if not re.search(pat, txt): continue
+            yq = re.search(r"((?:19|20)\d\d) - ([1-4])(?:st|nd|rd|th) Quarter", txt) or \
+                 re.search(r"Q([1-4])((?:19|20)\d\d)", m.group(1))
+            if not yq: continue
+            key = f"{yq.group(1)}Q{yq.group(2)}" if len(yq.group(1)) == 4 else f"{yq.group(2)}Q{yq.group(1)}"
+            docs.setdefault(key, {})[kind] = _qra_abs(m.group(1))
+    _write("qra_docs", {"sample": False, "quarters": dict(sorted(docs.items(), reverse=True))})
+    print(f"  qra_docs: {len(docs)}季, 最新{max(docs)}")
+
+
 FED_CORP = ["https://www.federalreserve.gov/data/corpsecure/",
             "https://www.federalreserve.gov/econresdata/releases/corpsecure/"]
 
@@ -1452,7 +1494,7 @@ def fetch_coupon_deep():
 # due组=事件账本判定当日到期的文件类抓取
 FETCHERS = {
     "daily":    [ensure_seeds, fetch_debt, fetch_debt_limit, fetch_tga, fetch_dts_flows, fetch_upcoming,
-                 fetch_approps_status],
+                 fetch_approps_status, fetch_qra_docs],
     "intraday": [ensure_seeds, fetch_auctions, fetch_upcoming, fetch_buybacks],
     "weekly":   [ensure_seeds, fetch_mts,
                  fetch_avg_rates, fetch_interest,

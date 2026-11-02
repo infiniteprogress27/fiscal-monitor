@@ -56,7 +56,7 @@ Actions日志的下载重定向到对象存储域名, 容器内不可读, 用`da
 ## 5. 数据集成色
 
 US真实自动(31): MTS表1(96月)与分科目(表4收入/表9支出)、年度分科目(FY2025赤字=官方-1775B)、DTS/TGA/债限(组件透视)/债限史(DTS精确+DTP近似)、债务长史+NGDP、MSPD结构(含表3到期墙)、WAM(2001+由MSPD表3逐券计算, 之前为TBAC节点插值)、供给结构2001+、coupon尺寸2007+(新发/续发分列)、52周bill利率、拍卖与历史、buybacks(`/v1/accounting/od/buybacks_operations`)、SOMA(NY Fed)、TIC国别2000+(mfhhis回填+mfh逐月累积)、利率与利息10年、地方收支五序列(FRED: FGRECPT/FGEXPND/W077RC1Q027SBEA/W079RCQ027SBEA/FGSL)、总发行(全口径+coupon口径)、市场日频(SPX=FRED拼接, 10Y=FRED)、拨款12法案进度(congress.gov API, 2026-11起替代被封的CRS表)、投资者类别配售(财政部IC-Coupons.xls, 2009-10+)。
-US锚/样例(3): qra_history, cbo_matrix(2月版, CBO封机房), corp_issuance(SIFMA xls需填表无法自动; 统计页YTD差分自2026-10起逐月累积真实值, 2025-09~2026-09=SIFMA固收汇总xls; 2008-05~2025-08=美联储Table 1.46 Bonds(fetch_fed_corp每周取当期页, backfill_fed_corp一次性回填存档); 2000-01~2008-04仍为旧锚。SIFMA公司债专表不公开, 表单只给汇总表)。
+US锚/样例(4): qra_street(卖方QRA预期, 本机定时任务qra-street-update在QRA前一周每天写入; 信源=智堡卖方研报, 用户定), qra_history, cbo_matrix(2月版, CBO封机房), corp_issuance(SIFMA xls需填表无法自动; 统计页YTD差分自2026-10起逐月累积真实值, 2025-09~2026-09=SIFMA固收汇总xls; 2008-05~2025-08=美联储Table 1.46 Bonds(fetch_fed_corp每周取当期页, backfill_fed_corp一次性回填存档); 2000-01~2008-04仍为旧锚。SIFMA公司债专表不公开, 表单只给汇总表)。
 JP真实(2): jgb_yields(财务省CSV 1974+, 英文站历史文件+当月文件累积), macro_jp(FRED JPNNGDP/JPNASSETS/IRLTLT01JPM156N + IMF WEO债务/收支/PB)。
 JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期限史、税收进度、国库收支、地方、债务长史、持有者、利息、日银减购、招标。
 
@@ -84,6 +84,7 @@ JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期
 - congress.gov委员会法案列表(hsap00/ssap00): 条目字段名不稳, 以url解析congress/type/number; 拨款阶段正则APPROPS_STAGES为首跑候选。
 - 投资者类别: 页面href无引号, 表头第4行, 列序见ALLOT_COLS注释; .xls需xlrd。
 - SIFMA统计页正文: "YTD <年> statistics include: Issuance (through <月>) $X billion"。
+- QRA历史文件(qra_docs, daily): 三个按年存档页的表格单元带headers=年份, 文本"Nth Quarter"; 最新文件页补当季("Financing Estimates: 2026 - 3rd Quarter"/"Policy Statement: …"/"Archives"=CombinedCharges)。TBAC列=TBAC讨论材料合订本(CombinedCharges, 2003起)。
 - 美联储Table 1.46: 当期页current.htm列最近8个月(含修订); 存档corpsecureYYYYMMDD.htm, 2017-08前在/econresdata/releases/corpsecure/, 最早2009-01期(数据起2008-05); 取第2行Bonds, 百万美元。口径不含Yankee、含144A, 与SIFMA年度差-8%~+20%。
 - MSPD表3 `/v1/debt/mspd/mspd_table_3_market`: 每CUSIP多行, outstanding_amt仅首行(续发行为null), 剔除Total Marketable与FFB行; 逐券合计+FFB=Total Marketable。
 - Census QTAX: 需`CENSUS_API_KEY`, 字段名大写, 必带`for=us:*`。

@@ -600,9 +600,23 @@ def v_holders_v3(obj, ctx):
 
 def v_qra_view(obj, ctx):
     qh = (ctx.get("qra_history") or {}).get("rows") or []
-    h = "<h4>QRFE 融资估计历史 (每季录入)</h4>"
-    h += table(["季度", "#私人净融资 (bn)", "#期末TGA假设", "备注"],
-               [(r["q"], fmt(r.get("borrowing")), fmt(r.get("tga_end")), r.get("note", "")) for r in qh])
+    st = ctx.get("qra_street") or {}
+    sb = [b for b in st.get("banks") or [] if b.get("est")]
+    qs = [r["q"] for r in qh] + [q for q in st.get("quarters") or [] if q not in {r["q"] for r in qh}]
+    byq = {r["q"]: r for r in qh}
+    def _est(b, q):
+        e = (b.get("est") or {}).get(q)
+        return f"{fmt(e[0])} / {fmt(e[1])}" if e else ""
+    h = "<h4>表1 · QRFE 融资估计 + 卖方预期 (bn)</h4>"
+    h += table(["季度", "#私人净融资", "#期末TGA假设"] + [f"#{b['bank']}" for b in sb] + ["备注"],
+               [(q, fmt(byq.get(q, {}).get("borrowing")), fmt(byq.get(q, {}).get("tga_end")))
+                + tuple(_est(b, q) for b in sb) + (byq.get(q, {}).get("note", ""),) for q in qs])
+    if st:
+        h += (f'<div class="anchor-note">卖方列 = 私人净融资 / 期末TGA, 各家报告日期见下表 · 本期 {esc(st.get("refunding", ""))} refunding: '
+              f'QRFE {esc(st.get("qrfe_date", ""))} · Statement {esc(st.get("statement_date", ""))} · 更新于 {esc(st.get("updated", ""))} · {esc(st.get("source", ""))}</div>')
+        h += "<h4>卖方预期 · 长期发行结构与其他</h4>"
+        h += table(["机构", "报告日", "长期发行结构", "回购 / 指引 / 其他"],
+                   [(b["bank"], b.get("date", "")[5:].replace("-", "/"), b.get("structure", ""), b.get("other", "")) for b in st.get("banks") or []])
     cs = ctx.get("coupon_sizes") or {}
     months, tenors = cs.get("months") or [], cs.get("tenors") or {}
     order = ["2y", "3y", "5y", "7y", "10y", "20y", "30y"]
@@ -637,6 +651,15 @@ def v_qra_view(obj, ctx):
                     for i, t in enumerate(order)], "bn",
                    opts={"tall": True, "zoom": True})
         h += '<div class="anchor-note">图为新发场次规模(阶梯态, 前向填充); 表为月度实况(新发与续发并存, 42/39交替为发行节奏本身)</div>' 
+    qd = (ctx.get("qra_docs") or {}).get("quarters") or {}
+    if qd:
+        def _lk(u): return f'<a href="{esc(u)}" target="_blank">↗</a>' if u else "—"
+        rows = [(q, _lk(d.get("qrfe")), _lk(d.get("statement")), _lk(d.get("tbac"))) for q, d in qd.items()]
+        hd = ["季度", "QRFE", "Statement", "TBAC"]
+        h += "<h4>QRA 历史文件</h4>" + table(hd, rows[:12])
+        h += f'<details class="dossier"><summary>更早 ({len(rows) - 12}季, 最早{esc(rows[-1][0])})</summary>{table(hd, rows[12:])}</details>'
+        h += ('<div class="anchor-note">季度=refunding所在日历季(2月=Q1, 5月=Q2, 8月=Q3, 11月=Q4), 与财政部存档一致 · '
+              'QRFE=Financing Estimates · Statement=Refunding Statement(早年为官方讲话) · TBAC=TBAC讨论材料(Charges合订本, 2003起) · daily自动更新</div>')
     return h + links_chips(obj) + qual_card(obj["qual"])
 
 
@@ -818,7 +841,7 @@ def main():
     ctx = {"anchors": cfg["anchors"]}
     for name in ["debt", "debt_limit", "debt_limit_history", "market", "tga", "mts", "mts_receipts", "mts_outlays",
                  "dts_flows", "auctions", "upcoming", "buybacks", "supply", "approps_status",
-                 "qra_history", "coupon_sizes", "wam", "debt_long", "bill1y", "local_fiscal", "tic_holders", "soma", "tic_series", "corp_issuance", "gross_issuance", "allotments",
+                 "qra_history", "qra_street", "qra_docs", "coupon_sizes", "wam", "debt_long", "bill1y", "local_fiscal", "tic_holders", "soma", "tic_series", "corp_issuance", "gross_issuance", "allotments",
                  "mspd_structure", "avg_rates", "interest"]:
         ctx[name] = J(name)
     ctx["fy_paths"] = fy_paths(ctx["mts"].get("series") or [])

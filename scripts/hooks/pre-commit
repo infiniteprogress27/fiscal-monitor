@@ -1,7 +1,7 @@
 #!/bin/sh
 # 本地提交守门: data/ docs/ 只由Actions bot写入, 本地只准提交人工锚。
 # 启用: git config core.hooksPath scripts/hooks   (确需绕过: git commit --no-verify)
-ANCHORS="data/us/qra_history.json data/us/cbo_matrix.json data/us/corp_issuance.json"
+ANCHORS="data/us/qra_street.json data/us/qra_history.json data/us/cbo_matrix.json data/us/corp_issuance.json"
 bad=""
 for f in $(git diff --cached --name-only); do
   case "$f" in
