@@ -1087,6 +1087,12 @@ background:#FBFCFA;flex-wrap:wrap}
 .osum{flex:1 1 auto;min-width:0;font-size:12px;color:var(--muted);line-height:1.5;text-align:left}
 .osum b{color:var(--muted);font-weight:600;font-size:12px}
 .srow .oname{flex:0 0 168px}
+.srow{cursor:pointer;user-select:none}
+.srow .oname::before{content:'▼';display:inline-block;width:16px;color:var(--ink);font-size:10px}
+.obj.closed .srow .oname::before{content:'▶'}
+.srow:hover{background:#F2F5F0}
+.obj.closed .srow{border-bottom:none}
+.obj.closed > .work, .obj.closed > details.dossier{display:none}
 .ptitle{font-size:13.5px;font-weight:600;margin:16px 0 6px;padding-left:8px;border-left:3px solid var(--ink)}
 .onode{margin-left:auto;font-size:12px;color:var(--muted)}
 .nn{font-family:var(--mono);font-weight:600;color:var(--red)}
@@ -1779,12 +1785,24 @@ $('calNext').onclick=()=>{calState.ym.setMonth(calState.ym.getMonth()+1); drawCa
 $('calHome').onclick=()=>{calState.ym=new Date(); drawCal(); drawDetail(dstr(new Date()));};
 drawChips(); drawCal(); drawDetail(dstr(new Date()));
 
+// 单卡: 点标题栏展开/收起; 层按钮: 一键全收/全展, 文案随卡片状态同步
+const syncL=layer=>{const b=layer.querySelector('.ltoggle'); if(!b) return;
+  const anyOpen=[...layer.querySelectorAll('.obj')].some(o=>!o.classList.contains('closed'));
+  b.textContent=anyOpen?'收起工作视图':'展开工作视图';};
+document.querySelectorAll('.obj > .srow').forEach(row=>{
+  row.addEventListener('click',ev=>{
+    if(ev.target.closest('a,button,input,select,summary')) return;
+    const obj=row.parentElement; obj.classList.toggle('closed');
+    const layer=obj.closest('.layer'); if(layer) syncL(layer);
+  });
+});
 document.querySelectorAll('.ltoggle').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const layer=document.getElementById(btn.dataset.layer);
-    const hidden=layer.classList.toggle('collapsed');
-    layer.querySelectorAll('.work, details.dossier').forEach(el=>{el.style.display=hidden?'none':'';});
-    btn.textContent=hidden?'展开工作视图':'收起工作视图';
+    const objs=[...layer.querySelectorAll('.obj')];
+    const close=objs.some(o=>!o.classList.contains('closed'));
+    objs.forEach(o=>o.classList.toggle('closed',close));
+    syncL(layer);
   });
 });
 </script></body></html>"""
