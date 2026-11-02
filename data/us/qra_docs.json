@@ -1,0 +1,681 @@
+{
+ "sample": false,
+ "quarters": {
+  "2026Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sb0584",
+   "statement": "https://home.treasury.gov/news/press-releases/sb0590",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ32026.pdf"
+  },
+  "2026Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sb0485",
+   "statement": "https://home.treasury.gov/news/press-releases/sb0489",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ22026.pdf"
+  },
+  "2026Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sb0377",
+   "statement": "https://home.treasury.gov/news/press-releases/sb0384",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ12026.pdf"
+  },
+  "2025Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sb0300",
+   "statement": "https://home.treasury.gov/news/press-releases/sb0305",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ42025.pdf"
+  },
+  "2025Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sb0209",
+   "statement": "https://home.treasury.gov/news/press-releases/sb0212",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ32025.pdf"
+  },
+  "2025Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sb0115",
+   "statement": "https://home.treasury.gov/news/press-releases/sb0120",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ22025.pdf"
+  },
+  "2025Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sb0007",
+   "statement": "https://home.treasury.gov/news/press-releases/sb0010",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ12025.pdf"
+  },
+  "2024Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy2688",
+   "statement": "https://home.treasury.gov/news/press-releases/jy2697",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ42024.pdf"
+  },
+  "2024Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy2506",
+   "statement": "https://home.treasury.gov/news/press-releases/jy2512",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ32024.pdf"
+  },
+  "2024Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy2304",
+   "statement": "https://home.treasury.gov/news/press-releases/jy2315",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ22024.pdf"
+  },
+  "2024Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy2054",
+   "statement": "https://home.treasury.gov/news/press-releases/jy2062",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ12024.pdf"
+  },
+  "2023Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy1851",
+   "statement": "https://home.treasury.gov/news/press-releases/jy1864",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ42023.pdf"
+  },
+  "2023Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy1662",
+   "statement": "https://home.treasury.gov/news/press-releases/jy1671",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ32023.pdf"
+  },
+  "2023Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy1453",
+   "statement": "https://home.treasury.gov/news/press-releases/jy1460",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ22023.pdf"
+  },
+  "2023Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy1231",
+   "statement": "https://home.treasury.gov/news/press-releases/jy1238",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ12023.pdf"
+  },
+  "2022Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy1063",
+   "statement": "https://home.treasury.gov/news/press-releases/jy1072",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ42022.pdf"
+  },
+  "2022Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy0902",
+   "statement": "https://home.treasury.gov/news/press-releases/jy0908",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ32022.pdf"
+  },
+  "2022Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy0755",
+   "statement": "https://home.treasury.gov/news/press-releases/jy0762",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ22022.pdf"
+  },
+  "2022Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy0575",
+   "statement": "https://home.treasury.gov/news/press-releases/jy0581",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ12022.pdf"
+  },
+  "2021Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy0452",
+   "statement": "https://home.treasury.gov/news/press-releases/jy0462",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ42021.pdf"
+  },
+  "2021Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy0302",
+   "statement": "https://home.treasury.gov/news/press-releases/jy0307",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ32021.pdf"
+  },
+  "2021Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy0158",
+   "statement": "https://home.treasury.gov/news/press-releases/jy0164",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ22021.pdf"
+  },
+  "2021Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jy0011",
+   "statement": "https://home.treasury.gov/news/press-releases/jy0016",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ12021.pdf"
+  },
+  "2020Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm1172",
+   "statement": "https://home.treasury.gov/news/press-releases/sm1176",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ42020.pdf"
+  },
+  "2020Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm1077",
+   "statement": "https://home.treasury.gov/news/press-releases/sm1081",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ32020.pdf"
+  },
+  "2020Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm997",
+   "statement": "https://home.treasury.gov/news/press-releases/sm1001",
+   "tbac": "https://home.treasury.gov/system/files/221/CombinedChargesforArchivesQ22020.pdf"
+  },
+  "2020Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm893",
+   "statement": "https://home.treasury.gov/news/press-releases/sm896",
+   "tbac": "https://home.treasury.gov/system/files/276/q12020_CombinedChargesforArchives.pdf"
+  },
+  "2019Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm808",
+   "statement": "https://home.treasury.gov/news/press-releases/sm810",
+   "tbac": "https://home.treasury.gov/system/files/276/q42019_CombinedChargesforArchives.pdf"
+  },
+  "2019Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm743",
+   "statement": "https://home.treasury.gov/news/press-releases/sm745",
+   "tbac": "https://home.treasury.gov/system/files/276/q32019_CombinedChargesforArchives.pdf"
+  },
+  "2019Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm672",
+   "statement": "https://home.treasury.gov/news/press-releases/sm677",
+   "tbac": "https://home.treasury.gov/system/files/221/q22019CombinedChargesforArchives.pdf"
+  },
+  "2019Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm593",
+   "statement": "https://home.treasury.gov/news/press-releases/sm597",
+   "tbac": "https://home.treasury.gov/system/files/276/q12019CombinedChargesforArchives.pdf"
+  },
+  "2018Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm535",
+   "statement": "https://home.treasury.gov/news/press-releases/sm538",
+   "tbac": "https://home.treasury.gov/system/files/276/CombinedChargesforArchives4thqtr2018.pdf"
+  },
+  "2018Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm445",
+   "statement": "https://home.treasury.gov/news/press-releases/sm449",
+   "tbac": "https://home.treasury.gov/system/files/276/Q32018CombinedChargesforArchives.pdf"
+  },
+  "2018Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm0375",
+   "statement": "https://home.treasury.gov/news/press-releases/sm0378",
+   "tbac": "https://home.treasury.gov/system/files/276/Q22018CombinedChargesforArchives.pdf"
+  },
+  "2018Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm0268",
+   "statement": "https://home.treasury.gov/news/press-releases/sm0275",
+   "tbac": "https://home.treasury.gov/system/files/276/Q12018CombinedChargesforArchives.pdf"
+  },
+  "2017Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm0197",
+   "statement": "https://home.treasury.gov/news/press-releases/sm0200",
+   "tbac": "https://home.treasury.gov/system/files/276/Q42017CombinedChargesforArchives.pdf"
+  },
+  "2017Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm0138",
+   "statement": "https://home.treasury.gov/news/press-releases/sm0141",
+   "tbac": "https://home.treasury.gov/system/files/276/Q32017CombinedChargesforArchives.pdf"
+  },
+  "2017Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/sm0068",
+   "statement": "https://home.treasury.gov/news/press-releases/sm0069",
+   "tbac": "https://home.treasury.gov/system/files/276/Q22017CombinedChargesforArchives.pdf"
+  },
+  "2017Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl0718",
+   "statement": "https://home.treasury.gov/news/press-releases/as0001",
+   "tbac": "https://home.treasury.gov/system/files/276/Q12017CombinedChargesforArchives.pdf"
+  },
+  "2016Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl0599",
+   "statement": "https://home.treasury.gov/news/press-releases/jl0602",
+   "tbac": "https://home.treasury.gov/system/files/276/CombinedChargesforArchives-4th-11-2-2016.pdf"
+  },
+  "2016Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl0532",
+   "statement": "https://home.treasury.gov/news/press-releases/jl0595",
+   "tbac": "https://home.treasury.gov/system/files/276/CombinedChargesforArchives3rd2016.pdf"
+  },
+  "2016Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl0445",
+   "statement": "https://home.treasury.gov/news/press-releases/jl0449",
+   "tbac": "https://home.treasury.gov/system/files/221/jl0534_CombinedChargesforArchives.pdf"
+  },
+  "2016Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl0334",
+   "statement": "https://home.treasury.gov/news/press-releases/jl0338",
+   "tbac": "https://home.treasury.gov/system/files/276/February2016CombinedChargesforArchives.pdf"
+  },
+  "2015Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl0245",
+   "statement": "https://home.treasury.gov/news/press-releases/jl0249",
+   "tbac": "https://home.treasury.gov/system/files/276/Nov15-TBAC-Presentation.pdf"
+  },
+  "2015Q3": {
+   "qrfe": "https://home.treasury.gov/system/files/221/Financing%20Estimates%20August%202015.pdf",
+   "statement": "https://home.treasury.gov/news/press-releases/jl0142",
+   "tbac": "https://home.treasury.gov/system/files/276/August2015TreasuryPresentationToTBAC.pdf"
+  },
+  "2015Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl10040",
+   "statement": "https://home.treasury.gov/news/press-releases/jl10045",
+   "tbac": "https://home.treasury.gov/system/files/276/May2015TreasuryPresentationToTBAC.pdf"
+  },
+  "2015Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl9756",
+   "statement": "https://home.treasury.gov/news/press-releases/jl9760",
+   "tbac": "https://home.treasury.gov/system/files/276/February2015CombinedChargesforArchives.pdf"
+  },
+  "2014Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl2684",
+   "statement": "https://home.treasury.gov/news/press-releases/jl2688",
+   "tbac": "https://home.treasury.gov/system/files/276/November-2014-QRCombined-Charges-for-Archives.pdf"
+  },
+  "2014Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl2597",
+   "statement": "https://home.treasury.gov/news/press-releases/jl2604",
+   "tbac": "https://home.treasury.gov/system/files/276/August-2014-Quarterly-Refunding-Combined-Charges-for-Archives-FINAL.pdf"
+  },
+  "2014Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl2370",
+   "statement": "https://home.treasury.gov/news/press-releases/jl2375",
+   "tbac": "https://home.treasury.gov/system/files/276/Treasury-and-TBAC-Presentation-for-Archives-2nd-Quarter.pdf"
+  },
+  "2014Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl2277",
+   "statement": "https://home.treasury.gov/news/press-releases/jl2281",
+   "tbac": "https://home.treasury.gov/system/files/276/Treasury-and-TBAC-Presentation-for-Archives-12014-FINAL.pdf"
+  },
+  "2013Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl2208",
+   "statement": "https://home.treasury.gov/news/press-releases/jl2210",
+   "tbac": "https://home.treasury.gov/system/files/276/Nov-2013-QR-TBAC-Discussion-Charts.pdf"
+  },
+  "2013Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl2131",
+   "statement": "https://home.treasury.gov/news/press-releases/jl2126",
+   "tbac": "https://home.treasury.gov/system/files/276/Archive-TBAC-Discussion-Charts.pdf"
+  },
+  "2013Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/jl1919",
+   "statement": "https://home.treasury.gov/news/press-releases/jl1921",
+   "tbac": "https://home.treasury.gov/system/files/221/TBAC_Discussion_Charts_May_2013.pdf"
+  },
+  "2013Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1837",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1846",
+   "tbac": "https://home.treasury.gov/system/files/221/TBAC_Discussion_Charts_Feb_2013.pdf"
+  },
+  "2012Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1752",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1753",
+   "tbac": "https://home.treasury.gov/system/files/276/November-2012-Qtrly-Metric-Package-FINAL.pdf"
+  },
+  "2012Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1659",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1663",
+   "tbac": "https://home.treasury.gov/system/files/276/TBAC-Discussion-Charts-August-2012.pdf"
+  },
+  "2012Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1556",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1562",
+   "tbac": "https://home.treasury.gov/system/files/276/TBAC-Discussion-Charts-May-2012.pdf"
+  },
+  "2012Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1401",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1405",
+   "tbac": "https://home.treasury.gov/system/files/276/TBAC-Discussion-Charts-Feb-2012.pdf"
+  },
+  "2011Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1342",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1348",
+   "tbac": "https://home.treasury.gov/system/files/276/TBAC-Discussion-Charts-Nov-2011.pdf"
+  },
+  "2011Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1262",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1267",
+   "tbac": "https://home.treasury.gov/system/files/276/TBAC-discussion-charts-Aug-2011.pdf"
+  },
+  "2011Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1155",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1161",
+   "tbac": "https://home.treasury.gov/system/files/221/dc_Q2_2011.pdf"
+  },
+  "2011Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg1038",
+   "statement": "https://home.treasury.gov/news/press-releases/tg1045",
+   "tbac": "https://home.treasury.gov/system/files/276/TBAC-Discussion-Charts-Merged-2.2011.pdf"
+  },
+  "2010Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg938",
+   "statement": "https://home.treasury.gov/news/press-releases/tg940",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2010-q4.pdf"
+  },
+  "2010Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg806",
+   "statement": "https://home.treasury.gov/news/press-releases/tg799",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2010-q3.pdf"
+  },
+  "2010Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg682",
+   "statement": "https://home.treasury.gov/news/press-releases/tg679",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2010-q2.pdf"
+  },
+  "2010Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg524",
+   "statement": "https://home.treasury.gov/news/press-releases/tg527",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2010-q1.pdf"
+  },
+  "2009Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg341",
+   "statement": "https://home.treasury.gov/news/press-releases/tg346",
+   "tbac": "https://home.treasury.gov/system/files/221/Nov09_ODM_TBAC__Discussion_Chart.pdf"
+  },
+  "2009Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg250",
+   "statement": "https://home.treasury.gov/news/press-releases/tg253",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2009-q3.pdf"
+  },
+  "2009Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg106",
+   "statement": "https://home.treasury.gov/news/press-releases/tg110",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2009-q2.pdf"
+  },
+  "2009Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/tg07",
+   "statement": "https://home.treasury.gov/news/press-releases/tg09",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2009-q1.pdf"
+  },
+  "2008Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp1236",
+   "statement": "https://home.treasury.gov/news/press-releases/hp1237",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2008-q4.pdf"
+  },
+  "2008Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp1104",
+   "statement": "https://home.treasury.gov/news/press-releases/hp1093",
+   "tbac": "https://home.treasury.gov/system/files/221/dc-2008-q3_0.pdf"
+  },
+  "2008Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp943",
+   "statement": "https://home.treasury.gov/news/press-releases/hp944",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2008-q2.pdf"
+  },
+  "2008Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp775",
+   "statement": "https://home.treasury.gov/news/press-releases/hp777",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2008-q1.pdf"
+  },
+  "2007Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp651",
+   "statement": "https://home.treasury.gov/news/press-releases/hp655",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2007-q4.pdf"
+  },
+  "2007Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp513",
+   "statement": "https://home.treasury.gov/news/press-releases/hp515",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2007-q3.pdf"
+  },
+  "2007Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp373",
+   "statement": "https://home.treasury.gov/news/press-releases/hp375",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2007-q2.pdf"
+  },
+  "2007Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp239",
+   "statement": "https://home.treasury.gov/news/press-releases/hp233",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2007-q1.pdf"
+  },
+  "2006Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp146",
+   "statement": "https://home.treasury.gov/news/press-releases/hp149"
+  },
+  "2006Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/hp35",
+   "statement": "https://home.treasury.gov/news/press-releases/hp37",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2006-q3.pdf"
+  },
+  "2006Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js4220",
+   "statement": "https://home.treasury.gov/news/press-releases/js4224",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2006-q2.pdf"
+  },
+  "2006Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js3091",
+   "statement": "https://home.treasury.gov/news/press-releases/js3094",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2006-q1.pdf"
+  },
+  "2005Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js3000",
+   "statement": "https://home.treasury.gov/news/press-releases/js3002",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2005-q4.pdf"
+  },
+  "2005Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js2669",
+   "statement": "https://home.treasury.gov/news/press-releases/js2671",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2005-q3.pdf"
+  },
+  "2005Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js2414",
+   "statement": "https://home.treasury.gov/news/press-releases/js2420",
+   "tbac": "https://home.treasury.gov/system/files/276/dc-2005-q2.pdf"
+  },
+  "2005Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js2220",
+   "statement": "https://home.treasury.gov/news/press-releases/js2222",
+   "tbac": "https://home.treasury.gov/system/files/276/mm-2005-q1.pdf"
+  },
+  "2004Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js2071",
+   "statement": "https://home.treasury.gov/news/press-releases/js2073",
+   "tbac": "https://home.treasury.gov/system/files/276/mm-2004-q4.pdf"
+  },
+  "2004Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js1820",
+   "statement": "https://home.treasury.gov/news/press-releases/js1825",
+   "tbac": "https://home.treasury.gov/system/files/276/mm-2004-q3.pdf"
+  },
+  "2004Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js1489",
+   "statement": "https://home.treasury.gov/news/press-releases/js1490",
+   "tbac": "https://home.treasury.gov/system/files/276/mm-2004-q2.pdf"
+  },
+  "2004Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js1133",
+   "statement": "https://home.treasury.gov/news/press-releases/js1137",
+   "tbac": "https://home.treasury.gov/system/files/276/mm-2004-q1.pdf"
+  },
+  "2003Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js966",
+   "statement": "https://home.treasury.gov/news/press-releases/js931",
+   "tbac": "https://home.treasury.gov/system/files/276/mm-2003-q4.pdf"
+  },
+  "2003Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js580",
+   "statement": "https://home.treasury.gov/news/press-releases/js581",
+   "tbac": "https://home.treasury.gov/system/files/276/mc-2003-q3.pdf"
+  },
+  "2003Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/js332",
+   "statement": "https://home.treasury.gov/news/press-releases/js223",
+   "tbac": "https://home.treasury.gov/system/files/276/mc-2003-q2.pdf"
+  },
+  "2003Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/kd3825",
+   "statement": "https://home.treasury.gov/news/press-releases/js09",
+   "tbac": "https://home.treasury.gov/system/files/276/discussioncharts.pdf"
+  },
+  "2002Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po3571",
+   "statement": "https://home.treasury.gov/news/press-releases/po3572"
+  },
+  "2002Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po3292",
+   "statement": "https://home.treasury.gov/news/press-releases/po3296"
+  },
+  "2002Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po3051",
+   "statement": "https://home.treasury.gov/news/press-releases/po3054"
+  },
+  "2002Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po955",
+   "statement": "https://home.treasury.gov/news/press-releases/po953"
+  },
+  "2001Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po736",
+   "statement": "https://home.treasury.gov/news/press-releases/po749"
+  },
+  "2001Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po516",
+   "statement": "https://home.treasury.gov/news/press-releases/po527"
+  },
+  "2001Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po336",
+   "statement": "https://home.treasury.gov/news/press-releases/po343"
+  },
+  "2001Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/po10",
+   "statement": "https://home.treasury.gov/news/press-releases/po15"
+  },
+  "2000Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/ls988",
+   "statement": "https://home.treasury.gov/news/press-releases/ls995"
+  },
+  "2000Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/ls815",
+   "statement": "https://home.treasury.gov/news/press-releases/ls821"
+  },
+  "2000Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/ls591",
+   "statement": "https://home.treasury.gov/news/press-releases/ls602"
+  },
+  "2000Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/ls357",
+   "statement": "https://home.treasury.gov/news/press-releases/ls365"
+  },
+  "1999Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/ls194",
+   "statement": "https://home.treasury.gov/news/press-releases/ls200"
+  },
+  "1999Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/ls37",
+   "statement": "https://home.treasury.gov/news/press-releases/ls43"
+  },
+  "1999Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr3124",
+   "statement": "https://home.treasury.gov/news/press-releases/rr3133"
+  },
+  "1999Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr2921",
+   "statement": "https://home.treasury.gov/news/press-releases/rr2930"
+  },
+  "1998Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr2777",
+   "statement": "https://home.treasury.gov/news/press-releases/rr2782"
+  },
+  "1998Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr2618",
+   "statement": "https://home.treasury.gov/news/press-releases/rr2629"
+  },
+  "1998Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr2413",
+   "statement": "https://home.treasury.gov/news/press-releases/rr2416"
+  },
+  "1998Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr2188",
+   "statement": "https://home.treasury.gov/news/press-releases/rr2197"
+  },
+  "1997Q4": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr2019",
+   "statement": "https://home.treasury.gov/news/press-releases/rr2031"
+  },
+  "1997Q3": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr1841",
+   "statement": "https://home.treasury.gov/news/press-releases/rr1849"
+  },
+  "1997Q2": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr1651",
+   "statement": "https://home.treasury.gov/system/files/221/rr1661.pdf"
+  },
+  "1997Q1": {
+   "qrfe": "https://home.treasury.gov/news/press-releases/rr1477",
+   "statement": "https://home.treasury.gov/system/files/221/rr1485.pdf"
+  },
+  "1996Q4": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1996-q4.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1996-q4.pdf"
+  },
+  "1996Q3": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1996-q3.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1996-q3.pdf"
+  },
+  "1996Q2": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1996-q2.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1996-q2.pdf"
+  },
+  "1996Q1": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1996-q1.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1996-q1.pdf"
+  },
+  "1995Q4": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1995-q4.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1995-q4.pdf"
+  },
+  "1995Q3": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1995-q3.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1995-q3.pdf"
+  },
+  "1995Q2": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1995-q2.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1995-q2.pdf"
+  },
+  "1995Q1": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1995-q1.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1995-q1.pdf"
+  },
+  "1994Q4": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1994-q4.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1994-q4.pdf"
+  },
+  "1994Q3": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1994-q3.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1994-q3.pdf"
+  },
+  "1994Q2": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1994-q2.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1994-q2.pdf"
+  },
+  "1994Q1": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1994-q1.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1994-q1.pdf"
+  },
+  "1993Q4": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1993-q4.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1993-q4.pdf"
+  },
+  "1993Q3": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1993-q3.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1993-q3.pdf"
+  },
+  "1993Q2": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1993-q2.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1993-q2.pdf"
+  },
+  "1993Q1": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1993-q1.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1993-q1.pdf"
+  },
+  "1992Q4": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1992-q4.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1992-q4.pdf"
+  },
+  "1992Q3": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1992-q3.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1992-q3.pdf"
+  },
+  "1992Q2": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1992-q2.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1992-q2.pdf"
+  },
+  "1992Q1": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1992-q1.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1992-q1.pdf"
+  },
+  "1991Q4": {
+   "qrfe": "https://home.treasury.gov/system/files/221/fe-1991-q4.pdf",
+   "statement": "https://home.treasury.gov/system/files/221/ps-1991-q4.pdf"
+  },
+  "1991Q3": {
+   "statement": "https://home.treasury.gov/system/files/221/ps-1991-q3.pdf"
+  },
+  "1991Q2": {
+   "statement": "https://home.treasury.gov/system/files/221/ps-1991-q2.pdf"
+  },
+  "1991Q1": {
+   "statement": "https://home.treasury.gov/system/files/221/ps-1991-q1.pdf"
+  },
+  "1990Q4": {
+   "statement": "https://home.treasury.gov/system/files/221/ps-1990-q4.pdf"
+  },
+  "1990Q3": {
+   "statement": "https://home.treasury.gov/system/files/221/ps-1990-q3.pdf"
+  },
+  "1990Q2": {
+   "statement": "https://home.treasury.gov/system/files/221/ps-1990-q2.pdf"
+  },
+  "1990Q1": {
+   "statement": "https://home.treasury.gov/system/files/221/ps-1990-q1.pdf"
+  }
+ },
+ "fetched_at": "2026-11-02T02:37:16.152927Z"
+}
