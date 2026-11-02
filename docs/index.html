@@ -109,6 +109,12 @@ background:#FBFCFA;flex-wrap:wrap}
 .osum{flex:1 1 auto;min-width:0;font-size:12px;color:var(--muted);line-height:1.5;text-align:left}
 .osum b{color:var(--muted);font-weight:600;font-size:12px}
 .srow .oname{flex:0 0 168px}
+.srow{cursor:pointer;user-select:none}
+.srow .oname::before{content:'▼';display:inline-block;width:16px;color:var(--ink);font-size:10px}
+.obj.closed .srow .oname::before{content:'▶'}
+.srow:hover{background:#F2F5F0}
+.obj.closed .srow{border-bottom:none}
+.obj.closed > .work, .obj.closed > details.dossier{display:none}
 .ptitle{font-size:13.5px;font-weight:600;margin:16px 0 6px;padding-left:8px;border-left:3px solid var(--ink)}
 .onode{margin-left:auto;font-size:12px;color:var(--muted)}
 .nn{font-family:var(--mono);font-weight:600;color:var(--red)}
@@ -200,7 +206,7 @@ font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-c
 @media (max-width:720px){.onode{margin-left:0;width:100%}}
 </style></head>
 <body><div class="wrap">
-<header><h1>FISCAL MONITOR <span>/ US 美国</span></h1><div class="meta">生成 2026-11-02 02:37 UTC · 对象注册表 2026-09-30</div></header>
+<header><h1>FISCAL MONITOR <span>/ US 美国</span></h1><div class="meta">生成 2026-11-02 05:23 UTC · 对象注册表 2026-09-30</div></header>
 <nav class="top"><a href="#L0">L0 Timeline</a><a href="#L1">L1 规则与立法</a><a href="#L2">L2 预算</a><a href="#L3">L3 收支</a><a href="#L4">L4 发行</a><a href="#L5">L5 债务管理</a><a href="#ref">参考层</a></nav>
 
 <div class="layer" id="L0">
@@ -220,7 +226,7 @@ font-family:var(--mono);font-size:11px;color:var(--muted);display:flex;justify-c
   <div class="calhead" id="calHead"></div>
   <div class="calgrid" id="calGrid"></div>
   <div class="caldetail" id="calDetail"><span class="hint">点击日期查看事件明细、核对清单与结果</span></div>
-  <div class="calrules">账本维护 2026-11-02 02:37 · 暂定事件带估标, 公告后自动作废覆盖<br>更新规则 — 发行: 暂定=规则推算(日滚), 公告覆盖(daily), 结果回填(intraday) · 回购: 计划表=每QRA后更新(buyback_schedule.yaml), 结果回填(intraday) · 文件: 节奏规则自动展开(daily滚动/weekly全量) · 立法/到期日: events_seed.yaml, 每周核对(weekly提醒)</div>
+  <div class="calrules">账本维护 2026-11-02 05:23 · 暂定事件带估标, 公告后自动作废覆盖<br>更新规则 — 发行: 暂定=规则推算(日滚), 公告覆盖(daily), 结果回填(intraday) · 回购: 计划表=每QRA后更新(buyback_schedule.yaml), 结果回填(intraday) · 文件: 节奏规则自动展开(daily滚动/weekly全量) · 立法/到期日: events_seed.yaml, 每周核对(weekly提醒)</div>
 </div>
 </div></section>
 <section class="obj"><div class="srow"><span class="oname">近7日变化流水</span>
@@ -1100,12 +1106,24 @@ $('calNext').onclick=()=>{calState.ym.setMonth(calState.ym.getMonth()+1); drawCa
 $('calHome').onclick=()=>{calState.ym=new Date(); drawCal(); drawDetail(dstr(new Date()));};
 drawChips(); drawCal(); drawDetail(dstr(new Date()));
 
+// 单卡: 点标题栏展开/收起; 层按钮: 一键全收/全展, 文案随卡片状态同步
+const syncL=layer=>{const b=layer.querySelector('.ltoggle'); if(!b) return;
+  const anyOpen=[...layer.querySelectorAll('.obj')].some(o=>!o.classList.contains('closed'));
+  b.textContent=anyOpen?'收起工作视图':'展开工作视图';};
+document.querySelectorAll('.obj > .srow').forEach(row=>{
+  row.addEventListener('click',ev=>{
+    if(ev.target.closest('a,button,input,select,summary')) return;
+    const obj=row.parentElement; obj.classList.toggle('closed');
+    const layer=obj.closest('.layer'); if(layer) syncL(layer);
+  });
+});
 document.querySelectorAll('.ltoggle').forEach(btn=>{
   btn.addEventListener('click',()=>{
     const layer=document.getElementById(btn.dataset.layer);
-    const hidden=layer.classList.toggle('collapsed');
-    layer.querySelectorAll('.work, details.dossier').forEach(el=>{el.style.display=hidden?'none':'';});
-    btn.textContent=hidden?'展开工作视图':'收起工作视图';
+    const objs=[...layer.querySelectorAll('.obj')];
+    const close=objs.some(o=>!o.classList.contains('closed'));
+    objs.forEach(o=>o.classList.toggle('closed',close));
+    syncL(layer);
   });
 });
 </script></body></html>
