@@ -598,6 +598,40 @@ def v_holders_v3(obj, ctx):
     return h + qual_card(obj["qual"])
 
 
+def qra_live_block():
+    """本期 QRA 文件分析: Statement / QRFE 与上季逐字红线 + 变化分析 + TBAC 讨论材料总结 (data/us/qra_live/<季>/)。"""
+    base = DATA / "qra_live"
+    qs = sorted([d.name for d in base.iterdir() if d.is_dir()], reverse=True) if base.exists() else []
+    if not qs:
+        return ""
+    q = qs[0]
+    h = f"<h4>本期文件分析 · {esc(q)}</h4>"
+    for kind, nm in (("statement", "Policy Statement"), ("qrfe", "Financing Estimates")):
+        f = base / q / f"{kind}.json"
+        if not f.exists():
+            continue
+        d = json.loads(f.read_text(encoding="utf-8"))
+        st = d.get("stats") or {}
+        h += (f'<div class="qlive"><div class="qlh"><b>{nm}</b> vs {esc(d.get("prev_quarter", ""))}'
+              f' · 抓取 {esc((d.get("fetched_at") or "")[11:19])} ET · 增{st.get("ins", 0)}词 / 删{st.get("del", 0)}词'
+              f' · <a href="{esc(d["url"])}" target="_blank">本期原文</a>'
+              + (f' · <a href="{esc(d["prev_url"])}" target="_blank">上期原文</a>' if d.get("prev_url") else "") + "</div>")
+        an = d.get("analysis")
+        h += (f'<div class="qmd">{esc(an)}</div>' if an else '<div class="anchor-note">语言变化分析生成中…</div>')
+        h += f'<details class="qrl"{" open" if kind == "statement" else ""}><summary>逐字红线</summary><div class="redline">{d.get("redline_html", "")}</div></details>'
+        if kind == "statement":
+            tb = d.get("tbac_summary")
+            tt = d.get("tbac_table") or {}
+            if tt.get("rows"):
+                h += (f'<details class="qrl" open><summary>{esc(tt.get("title") or "TBAC Recommended Financing Table")}</summary>'
+                      + table(tt.get("headers") or [], [[str(c) for c in r] for r in tt["rows"]])
+                      + "".join(f'<div class="anchor-note">{esc(n)}</div>' for n in tt.get("notes") or []) + "</details>")
+            h += (f'<details class="qrl" open><summary>TBAC 讨论材料 · 结构化总结</summary><div class="qmd">{esc(tb)}</div></details>' if tb
+                  else '<div class="anchor-note">TBAC 讨论材料总结生成中…</div>')
+        h += "</div>"
+    return h
+
+
 def v_qra_view(obj, ctx):
     qh = (ctx.get("qra_history") or {}).get("rows") or []
     st = ctx.get("qra_street") or {}
@@ -651,6 +685,7 @@ def v_qra_view(obj, ctx):
                     for i, t in enumerate(order)], "bn",
                    opts={"tall": True, "zoom": True})
         h += '<div class="anchor-note">图为新发场次规模(阶梯态, 前向填充); 表为月度实况(新发与续发并存, 42/39交替为发行节奏本身)</div>' 
+    h += qra_live_block()
     qd = (ctx.get("qra_docs") or {}).get("quarters") or {}
     if qd:
         def _lk(u): return f'<a href="{esc(u)}" target="_blank">↗</a>' if u else "—"
@@ -1106,6 +1141,13 @@ white-space:normal;line-height:1.4;color:var(--ink)}
 .qrow{display:flex;gap:10px;font-size:12.5px;margin:3px 0}
 .qk{flex:0 0 68px;color:var(--blue);font-weight:500}
 .anchor-note{font-family:var(--mono);font-size:11.5px;color:var(--amber);margin:4px 0}
+.qlive{border:1px solid var(--line);border-radius:5px;padding:8px 12px;margin:6px 0 12px}
+.qlh{font-size:12px;color:var(--muted);margin-bottom:6px}.qlh b{color:var(--ink);font-size:13px}
+.qmd{white-space:pre-wrap;font-size:12.5px;line-height:1.65;margin:4px 0 8px}
+details.qrl summary{cursor:pointer;font-size:12px;color:var(--muted);padding:4px 0}
+.redline{font-size:12.5px;line-height:1.7;max-height:520px;overflow:auto;padding:6px 2px}
+.redline ins{background:#E2F1E2;color:#1B5E20;text-decoration:none}
+.redline del{background:#FBE3E3;color:#9B1C1C}
 details.dossier{border-top:1px solid var(--line)}
 details.dossier summary{cursor:pointer;padding:7px 16px;font-size:12px;color:var(--muted)}
 details.dossier > div, details.dossier > table{margin:4px 16px 12px}

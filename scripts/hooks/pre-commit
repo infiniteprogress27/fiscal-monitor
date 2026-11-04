@@ -6,6 +6,7 @@ bad=""
 for f in $(git diff --cached --name-only); do
   case "$f" in
     docs/*) bad="$bad\n  $f  (构建产物)" ;;
+    data/us/qra_live/*) ;;  # 本机 qra_live.py / QRA 分析任务写入的锚(发布日红线与分析)
     data/*)
       case " $ANCHORS " in
         *" $f "*) ;;

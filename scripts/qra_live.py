@@ -1,0 +1,258 @@
+#!/usr/bin/env python3
+"""QRA 发布日实时抓取 + 与上期逐字红线 (本机跑, 由 AgentHub shell 任务 qra-release-watch 拉起)。
+
+  qra_live.py due [--within 20]       今天(美东)是否有 QRFE / Statement 发布, 距发布 ≤N 分钟才输出 kind
+  qra_live.py watch statement|qrfe --until 3600 [--interval 2]
+                                      轮询财政部「最新文件」页直到本季文件出现 → 抓正文 → 与上季红线
+                                      → 写 data/us/qra_live/<季>/<kind>.json (锚) + 本机 PDF 副本 → 推送 → 触发重建
+  qra_live.py redo statement 2026Q4   不轮询, 直接按已知链接重抓重算(补救/测试)
+
+季度口径与 qra_docs.json 一致: refunding 所在日历季(11月=Q4)。上季链接取自 qra_docs.json。
+Statement 8:30 ET、QRFE 15:00 ET 发布; 时间以 events.jsonl 的 qra_stmt- / qra_est- 为准。
+只用标准库。
+"""
+import difflib, html, json, os, re, subprocess, sys, time, urllib.request
+from datetime import datetime, timedelta
+from zoneinfo import ZoneInfo
+
+ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+DATA = os.path.join(ROOT, 'data', 'us')
+LIVE = os.path.join(DATA, 'qra_live')
+LOCAL = os.path.expanduser('~/agenthub/workspace/outputs/qra')  # PDF 等大文件只放本机, 不进公开仓库
+TRE = 'https://home.treasury.gov'
+RECENT = TRE + '/policy-issues/financing-the-government/quarterly-refunding/most-recent-quarterly-refunding-documents'
+ET = ZoneInfo('America/New_York')
+KIND = {'statement': ('qra_stmt-', 'Policy Statement', (8, 30)),
+        'qrfe': ('qra_est-', 'Financing Estimates', (15, 0))}
+ORD = {1: '1st', 2: '2nd', 3: '3rd', 4: '4th'}
+NOPROXY = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+
+
+def get(url, timeout=15, binary=False):
+    req = urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (fiscal-monitor)', 'Cache-Control': 'no-cache'})
+    for opener in (NOPROXY, urllib.request.build_opener()):  # 直连优先, 失败再走系统代理
+        try:
+            with opener.open(req, timeout=timeout) as r:
+                b = r.read()
+                return b if binary else b.decode('utf-8', 'ignore')
+        except Exception as e:
+            err = e
+    raise err
+
+
+def log(*a):
+    print(time.strftime('%H:%M:%S'), *a, flush=True)
+
+
+def quarter_of(d):  # date -> "2026Q4"
+    return f'{d.year}Q{(d.month - 1) // 3 + 1}'
+
+
+def prev_quarter(q):
+    y, n = int(q[:4]), int(q[-1])
+    return f'{y - 1}Q4' if n == 1 else f'{y}Q{n - 1}'
+
+
+def label(q):  # "2026Q4" -> "2026 - 4th Quarter"
+    return f'{q[:4]} - {ORD[int(q[-1])]} Quarter'
+
+
+def events():
+    p = os.path.join(DATA, 'events.jsonl')
+    return [json.loads(l) for l in open(p, encoding='utf-8') if l.strip()]
+
+
+def release_today(kind):
+    pre, _, (hh, mm) = KIND[kind]
+    today = datetime.now(ET).date().isoformat()
+    for e in events():
+        if e['id'].startswith(pre) and e['date'] == today and e.get('status') != 'cancelled':
+            return datetime.now(ET).replace(hour=hh, minute=mm, second=0, microsecond=0)
+    return None
+
+
+def links(doc):
+    out = []
+    for h, t in re.findall(r'<a[^>]+href="?([^"\s>]+)"?[^>]*>(.*?)</a>', doc, re.S):
+        t = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', t))).replace('​', '').strip()
+        if t:
+            out.append((t, h if h.startswith('http') else TRE + h))
+    return out
+
+
+def body_blocks(doc):
+    """新闻稿正文 → 段落列表; 表格每行一段 "a | b | c"。"""
+    i = doc.find('field--name-field-news-body')
+    seg = doc[i:] if i >= 0 else doc
+    j = seg.find('field--name-body')
+    seg = seg[:j] if j > 0 else seg
+    blocks = []
+    for m in re.finditer(r'<(p|li|h[1-6]|tr)\b[^>]*>(.*?)</\1>', seg, re.S):
+        tag, inner = m.group(1), m.group(2)
+        if tag == 'tr':
+            cells = [re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', '', c))).strip()
+                     for c in re.findall(r'<t[hd][^>]*>(.*?)</t[hd]>', inner, re.S)]
+            t = ' | '.join(cells)
+        else:
+            if tag == 'p' and '<li' in inner:
+                continue
+            t = re.sub(r'\s+', ' ', html.unescape(re.sub(r'<[^>]+>', ' ', inner))).strip()
+            if tag == 'li':
+                t = '• ' + t
+        t = t.replace(' ', ' ').replace('‑', '-').replace('​', '').strip()
+        if t and not t.startswith('###'):
+            blocks.append(t)
+    return blocks
+
+
+def tokens(blocks):
+    out = []
+    for b in blocks:
+        out += re.findall(r'\S+', b) + ['¶']
+    return out
+
+
+def redline(old, new):
+    """逐词红线 → (html, 纯文本[-删-]{+增+}, 统计)。"""
+    a, b = tokens(old), tokens(new)
+    sm = difflib.SequenceMatcher(None, a, b, autojunk=False)
+    h, t, n = [], [], {'ins': 0, 'del': 0}
+
+    def emit(ws, cls=None):
+        s = ' '.join(ws)
+        if cls is None:
+            h.append(html.escape(s).replace('¶', '<br><br>')); t.append(s)
+        else:
+            tag = 'ins' if cls == 'ins' else 'del'
+            n[cls] += len([w for w in ws if w != '¶'])
+            h.append(f'<{tag}>{html.escape(s).replace("¶", "¶<br>")}</{tag}>')
+            t.append(('{+' if cls == 'ins' else '[-') + s + ('+}' if cls == 'ins' else '-]'))
+
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        if op == 'equal':
+            emit(a[i1:i2])
+        else:
+            if i2 > i1: emit(a[i1:i2], 'del')
+            if j2 > j1: emit(b[j1:j2], 'ins')
+    txt = ' '.join(t).replace(' ¶ ', '\n\n').replace('¶', '\n\n')
+    return ' '.join(h), txt, {**n, 'similarity': round(sm.ratio(), 3)}
+
+
+def git(*a):
+    return subprocess.run(['git', '-C', ROOT, *a], capture_output=True, text=True)
+
+
+def publish(q, kind):
+    rel = os.path.relpath(os.path.join(LIVE, q), ROOT)
+    git('pull', '-q', '--rebase', 'origin', 'main')
+    git('add', rel)
+    r = git('commit', '-q', '-m', f'qra_live: {q} {kind} 抓取与红线\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>')
+    if r.returncode:
+        log('commit:', (r.stdout + r.stderr).strip()[:200]); return
+    for k in range(3):
+        if git('push', '-q').returncode == 0:
+            break
+        git('pull', '-q', '--rebase', 'origin', 'main')
+    subprocess.run(['gh', 'workflow', 'run', 'update-dashboard', '-R', 'infiniteprogress27/fiscal-monitor', '-f', 'mode=daily'],
+                   capture_output=True)
+    log('pushed + rebuild triggered')
+
+
+def process(kind, q, url, page_links, fetched_at, tries):
+    doc = get(url)
+    new = body_blocks(doc)
+    docs = json.load(open(os.path.join(DATA, 'qra_docs.json'), encoding='utf-8')).get('quarters', {})
+    pq = prev_quarter(q)
+    purl = (docs.get(pq) or {}).get(kind)
+    old = body_blocks(get(purl)) if purl else []
+    rh, rt, st = redline(old, new)
+    os.makedirs(os.path.join(LIVE, q), exist_ok=True)
+    os.makedirs(os.path.join(LOCAL, q), exist_ok=True)
+    # 同页其他本期文件: TBAC 讨论材料(Charges) / 推荐融资表 / TBAC 报告 / 纪要 ……
+    tag = label(q).split(' - ')[0]
+    extra = {}
+    for t, h in page_links:
+        low = (t + h).lower()
+        if h.lower().endswith('.pdf') or 'press-releases' in h:
+            if any(k in low for k in ('charge', 'tbac', 'financing table', 'presentation', 'minutes', 'report')):
+                extra[t] = h
+    pdfs = {}
+    for t, h in extra.items():
+        if h.lower().endswith('.pdf'):
+            fn = os.path.join(LOCAL, q, re.sub(r'[^\w.-]+', '_', h.rsplit('/', 1)[-1]))
+            try:
+                open(fn, 'wb').write(get(h, timeout=60, binary=True)); pdfs[t] = fn
+            except Exception as e:
+                log('pdf fail', h, e)
+    out = {'sample': False, 'quarter': q, 'kind': kind, 'url': url, 'prev_quarter': pq, 'prev_url': purl,
+           'fetched_at': fetched_at, 'tries': tries, 'paragraphs': new, 'prev_paragraphs': old,
+           'redline_html': rh, 'stats': st, 'page_docs': extra,
+           'analysis': None, 'tbac_summary': None, 'analyzed_at': None}
+    p = os.path.join(LIVE, q, f'{kind}.json')
+    if os.path.exists(p):  # 重抓时保留已写的分析
+        old_j = json.load(open(p, encoding='utf-8'))
+        for k in ('analysis', 'tbac_summary', 'analyzed_at'):
+            out[k] = old_j.get(k)
+    json.dump(out, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    open(os.path.join(LOCAL, q, f'{kind}_redline.txt'), 'w', encoding='utf-8').write(rt)
+    json.dump({'quarter': q, 'kind': kind, 'json': p, 'redline_txt': os.path.join(LOCAL, q, f'{kind}_redline.txt'),
+               'pdfs': pdfs, 'page_docs': extra, 'at': fetched_at},
+              open(os.path.join(LOCAL, 'pending.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    log(f'{kind} {q}: {len(new)}段 vs {pq} {len(old)}段 · 增{st["ins"]}词 删{st["del"]}词 · 相似度{st["similarity"]} · PDF {len(pdfs)}')
+    return p
+
+
+def watch(kind, until, interval):
+    t0 = time.time()
+    rel = release_today(kind)
+    q = quarter_of(rel or datetime.now(ET))
+    want = f'{KIND[kind][1]}: {label(q)}'
+    log('watching for', repr(want))
+    tries = 0
+    while True:
+        tries += 1
+        try:
+            page = links(get(RECENT + f'?t={int(time.time())}', timeout=10))
+            hit = next((h for t, h in page if t.startswith(want)), None)
+            if hit:
+                got = datetime.now(ET).isoformat(timespec='seconds')
+                log('found', hit, 'after', tries, 'tries')
+                for k in range(10):
+                    try:
+                        process(kind, q, hit, page, got, tries); break
+                    except Exception as e:
+                        log('process retry', e); time.sleep(3)
+                else:
+                    return 1
+                publish(q, kind)
+                return 0
+        except Exception as e:
+            if tries % 30 == 1: log('poll err', e)
+        if time.time() - t0 > until:
+            log('not published after', tries, 'tries'); return 2
+        time.sleep(interval)
+
+
+if __name__ == '__main__':
+    a = sys.argv[1:]
+    if a[0] == 'due':
+        w = int(a[a.index('--within') + 1]) if '--within' in a else 20
+        now = datetime.now(ET)
+        for k in KIND:
+            r = release_today(k)
+            if r and -10 <= (r - now).total_seconds() / 60 <= w:  # 发布前 w 分钟 ~ 发布后 10 分钟
+                if not os.path.exists(os.path.join(LIVE, quarter_of(r), f'{k}.json')):  # 已抓过不重复
+                    print(k)
+    elif a[0] == 'watch':
+        until = int(a[a.index('--until') + 1]) if '--until' in a else 3600
+        iv = float(a[a.index('--interval') + 1]) if '--interval' in a else 2
+        sys.exit(watch(a[1], until, iv))
+    elif a[0] == 'redo':
+        kind, q = a[1], a[2]
+        page = links(get(RECENT))
+        want = f'{KIND[kind][1]}: {label(q)}'
+        url = next((h for t, h in page if t.startswith(want)), None)
+        if not url:
+            url = json.load(open(os.path.join(DATA, 'qra_docs.json'))).get('quarters', {}).get(q, {}).get(kind)
+        process(kind, q, url, page, datetime.now(ET).isoformat(timespec='seconds'), 0)
+        if '--publish' in a: publish(q, kind)
