@@ -142,10 +142,10 @@ def redline(old, new):
     return ' '.join(h), txt, {**n, 'similarity': round(sm.ratio(), 3)}
 
 
-def sentences(blocks):
-    """段落 → [(小节标题, 句子)]; 全大写短段视为小节标题, 表格行整行算一句。"""
+def sentences(blocks, with_pid=False):
+    """段落 → [(小节标题, 句子)] (with_pid 时为 (小节, 段号, 句子)); 全大写短段视为小节标题, 表格行整行算一句。"""
     out, sec = [], ''
-    for b in blocks:
+    for pid, b in enumerate(blocks):
         if b.isupper() and len(b) < 80:
             sec = b; continue
         b = b.lstrip('• ')
@@ -154,8 +154,53 @@ def sentences(blocks):
         else:  # 缩写不断句
             t = re.sub(r'\b(U\.S|p\.m|a\.m|No|Mr|Ms|Dr|Inc|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.', lambda m: m.group(1) + '\x00', b)
             parts = [x.replace('\x00', '.') for x in re.split(r'(?<=[.;:])\s+(?=[A-Z$(])', t)]
-        out += [(sec, x.strip()) for x in parts if x.strip()]
+        out += [((sec, pid, x.strip()) if with_pid else (sec, x.strip())) for x in parts if x.strip()]
     return out
+
+
+def word_html(a, b):
+    aw, bw = a.split(), b.split()
+    sm = difflib.SequenceMatcher(None, aw, bw, autojunk=False)
+    o = []
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        if op == 'equal':
+            o.append(html.escape(' '.join(aw[i1:i2])))
+        else:
+            if i2 > i1: o.append('<del>' + html.escape(' '.join(aw[i1:i2])) + '</del>')
+            if j2 > j1: o.append('<ins>' + html.escape(' '.join(bw[j1:j2])) + '</ins>')
+    return ' '.join(o)
+
+
+def redline_sent_html(old, new):
+    """按句对齐的全文红线: 未改句照常显示, 改动句内逐词标, 整句增删整句标; 表格行整行对齐; 保留小节与段落。"""
+    a, b = sentences(old, True), sentences(new, True)
+    sm = difflib.SequenceMatcher(None, [x[2] for x in a], [x[2] for x in b], autojunk=False)
+    items = []  # (小节, 段键, html, 是否表格行)
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        if op == 'equal':
+            items += [(y[0], ('n', y[1]), html.escape(y[2]), ' | ' in y[2]) for y in b[j1:j2]]
+        elif op == 'replace' and (i2 - i1) == (j2 - j1):
+            items += [(y[0], ('n', y[1]), word_html(x[2], y[2]), ' | ' in y[2]) for x, y in zip(a[i1:i2], b[j1:j2])]
+        else:
+            items += [(x[0], ('n', b[j1][1]) if j2 > j1 else ('o', x[1]), '<del>' + html.escape(x[2]) + '</del>', ' | ' in x[2]) for x in a[i1:i2]]
+            items += [(y[0], ('n', y[1]), '<ins>' + html.escape(y[2]) + '</ins>', ' | ' in y[2]) for y in b[j1:j2]]
+    out, sec, key = [], None, None
+    for sc, k, h, tr in items:
+        if sc != sec:
+            if key is not None: out.append('</p>')
+            out.append(f'<h5>{html.escape(sc or "")}</h5>' if sc else ''); sec, key = sc, None
+        if tr:
+            if key is not None: out.append('</p>'); key = None
+            out.append(f'<div class="rtr">{h}</div>')
+            continue
+        if k != key:
+            if key is not None: out.append('</p>')
+            out.append('<p>'); key = k
+        else:
+            out.append(' ')
+        out.append(h)
+    if key is not None: out.append('</p>')
+    return ''.join(out)
 
 
 def word_md(a, b):
@@ -268,7 +313,8 @@ def process(kind, q, url, page_links, fetched_at, tries):
     pq = prev_quarter(q)
     purl = (docs.get(pq) or {}).get(kind)
     old = body_blocks(get(purl)) if purl else []
-    rh, rt, st = redline(old, new)
+    _, rt, st = redline(old, new)
+    rh = redline_sent_html(old, new)
     os.makedirs(os.path.join(LIVE, q), exist_ok=True)
     os.makedirs(os.path.join(LOCAL, q), exist_ok=True)
     # 同页其他本期文件: TBAC 讨论材料(Charges) / 推荐融资表 / TBAC 报告 / 纪要 ……

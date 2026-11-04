@@ -1149,6 +1149,8 @@ details.qrl summary{cursor:pointer;font-size:12px;color:var(--muted);padding:4px
 .redline{font-size:12.5px;line-height:1.7;max-height:520px;overflow:auto;padding:6px 2px}
 .redline ins{background:#E2F1E2;color:#1B5E20;text-decoration:none}
 .redline del{background:#FBE3E3;color:#9B1C1C}
+.redline p{margin:0 0 8px}.redline h5{font-size:11.5px;color:var(--muted);margin:12px 0 4px;letter-spacing:.4px}
+.redline .rtr{font-family:var(--mono);font-size:11.5px;white-space:pre}
 details.dossier{border-top:1px solid var(--line)}
 details.dossier summary{cursor:pointer;padding:7px 16px;font-size:12px;color:var(--muted)}
 details.dossier > div, details.dossier > table{margin:4px 16px 12px}
