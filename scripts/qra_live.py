@@ -179,8 +179,14 @@ def redline_sent_html(old, new):
     for op, i1, i2, j1, j2 in sm.get_opcodes():
         if op == 'equal':
             items += [(y[0], ('n', y[1]), html.escape(y[2]), ' | ' in y[2]) for y in b[j1:j2]]
-        elif op == 'replace' and (i2 - i1) == (j2 - j1):
-            items += [(y[0], ('n', y[1]), word_html(x[2], y[2]), ' | ' in y[2]) for x, y in zip(a[i1:i2], b[j1:j2])]
+        elif op == 'replace':
+            for x, y in align_chunk(a[i1:i2], b[j1:j2], key=lambda t: t[2]):
+                if x and y:
+                    items.append((y[0], ('n', y[1]), word_html(x[2], y[2]), ' | ' in y[2]))
+                elif x:
+                    items.append((x[0], ('o', x[1]), '<del>' + html.escape(x[2]) + '</del>', ' | ' in x[2]))
+                else:
+                    items.append((y[0], ('n', y[1]), '<ins>' + html.escape(y[2]) + '</ins>', ' | ' in y[2]))
         else:
             items += [(x[0], ('n', b[j1][1]) if j2 > j1 else ('o', x[1]), '<del>' + html.escape(x[2]) + '</del>', ' | ' in x[2]) for x in a[i1:i2]]
             items += [(y[0], ('n', y[1]), '<ins>' + html.escape(y[2]) + '</ins>', ' | ' in y[2]) for y in b[j1:j2]]
@@ -201,6 +207,21 @@ def redline_sent_html(old, new):
         out.append(h)
     if key is not None: out.append('</p>')
     return ''.join(out)
+
+
+def align_chunk(olds, news, key=lambda x: x):
+    """不等长替换块内按相似度顺序配对: 返回 [(old|None, new|None)]; 相似度≥0.6 视为同一句改写。"""
+    out, j = [], 0
+    for o in olds:
+        best = None
+        for k in range(j, len(news)):
+            if difflib.SequenceMatcher(None, key(o), key(news[k]), autojunk=False).ratio() >= 0.6:
+                best = k; break
+        if best is None:
+            out.append((o, None)); continue
+        out += [(None, n) for n in news[j:best]] + [(o, news[best])]
+        j = best + 1
+    return out + [(None, n) for n in news[j:]]
 
 
 def word_md(a, b):
@@ -228,10 +249,13 @@ def slack_redline(old, new):
         sec = (b[j1][0] if j2 > j1 else a[i1][0]) or '开头'
         if op == 'replace':
             olds, news = a[i1:i2], b[j1:j2]
-            if len(olds) == len(news):
-                rows += [(y[0] or sec, word_md(x[1], y[1])) for x, y in zip(olds, news)]
-            else:
-                rows.append((sec, word_md(' '.join(x[1] for x in olds), ' '.join(y[1] for y in news))))
+            for x, y in align_chunk(olds, news, key=lambda t: t[1]):
+                if x and y:
+                    rows.append((y[0] or sec, word_md(x[1], y[1])))
+                elif x:
+                    rows.append((x[0] or sec, '~~' + x[1] + '~~'))
+                else:
+                    rows.append((y[0] or sec, '**' + y[1] + '**'))
         elif op == 'delete':
             rows += [(a[i][0] or sec, '~~' + a[i][1] + '~~') for i in range(i1, i2)]
         else:
