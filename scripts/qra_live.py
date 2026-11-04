@@ -370,8 +370,10 @@ def process(kind, q, url, page_links, fetched_at, tries):
     p = os.path.join(LIVE, q, f'{kind}.json')
     if os.path.exists(p):  # 重抓时保留已写的分析
         old_j = json.load(open(p, encoding='utf-8'))
-        for k in ('analysis', 'tbac_summary', 'analyzed_at'):
+        for k in ('analysis', 'tbac_summary', 'tbac_table', 'analyzed_at'):
             out[k] = old_j.get(k)
+        if old_j.get('url') == url and old_j.get('tries'):  # redo 不改首抓时间
+            out['fetched_at'], out['tries'] = old_j['fetched_at'], old_j['tries']
     json.dump(out, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     open(os.path.join(LOCAL, q, f'{kind}_redline.txt'), 'w', encoding='utf-8').write(rt)
     open(os.path.join(LOCAL, q, f'{kind}_redline_slack.md'), 'w', encoding='utf-8').write(slack_redline(old, new))
