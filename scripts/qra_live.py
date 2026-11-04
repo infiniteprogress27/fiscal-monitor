@@ -162,6 +162,19 @@ def publish(q, kind):
     log('pushed + rebuild triggered')
 
 
+def pdf_text(fn):
+    """PDF → 同名 .txt, 每页以 "=== p.N ===" 分隔 (分析任务读文本; 本机 Read 工具读不了多页 PDF)。需 .venv 里的 pypdf。"""
+    try:
+        from pypdf import PdfReader
+    except ImportError:
+        log('pypdf missing, no text for', fn); return None
+    r = PdfReader(fn)
+    t = ''.join(f'\n\n=== p.{i + 1} ===\n' + (pg.extract_text() or '') for i, pg in enumerate(r.pages))
+    out = fn[:-4] + '.txt'
+    open(out, 'w', encoding='utf-8').write(t)
+    return out
+
+
 def process(kind, q, url, page_links, fetched_at, tries):
     doc = get(url)
     new = body_blocks(doc)
@@ -186,6 +199,7 @@ def process(kind, q, url, page_links, fetched_at, tries):
             fn = os.path.join(LOCAL, q, re.sub(r'[^\w.-]+', '_', h.rsplit('/', 1)[-1]))
             try:
                 open(fn, 'wb').write(get(h, timeout=60, binary=True)); pdfs[t] = fn
+                pdf_text(fn)
             except Exception as e:
                 log('pdf fail', h, e)
     out = {'sample': False, 'quarter': q, 'kind': kind, 'url': url, 'prev_quarter': pq, 'prev_url': purl,
