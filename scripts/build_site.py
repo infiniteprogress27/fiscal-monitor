@@ -601,12 +601,12 @@ def v_holders_v3(obj, ctx):
 def qra_live_block():
     """本期 QRA 文件分析: Statement / QRFE 与上季逐字红线 + 变化分析 + TBAC 讨论材料总结 (data/us/qra_live/<季>/)。"""
     base = DATA / "qra_live"
-    qs = sorted([d.name for d in base.iterdir() if d.is_dir()], reverse=True) if base.exists() else []
+    qs = sorted([d.name for d in base.iterdir() if (d / "statement.json").exists()], reverse=True) if base.exists() else []
     if not qs:
         return ""
     q = qs[0]
     h = f"<h4>本期文件分析 · {esc(q)}</h4>"
-    for kind, nm in (("statement", "Policy Statement"), ("qrfe", "Financing Estimates")):
+    for kind, nm in (("statement", "Policy Statement"),):  # 语言变化只看 Policy Statement; QRFE 只取数进表1
         f = base / q / f"{kind}.json"
         if not f.exists():
             continue
