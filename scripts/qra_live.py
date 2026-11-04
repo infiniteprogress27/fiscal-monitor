@@ -268,6 +268,36 @@ def slack_redline(old, new):
     return '\n'.join(out).strip()
 
 
+def strict_html(md):
+    """slack_redline 的 Markdown → HTML(与私信逐字同源): *小节* → h5, • 行 → li, ~~删~~ → del, **增** → ins。"""
+    out, open_ul = [], False
+    for ln in md.splitlines():
+        ln = ln.strip()
+        if not ln:
+            continue
+        if ln.startswith('*') and ln.endswith('*') and not ln.startswith('**'):
+            if open_ul: out.append('</ul>'); open_ul = False
+            out.append(f'<h5>{html.escape(ln.strip("*"))}</h5>'); continue
+        if not open_ul: out.append('<ul>'); open_ul = True
+        t = html.escape(ln[2:] if ln.startswith('• ') else ln)
+        t = re.sub(r'~~(.+?)~~', r'<del>\1</del>', t)
+        t = re.sub(r'\*\*(.+?)\*\*', r'<ins>\1</ins>', t)
+        out.append(f'<li>{t}</li>')
+    if open_ul: out.append('</ul>')
+    return ''.join(out)
+
+
+def auction_table(blocks):
+    """Statement 里的 coupon / FRN 拍卖规模表 → {headers, rows}(上季实际 3 行 + 本季预期 3 行)。"""
+    rows = [b.split(' | ') for b in blocks if ' | ' in b]
+    hdr = next((r for r in rows if any('Year' in c for c in r)), None)
+    data = [r for r in rows if re.match(r'^[A-Z][a-z]{2}-\d{2}$', r[0].strip())]
+    if not hdr or not data:
+        return None
+    hdr = [c.strip().strip('|').strip() for c in hdr if c.strip().strip('|').strip()]
+    return {'headers': hdr, 'rows': [[c.strip() for c in r] for r in data]}
+
+
 QTR_END = {'March': 1, 'June': 2, 'September': 3, 'December': 4}
 
 
@@ -302,7 +332,7 @@ def git(*a):
 def publish(q, kind):
     rel = os.path.relpath(os.path.join(LIVE, q), ROOT)
     git('pull', '-q', '--rebase', 'origin', 'main')
-    git('add', rel)
+    git('add', rel, os.path.relpath(os.path.join(LIVE, 'live.html'), ROOT))
     if kind == 'qrfe':
         git('add', 'data/us/qra_history.json')
     r = git('commit', '-q', '-m', f'qra_live: {q} {kind} 抓取与红线\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>')
@@ -330,7 +360,17 @@ def pdf_text(fn):
     return out
 
 
-def process(kind, q, url, page_links, fetched_at, tries):
+def write_block():
+    """把网页「Coupon 结构 + 本期文件分析」片段写成 data/us/qra_live/live.html: 页面在 QRA 当天直接从仓库拉它, 不等 Actions 重建。"""
+    try:
+        sys.path.insert(0, os.path.dirname(__file__))
+        import build_site as B
+        open(os.path.join(LIVE, 'live.html'), 'w', encoding='utf-8').write(B.qra_live_inner({'coupon_sizes': B.J('coupon_sizes')}))
+    except Exception as e:
+        log('live.html fail', e)
+
+
+def process(kind, q, url, page_links, fetched_at, tries, download=True):
     doc = get(url)
     new = body_blocks(doc)
     docs = json.load(open(os.path.join(DATA, 'qra_docs.json'), encoding='utf-8')).get('quarters', {})
@@ -351,7 +391,7 @@ def process(kind, q, url, page_links, fetched_at, tries):
                 extra[t] = h
     pdfs = {}
     for t, h in extra.items():
-        if h.lower().endswith('.pdf'):
+        if h.lower().endswith('.pdf') and download:
             name = h.rsplit('/', 1)[-1]
             dm = re.search(r'(\d{2})(\d{2})(\d{4})\.pdf$', name)  # 推荐融资表按日期 MMDDYYYY 命名
             mine = f'Q{q[-1]}{q[:4]}' in name or (dm and quarter_of(datetime(int(dm.group(3)), int(dm.group(1)), 1)) == q)
@@ -366,6 +406,8 @@ def process(kind, q, url, page_links, fetched_at, tries):
     out = {'sample': False, 'quarter': q, 'kind': kind, 'url': url, 'prev_quarter': pq, 'prev_url': purl,
            'fetched_at': fetched_at, 'tries': tries, 'paragraphs': new, 'prev_paragraphs': old,
            'redline_html': rh, 'stats': st, 'page_docs': extra,
+           'redline_strict_html': strict_html(slack_redline(old, new)),
+           'auction_table': auction_table(new) if kind == 'statement' else None,
            'analysis': None, 'tbac_summary': None, 'analyzed_at': None}
     p = os.path.join(LIVE, q, f'{kind}.json')
     if os.path.exists(p):  # 重抓时保留已写的分析
@@ -382,10 +424,12 @@ def process(kind, q, url, page_links, fetched_at, tries):
         if nums:
             update_qra_history(nums, f'{fetched_at[:10]} QRFE')
             log('qra_history <-', nums)
-    json.dump({'quarter': q, 'kind': kind, 'json': p, 'redline_txt': os.path.join(LOCAL, q, f'{kind}_redline.txt'),
-               'redline_slack': os.path.join(LOCAL, q, f'{kind}_redline_slack.md'),
-               'pdfs': pdfs, 'page_docs': extra, 'at': fetched_at},
-              open(os.path.join(LOCAL, 'pending.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    write_block()
+    if download or not os.path.exists(os.path.join(LOCAL, 'pending.json')) or json.load(open(os.path.join(LOCAL, 'pending.json'))).get('quarter') != q:
+      json.dump({'quarter': q, 'kind': kind, 'json': p, 'redline_txt': os.path.join(LOCAL, q, f'{kind}_redline.txt'),
+                 'redline_slack': os.path.join(LOCAL, q, f'{kind}_redline_slack.md'),
+                 'pdfs': pdfs, 'page_docs': extra, 'at': fetched_at},
+                open(os.path.join(LOCAL, 'pending.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     log(f'{kind} {q}: {len(new)}段 vs {pq} {len(old)}段 · 增{st["ins"]}词 删{st["del"]}词 · 相似度{st["similarity"]} · PDF {len(pdfs)}')
     return p
 
@@ -412,24 +456,35 @@ def watch(kind, until, interval):
     q = quarter_of(rel or datetime.now(ET))
     want = f'{KIND[kind][1]}: {label(q)}'
     log('watching for', repr(want))
-    tries = 0
+    tries, base = 0, 0
+    known = {u.rstrip('/') for v in json.load(open(os.path.join(DATA, 'qra_docs.json'))).get('quarters', {}).values()
+             for u in v.values() if u}
     while True:
         tries += 1
         try:
             page = links(get(RECENT + f'?t={int(time.time())}', timeout=10))
             hit = next((h for t, h in page if t.startswith(want)), None)
             if not hit:  # 「最新文件」页可能比新闻稿晚更新: 同时看新闻稿列表(排除已知各季链接)
-                known = {u.rstrip('/') for v in json.load(open(os.path.join(DATA, 'qra_docs.json'))).get('quarters', {}).values()
-                         for u in v.values() if u}
                 pr = links(get(PR_LIST + f'?t={int(time.time())}', timeout=10))
                 hit = next((h for t, h in pr if t.startswith(PR_TITLE[kind]) and h.rstrip('/') not in known
                             and '/press-releases/sb' in h), None)
+                ids = [int(m) for t, h in pr for m in re.findall(r'/press-releases/sb(\d+)', h)]
+                base = max(ids + [base])
+            if not hit:  # 列表页也可能滞后: 直接试后面几个新闻稿编号(发布即可访问)
+                for n in range(base + 1, base + 5):
+                    u = f'{TRE}/news/press-releases/sb{n:04d}'
+                    try:
+                        d0 = get(u, timeout=6)
+                    except Exception:
+                        continue
+                    if PR_TITLE[kind] in d0[:20000] and u not in known:
+                        hit = u; break
             if hit:
                 got = datetime.now(ET).isoformat(timespec='seconds')
                 log('found', hit, 'after', tries, 'tries')
                 for k in range(10):
                     try:
-                        process(kind, q, hit, page, got, tries); break
+                        process(kind, q, hit, page, got, tries, download=False); break  # 红线先推, PDF 之后
                     except Exception as e:
                         log('process retry', e); time.sleep(3)
                 else:
@@ -459,6 +514,8 @@ if __name__ == '__main__':
         until = int(a[a.index('--until') + 1]) if '--until' in a else 3600
         iv = float(a[a.index('--interval') + 1]) if '--interval' in a else 2
         sys.exit(watch(a[1], until, iv))
+    elif a[0] == 'block':
+        write_block()
     elif a[0] == 'redo':
         kind, q = a[1], a[2]
         page = links(get(RECENT))

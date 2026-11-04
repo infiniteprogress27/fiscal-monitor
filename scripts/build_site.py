@@ -599,6 +599,32 @@ def v_holders_v3(obj, ctx):
     return h + qual_card(obj["qual"])
 
 
+def coupon_table_html(ctx):
+    """Coupon 发行结构表: 有本期 Policy Statement 规模表就直接用它(上季实际 + 本季预期, 发布即更新), 否则用拍卖实况近 6 个月。"""
+    base = DATA / "qra_live"
+    for q in sorted([d.name for d in base.iterdir() if (d / "statement.json").exists()], reverse=True) if base.exists() else []:
+        at = json.loads((base / q / "statement.json").read_text(encoding="utf-8")).get("auction_table")
+        if at and at.get("rows"):
+            n = len(at["rows"])
+            hd = ["月份", "段"] + [f"#{c.replace('-Year', 'y')}" for c in at["headers"]]
+            rows = [[r[0], "实际" if i < n // 2 else "<b>预期</b>"] + r[1:] for i, r in enumerate(at["rows"])]
+            return (f"<h4>Coupon发行结构 · {esc(q)} Policy Statement 规模表 (bn)</h4>" + table(hd, rows)
+                    + '<div class="anchor-note">取自本期 Policy Statement 原表(上季实际 + 本季预期), 发布即更新; 下图为拍卖实况</div>')
+    cs = ctx.get("coupon_sizes") or {}
+    months, tenors = cs.get("months") or [], cs.get("tenors") or {}
+    order = ["2y", "3y", "5y", "7y", "10y", "20y", "30y"]
+    if not months:
+        return ""
+    rows = [(months[i],) + tuple(fmt(tenors.get(t, [None]*len(months))[i]) for t in order)
+            for i in range(max(0, len(months)-6), len(months))]
+    return "<h4>Coupon发行结构 · 近6个月拍卖实况 (bn)</h4>" + table(["月份"] + [f"#{t}" for t in order], rows)
+
+
+def qra_live_inner(ctx):
+    """QRA 卡里会实时刷新的部分: coupon 结构表 + 本期文件分析。qra_live.py 也用它写 data/us/qra_live/live.html。"""
+    return coupon_table_html(ctx) + qra_live_block()
+
+
 def qra_live_block():
     """本期 QRA 文件分析: Statement / QRFE 与上季逐字红线 + 变化分析 + TBAC 讨论材料总结 (data/us/qra_live/<季>/)。"""
     base = DATA / "qra_live"
@@ -618,9 +644,13 @@ def qra_live_block():
               f' · <a href="{esc(d["url"])}" target="_blank">本期原文</a>'
               + (f' · <a href="{esc(d["prev_url"])}" target="_blank">上期原文</a>' if d.get("prev_url") else "") + "</div>")
         an = d.get("analysis")
-        if kind == "statement":
-            h += (f'<div class="qmd">{esc(an)}</div>' if an else '<div class="anchor-note">语言变化分析生成中…</div>')
-        h += f'<details class="qrl"{" open" if kind == "statement" else ""}><summary>逐字红线</summary><div class="redline">{d.get("redline_html", "")}</div></details>'
+        ver = f'{d.get("fetched_at", "")}|{d.get("analyzed_at") or ""}'
+        h += f'<span class="qv" hidden>{esc(ver)}</span>'
+        if d.get("redline_strict_html"):
+            h += f'<div class="qsub">逐句对比 · 只列有改动的句子 · 红色划线=删除, 绿色=新增 · 与私信同一份</div><div class="redline strict">{d["redline_strict_html"]}</div>'
+        h += (f'<details class="qrl"><summary>模型整理 · 语言变化</summary><div class="qmd">{esc(an)}</div></details>' if an
+              else '<div class="anchor-note">模型整理生成中…</div>')
+        h += f'<details class="qrl"><summary>全文红线</summary><div class="redline">{d.get("redline_html", "")}</div></details>'
         if kind == "statement":
             tb = d.get("tbac_summary")
             tt = d.get("tbac_table") or {}
@@ -628,7 +658,7 @@ def qra_live_block():
                 h += (f'<details class="qrl" open><summary>{esc(tt.get("title") or "TBAC Recommended Financing Table")}</summary>'
                       + table(tt.get("headers") or [], [[str(c) for c in r] for r in tt["rows"]])
                       + "".join(f'<div class="anchor-note">{esc(n)}</div>' for n in tt.get("notes") or []) + "</details>")
-            h += (f'<details class="qrl" open><summary>TBAC 讨论材料 · 结构化总结</summary><div class="qmd">{esc(tb)}</div></details>' if tb
+            h += (f'<details class="qrl"><summary>TBAC 讨论材料 · 逐页总结</summary><div class="qmd">{esc(tb)}</div></details>' if tb
                   else '<div class="anchor-note">TBAC 讨论材料总结生成中…</div>')
         h += "</div>"
     return h
@@ -657,11 +687,7 @@ def v_qra_view(obj, ctx):
     months, tenors = cs.get("months") or [], cs.get("tenors") or {}
     order = ["2y", "3y", "5y", "7y", "10y", "20y", "30y"]
     if months:
-        h += "<h4>Coupon发行结构 · 近6个月 (bn)</h4>"
-        rows = []
-        for i in range(max(0, len(months)-6), len(months)):
-            rows.append((months[i],) + tuple(fmt(tenors.get(t, [None]*len(months))[i]) for t in order))
-        h += table(["月份"] + [f"#{t}" for t in order], rows)
+        h += "<h4>Coupon发行结构 (bn)</h4>"
         cols = ["ink", "blue", "green", "amber", "red", "#6B4E8C", "muted"]
         newt = cs.get("tenors_new") or {}
         import statistics as _st
@@ -687,7 +713,8 @@ def v_qra_view(obj, ctx):
                     for i, t in enumerate(order)], "bn",
                    opts={"tall": True, "zoom": True})
         h += '<div class="anchor-note">图为新发场次规模(阶梯态, 前向填充); 表为月度实况(新发与续发并存, 42/39交替为发行节奏本身)</div>' 
-    h += qra_live_block()
+    days = sorted({e["date"] for e in EVENTS if e["id"].startswith(("qra_stmt-", "qra_est-"))})
+    h += f'<div id="qra-live" data-days=\'{json.dumps(days)}\'>{qra_live_inner(ctx)}</div>'
     qd = (ctx.get("qra_docs") or {}).get("quarters") or {}
     if qd:
         def _lk(u): return f'<a href="{esc(u)}" target="_blank">↗</a>' if u else "—"
@@ -1179,7 +1206,8 @@ details.qrl summary{cursor:pointer;font-size:12px;color:var(--muted);padding:4px
 .redline{font-size:12.5px;line-height:1.7;max-height:520px;overflow:auto;padding:6px 2px}
 .redline ins{background:#E2F1E2;color:#1B5E20;text-decoration:none}
 .redline del{background:#FBE3E3;color:#9B1C1C}
-.redline p{margin:0 0 8px}.redline h5{font-size:11.5px;color:var(--muted);margin:12px 0 4px;letter-spacing:.4px}
+.redline p{margin:0 0 8px}.redline.strict{max-height:none}.redline.strict ul{margin:0 0 6px 18px;padding:0}.redline.strict li{margin:3px 0}
+.qsub{font-size:12px;color:var(--muted);margin:2px 0 4px}.redline h5{font-size:11.5px;color:var(--muted);margin:12px 0 4px;letter-spacing:.4px}
 .redline .rtr{font-family:var(--mono);font-size:11.5px;white-space:pre}
 details.dossier{border-top:1px solid var(--line)}
 details.dossier summary{cursor:pointer;padding:7px 16px;font-size:12px;color:var(--muted)}
@@ -1858,6 +1886,27 @@ $('calNext').onclick=()=>{calState.ym.setMonth(calState.ym.getMonth()+1); drawCa
 $('calHome').onclick=()=>{calState.ym=new Date(); drawCal(); drawDetail(dstr(new Date()));};
 drawChips(); drawCal(); drawDetail(dstr(new Date()));
 
+// QRA 实时区: 页面直接从仓库拉 data/us/qra_live/live.html (不等 Actions 重建); QRA 当天每 30 秒一次, 平时只在打开时拉一次
+(function(){
+  const el=document.getElementById('qra-live'); if(!el) return;
+  const url='https://api.github.com/repos/infiniteprogress27/fiscal-monitor/contents/data/us/qra_live/live.html?ref=main';
+  const ver=x=>{const m=/<span class="qv" hidden>([^<]*)<\/span>/.exec(x); return m?m[1]:'';};
+  let etag=null, timer=null;
+  async function pull(){
+    try{
+      const h={'Accept':'application/vnd.github.raw'}; if(etag) h['If-None-Match']=etag;
+      const r=await fetch(url,{headers:h,cache:'no-store'});
+      if(+(r.headers.get('x-ratelimit-remaining')||99)<3 && timer){clearInterval(timer);timer=null;}
+      if(r.status!==200) return;
+      etag=r.headers.get('ETag'); const t=await r.text();
+      if(t && ver(t)!==ver(el.innerHTML)) el.innerHTML=t;
+    }catch(e){}
+  }
+  pull();
+  const days=JSON.parse(el.dataset.days||'[]');
+  const et=new Date().toLocaleDateString('en-CA',{timeZone:'America/New_York'});
+  if(days.includes(et)){ timer=setInterval(pull,30000); setTimeout(()=>{if(timer)clearInterval(timer);},5*3600*1000); }
+})();
 // 单卡: 点标题栏展开/收起; 层按钮: 一键全收/全展, 文案随卡片状态同步
 const syncL=layer=>{const b=layer.querySelector('.ltoggle'); if(!b) return;
   const anyOpen=[...layer.querySelectorAll('.obj')].some(o=>!o.classList.contains('closed'));
