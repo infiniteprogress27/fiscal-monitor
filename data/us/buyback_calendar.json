@@ -1,0 +1,154 @@
+{
+ "sample": false,
+ "name": "November 2026 Refunding Tentative Buyback Calendar V1",
+ "start": "2026-11-12",
+ "end": "2027-02-09",
+ "url": "https://home.treasury.gov/system/files/221/Tentative-Buyback-ScheduleQ42026.xml",
+ "ops": [
+  {
+   "date": "2026-11-12",
+   "announce": "2026-11-10",
+   "settle": "2026-11-13",
+   "type": "流动性支持",
+   "bucket": "TIPS 1-10y",
+   "max_bn": 0.75
+  },
+  {
+   "date": "2026-11-17",
+   "announce": "2026-11-16",
+   "settle": "2026-11-18",
+   "type": "流动性支持",
+   "bucket": "名义券 20-30y",
+   "max_bn": 6.0
+  },
+  {
+   "date": "2026-11-19",
+   "announce": "2026-11-18",
+   "settle": "2026-11-20",
+   "type": "流动性支持",
+   "bucket": "名义券 7-10y",
+   "max_bn": 4.0
+  },
+  {
+   "date": "2026-12-02",
+   "announce": "2026-12-01",
+   "settle": "2026-12-03",
+   "type": "流动性支持",
+   "bucket": "名义券 10-20y",
+   "max_bn": 6.0
+  },
+  {
+   "date": "2026-12-03",
+   "announce": "2026-12-02",
+   "settle": "2026-12-04",
+   "type": "现金管理",
+   "bucket": "名义券 1Mo-2y",
+   "max_bn": 12.5
+  },
+  {
+   "date": "2026-12-08",
+   "announce": "2026-12-07",
+   "settle": "2026-12-09",
+   "type": "流动性支持",
+   "bucket": "名义券 20-30y",
+   "max_bn": 6.0
+  },
+  {
+   "date": "2026-12-16",
+   "announce": "2026-12-15",
+   "settle": "2026-12-17",
+   "type": "现金管理",
+   "bucket": "名义券 1Mo-2y",
+   "max_bn": 12.5
+  },
+  {
+   "date": "2026-12-17",
+   "announce": "2026-12-16",
+   "settle": "2026-12-18",
+   "type": "流动性支持",
+   "bucket": "名义券 5-7y",
+   "max_bn": 4.0
+  },
+  {
+   "date": "2026-12-22",
+   "announce": "2026-12-21",
+   "settle": "2026-12-23",
+   "type": "流动性支持",
+   "bucket": "名义券 10-20y",
+   "max_bn": 6.0
+  },
+  {
+   "date": "2027-01-06",
+   "announce": "2027-01-05",
+   "settle": "2027-01-07",
+   "type": "流动性支持",
+   "bucket": "名义券 20-30y",
+   "max_bn": 6.0
+  },
+  {
+   "date": "2027-01-07",
+   "announce": "2027-01-06",
+   "settle": "2027-01-08",
+   "type": "流动性支持",
+   "bucket": "名义券 2-3y",
+   "max_bn": 4.0
+  },
+  {
+   "date": "2027-01-12",
+   "announce": "2027-01-11",
+   "settle": "2027-01-13",
+   "type": "流动性支持",
+   "bucket": "名义券 10-20y",
+   "max_bn": 6.0
+  },
+  {
+   "date": "2027-01-14",
+   "announce": "2027-01-13",
+   "settle": "2027-01-15",
+   "type": "流动性支持",
+   "bucket": "TIPS 10-30y",
+   "max_bn": 0.5
+  },
+  {
+   "date": "2027-01-20",
+   "announce": "2027-01-19",
+   "settle": "2027-01-21",
+   "type": "流动性支持",
+   "bucket": "名义券 3-5y",
+   "max_bn": 4.0
+  },
+  {
+   "date": "2027-01-21",
+   "announce": "2027-01-20",
+   "settle": "2027-01-22",
+   "type": "流动性支持",
+   "bucket": "名义券 1Mo-2y",
+   "max_bn": 4.0
+  },
+  {
+   "date": "2027-01-26",
+   "announce": "2027-01-25",
+   "settle": "2027-01-27",
+   "type": "流动性支持",
+   "bucket": "名义券 20-30y",
+   "max_bn": 6.0
+  },
+  {
+   "date": "2027-02-04",
+   "announce": "2027-02-03",
+   "settle": "2027-02-05",
+   "type": "流动性支持",
+   "bucket": "TIPS 1-10y",
+   "max_bn": 0.75
+  },
+  {
+   "date": "2027-02-09",
+   "announce": "2027-02-08",
+   "settle": "2027-02-10",
+   "type": "流动性支持",
+   "bucket": "名义券 10-20y",
+   "max_bn": 6.0
+  }
+ ],
+ "fetched_at": "2026-11-04T14:03:41.604215Z"
+}
