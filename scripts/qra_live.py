@@ -24,6 +24,8 @@ RECENT = TRE + '/policy-issues/financing-the-government/quarterly-refunding/most
 ET = ZoneInfo('America/New_York')
 KIND = {'statement': ('qra_stmt-', 'Policy Statement', (8, 30)),
         'qrfe': ('qra_est-', 'Financing Estimates', (15, 0))}
+PR_LIST = TRE + '/news/press-releases'
+PR_TITLE = {'statement': 'Quarterly Refunding Statement', 'qrfe': 'Treasury Announces Marketable Borrowing Estimates'}
 ORD = {1: '1st', 2: '2nd', 3: '3rd', 4: '4th'}
 NOPROXY = urllib.request.build_opener(urllib.request.ProxyHandler({}))
 
@@ -202,6 +204,22 @@ def process(kind, q, url, page_links, fetched_at, tries):
     return p
 
 
+def wait_pdfs(kind, q, url, got, tries, until=1800):
+    """红线先推; TBAC 讨论材料 PDF 若还没挂到「最新文件」页, 每 5 秒再看, 拿到后重写本机 PDF 与 pending.json。"""
+    tag = f'Q{q[-1]}{q[:4]}'
+    t0 = time.time()
+    while time.time() - t0 < until:
+        try:
+            page = links(get(RECENT + f'?t={int(time.time())}', timeout=10))
+            if any(tag in h and 'charge' in h.lower() for t, h in page):
+                process(kind, q, url, page, got, tries)
+                log('TBAC PDFs ready'); return True
+        except Exception as e:
+            log('pdf poll err', e)
+        time.sleep(5)
+    log('TBAC PDFs not found in', until, 's; analysis runs without them'); return False
+
+
 def watch(kind, until, interval):
     t0 = time.time()
     rel = release_today(kind)
@@ -214,6 +232,12 @@ def watch(kind, until, interval):
         try:
             page = links(get(RECENT + f'?t={int(time.time())}', timeout=10))
             hit = next((h for t, h in page if t.startswith(want)), None)
+            if not hit:  # 「最新文件」页可能比新闻稿晚更新: 同时看新闻稿列表(排除已知各季链接)
+                known = {u.rstrip('/') for v in json.load(open(os.path.join(DATA, 'qra_docs.json'))).get('quarters', {}).values()
+                         for u in v.values() if u}
+                pr = links(get(PR_LIST + f'?t={int(time.time())}', timeout=10))
+                hit = next((h for t, h in pr if t.startswith(PR_TITLE[kind]) and h.rstrip('/') not in known
+                            and '/press-releases/sb' in h), None)
             if hit:
                 got = datetime.now(ET).isoformat(timespec='seconds')
                 log('found', hit, 'after', tries, 'tries')
@@ -225,6 +249,8 @@ def watch(kind, until, interval):
                 else:
                     return 1
                 publish(q, kind)
+                if kind == 'statement':
+                    wait_pdfs(kind, q, hit, got, tries)
                 return 0
         except Exception as e:
             if tries % 30 == 1: log('poll err', e)
