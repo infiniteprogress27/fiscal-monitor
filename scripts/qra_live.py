@@ -86,8 +86,10 @@ def body_blocks(doc):
     """新闻稿正文 → 段落列表; 表格每行一段 "a | b | c"。"""
     i = doc.find('field--name-field-news-body')
     seg = doc[i:] if i >= 0 else doc
-    j = seg.find('field--name-body')
-    seg = seg[:j] if j > 0 else seg
+    for end in ('field--name-body', '>Latest News<', 'Latest News'):  # 正文后是站点页脚导航
+        j = seg.find(end)
+        if j > 0:
+            seg = seg[:j]
     blocks = []
     for m in re.finditer(r'<(p|li|h[1-6]|tr)\b[^>]*>(.*?)</\1>', seg, re.S):
         tag, inner = m.group(1), m.group(2)
