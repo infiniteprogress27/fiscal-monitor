@@ -60,7 +60,7 @@ US锚/样例(4): qra_street(卖方QRA预期, 本机定时任务qra-street-update
 JP真实(2): jgb_yields(财务省CSV 1974+, 英文站历史文件+当月文件累积), macro_jp(FRED JPNNGDP/JPNASSETS/IRLTLT01JPM156N + IMF WEO债务/收支/PB)。
 JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期限史、税收进度、国库收支、地方、债务长史、持有者、利息、日银减购、招标。
 
-QRA发布日(本机, 2026-11-04起): AgentHub shell任务 qra-release-watch(cron 50 2,3,19,20, 按events.jsonl的qra_stmt-/qra_est-判断当天是否发布, 冬夏令时都覆盖) → scripts/qra_live.py 每2秒轮询「最新文件」页+新闻稿列表 → 抓正文与上季逐字红线 → data/us/qra_live/<季>/<statement|qrfe>.json(锚, pre-commit放行data/us/qra_live/) → 推送+触发daily重建; statement还会等TBAC Charges PDF(最多30分钟) → 触发 qra-release-analysis(Opus, 用户已预授权自动跑): 写analysis(语言变化)/tbac_summary(按PPT脉络, 数据与脚注不漏)/tbac_table(TBAC推荐融资表转录), qrfe时同步qra_history.json, statement时Slack私信D05DYPNHE7J。PDF只存本机 ~/agenthub/workspace/outputs/qra/<季>/。页面: QRA卡「本期文件分析」在历史文件表上方。补救: `qra_live.py redo statement 2026Q4 [--publish]`。
+QRA发布日(本机, 2026-11-04起): AgentHub shell任务 qra-release-watch(cron 50 2,3,19,20, 按events.jsonl的qra_stmt-/qra_est-判断当天是否发布, 冬夏令时都覆盖) → scripts/qra_live.py 每2秒轮询「最新文件」页+新闻稿列表 → 抓正文与上季逐字红线 → data/us/qra_live/<季>/<statement|qrfe>.json(锚, pre-commit放行data/us/qra_live/) → 推送+触发daily重建; statement还会等TBAC Charges PDF(最多30分钟) → 触发 qra-release-analysis(Opus, 用户已预授权自动跑): 写analysis(语言变化)/tbac_summary(按PPT脉络, 数据与脚注不漏)/tbac_table(TBAC推荐融资表转录), qrfe时同步qra_history.json, statement时Slack私信D05DYPNHE7J。PDF只存本机 ~/agenthub/workspace/outputs/qra/<季>/。页面: QRA卡「Coupon发行结构(取本期Statement原表)+本期文件分析」包在 #qra-live 里, qra_live.py/分析任务写 data/us/qra_live/live.html, 页面在QRA当天每30秒经GitHub API直拉(不等Actions); 逐句对比(redline_strict_html)与私信同源, 模型整理与全文红线折叠。改页面代码后必须触发重建并线上核对。补救: `qra_live.py redo statement 2026Q4 [--publish]`。
 
 ## 6. 工程纪律 (每条都是踩坑后立的规矩)
 
