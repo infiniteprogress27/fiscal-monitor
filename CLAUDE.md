@@ -99,7 +99,8 @@ QRA发布日(本机, 2026-11-04起): AgentHub shell任务 qra-release-watch(cron
 
 | 锚 | 文件 | 节奏 | 触发 |
 |---|---|---|---|
-| QRFE历史/回购结构 | data/us/qra_history.json, config/buyback_schedule.yaml | 每季QRA(11/2·11/4最近) | 对话转换 |
+| QRFE历史 | data/us/qra_history.json | 每季QRFE | qra_live.py自动从新闻稿取数 |
+| 回购结构 | data/us/buyback_calendar.json(财政部暂定回购日历XML, daily自动); config/buyback_schedule.yaml只留「目的」文字与累计回购人工锚 | 每季QRA | 自动 |
 | CBO基线矩阵 | data/us/cbo_matrix.json | CBO每版(夏季更新截至10月未见) | xlsx对话转换 |
 | 拨款状态/302(b)/CR链/预算周期节点 | objects_us.yaml appropriations·budget_cycle实例 | 每周核 | 对话 |
 | 事件种子 | config/events_seed*.yaml | 每周 | 对话 |
