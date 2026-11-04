@@ -328,7 +328,12 @@ def process(kind, q, url, page_links, fetched_at, tries):
     pdfs = {}
     for t, h in extra.items():
         if h.lower().endswith('.pdf'):
-            fn = os.path.join(LOCAL, q, re.sub(r'[^\w.-]+', '_', h.rsplit('/', 1)[-1]))
+            name = h.rsplit('/', 1)[-1]
+            dm = re.search(r'(\d{2})(\d{2})(\d{4})\.pdf$', name)  # 推荐融资表按日期 MMDDYYYY 命名
+            mine = f'Q{q[-1]}{q[:4]}' in name or (dm and quarter_of(datetime(int(dm.group(3)), int(dm.group(1)), 1)) == q)
+            if not mine:  # 「最新文件」页上还挂着别季的文件, 不混进本季
+                continue
+            fn = os.path.join(LOCAL, q, re.sub(r'[^\w.-]+', '_', name))
             try:
                 open(fn, 'wb').write(get(h, timeout=60, binary=True)); pdfs[t] = fn
                 pdf_text(fn)
