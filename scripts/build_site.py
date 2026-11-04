@@ -617,7 +617,8 @@ def qra_live_block():
               f' · <a href="{esc(d["url"])}" target="_blank">本期原文</a>'
               + (f' · <a href="{esc(d["prev_url"])}" target="_blank">上期原文</a>' if d.get("prev_url") else "") + "</div>")
         an = d.get("analysis")
-        h += (f'<div class="qmd">{esc(an)}</div>' if an else '<div class="anchor-note">语言变化分析生成中…</div>')
+        if kind == "statement":
+            h += (f'<div class="qmd">{esc(an)}</div>' if an else '<div class="anchor-note">语言变化分析生成中…</div>')
         h += f'<details class="qrl"{" open" if kind == "statement" else ""}><summary>逐字红线</summary><div class="redline">{d.get("redline_html", "")}</div></details>'
         if kind == "statement":
             tb = d.get("tbac_summary")

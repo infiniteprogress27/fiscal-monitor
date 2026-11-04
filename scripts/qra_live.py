@@ -142,6 +142,90 @@ def redline(old, new):
     return ' '.join(h), txt, {**n, 'similarity': round(sm.ratio(), 3)}
 
 
+def sentences(blocks):
+    """段落 → [(小节标题, 句子)]; 全大写短段视为小节标题, 表格行整行算一句。"""
+    out, sec = [], ''
+    for b in blocks:
+        if b.isupper() and len(b) < 80:
+            sec = b; continue
+        b = b.lstrip('• ')
+        if ' | ' in b:
+            parts = [b]
+        else:  # 缩写不断句
+            t = re.sub(r'\b(U\.S|p\.m|a\.m|No|Mr|Ms|Dr|Inc|Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec)\.', lambda m: m.group(1) + '\x00', b)
+            parts = [x.replace('\x00', '.') for x in re.split(r'(?<=[.;:])\s+(?=[A-Z$(])', t)]
+        out += [(sec, x.strip()) for x in parts if x.strip()]
+    return out
+
+
+def word_md(a, b):
+    """两句逐词 → Slack markdown: ~~删~~ **增**。"""
+    aw, bw = a.split(), b.split()
+    sm = difflib.SequenceMatcher(None, aw, bw, autojunk=False)
+    o = []
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        if op == 'equal':
+            o.append(' '.join(aw[i1:i2]))
+        else:
+            if i2 > i1: o.append('~~' + ' '.join(aw[i1:i2]) + '~~')
+            if j2 > j1: o.append('**' + ' '.join(bw[j1:j2]) + '**')
+    return ' '.join(o)
+
+
+def slack_redline(old, new):
+    """逐句红线(只列有改动的句子, 按小节分组; 整句删=~~句~~, 整句增=**句**)。"""
+    a, b = sentences(old), sentences(new)
+    sm = difflib.SequenceMatcher(None, [x[1] for x in a], [x[1] for x in b], autojunk=False)
+    rows = []
+    for op, i1, i2, j1, j2 in sm.get_opcodes():
+        if op == 'equal':
+            continue
+        sec = (b[j1][0] if j2 > j1 else a[i1][0]) or '开头'
+        if op == 'replace':
+            olds, news = a[i1:i2], b[j1:j2]
+            if len(olds) == len(news):
+                rows += [(y[0] or sec, word_md(x[1], y[1])) for x, y in zip(olds, news)]
+            else:
+                rows.append((sec, word_md(' '.join(x[1] for x in olds), ' '.join(y[1] for y in news))))
+        elif op == 'delete':
+            rows += [(a[i][0] or sec, '~~' + a[i][1] + '~~') for i in range(i1, i2)]
+        else:
+            rows += [(b[j][0] or sec, '**' + b[j][1] + '**') for j in range(j1, j2)]
+    out, last = [], None
+    for sec, line in rows:
+        if sec != last:
+            out.append(f'\n*{sec}*'); last = sec
+        out.append('• ' + line)
+    return '\n'.join(out).strip()
+
+
+QTR_END = {'March': 1, 'June': 2, 'September': 3, 'December': 4}
+
+
+def qrfe_numbers(blocks):
+    """QRFE 新闻稿 → {季: (私人净融资bn, 期末TGA bn)} (只取 expects to borrow 的两句)。"""
+    out = {}
+    for b in blocks:
+        m = re.search(r'During the \w+\W+(\w+) (\d{4}) quarter, Treasury expects to borrow \$([\d,.]+) (billion|trillion).*?'
+                      r'cash balance of \$([\d,.]+) (billion|trillion)', b)
+        if m and m.group(1) in QTR_END:
+            v = lambda x, u: round(float(x.replace(',', '')) * (1000 if u == 'trillion' else 1))
+            out[f'{m.group(2)}Q{QTR_END[m.group(1)]}'] = (v(m.group(3), m.group(4)), v(m.group(5), m.group(6)))
+    return out
+
+
+def update_qra_history(nums, src):
+    p = os.path.join(DATA, 'qra_history.json')
+    d = json.load(open(p, encoding='utf-8'))
+    rows = {r['q']: r for r in d['rows']}
+    for q, (bor, tga) in nums.items():
+        r = rows.setdefault(q, {'q': q})
+        r.update({'borrowing': bor, 'tga_end': tga, 'note': src})
+    d['rows'] = sorted(rows.values(), key=lambda r: r['q'])
+    json.dump(d, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
+    return p
+
+
 def git(*a):
     return subprocess.run(['git', '-C', ROOT, *a], capture_output=True, text=True)
 
@@ -150,6 +234,8 @@ def publish(q, kind):
     rel = os.path.relpath(os.path.join(LIVE, q), ROOT)
     git('pull', '-q', '--rebase', 'origin', 'main')
     git('add', rel)
+    if kind == 'qrfe':
+        git('add', 'data/us/qra_history.json')
     r = git('commit', '-q', '-m', f'qra_live: {q} {kind} 抓取与红线\n\nCo-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>')
     if r.returncode:
         log('commit:', (r.stdout + r.stderr).strip()[:200]); return
@@ -213,7 +299,14 @@ def process(kind, q, url, page_links, fetched_at, tries):
             out[k] = old_j.get(k)
     json.dump(out, open(p, 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     open(os.path.join(LOCAL, q, f'{kind}_redline.txt'), 'w', encoding='utf-8').write(rt)
+    open(os.path.join(LOCAL, q, f'{kind}_redline_slack.md'), 'w', encoding='utf-8').write(slack_redline(old, new))
+    if kind == 'qrfe':
+        nums = qrfe_numbers(new)
+        if nums:
+            update_qra_history(nums, f'{fetched_at[:10]} QRFE')
+            log('qra_history <-', nums)
     json.dump({'quarter': q, 'kind': kind, 'json': p, 'redline_txt': os.path.join(LOCAL, q, f'{kind}_redline.txt'),
+               'redline_slack': os.path.join(LOCAL, q, f'{kind}_redline_slack.md'),
                'pdfs': pdfs, 'page_docs': extra, 'at': fetched_at},
               open(os.path.join(LOCAL, 'pending.json'), 'w', encoding='utf-8'), ensure_ascii=False, indent=1)
     log(f'{kind} {q}: {len(new)}段 vs {pq} {len(old)}段 · 增{st["ins"]}词 删{st["del"]}词 · 相似度{st["similarity"]} · PDF {len(pdfs)}')
