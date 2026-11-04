@@ -1,7 +1,8 @@
-# 回购计划结构 (每QRA后更新; 现行=2026年8月refunding季, 8/19加码)
+# 回购计划结构: 额度/期限篮/场次/日程自 2026-11 起由 data/us/buyback_calendar.json(财政部暂定回购日历XML, daily) 自动计算;
+# 本文件只提供两计划的「目的」文字与累计回购人工锚; 下面 envelope/buckets/ops 仅在日历缺失时兜底显示。
 quarter: 2026年8月refunding季 (8/6-11/4)
-as_of: "2026-08-19 财政部加码公告; 11/4 QRA审视后续规模"
-cum_since_2024_bn: 225      # 2024/5起累计买回估(TBAC口径+FiscalData逐场), 待11/4更新
+as_of: "2026-11-04 QRA: 流动性支持回购本季上限 $38bn → $70bn, 现金管理 $25bn 不变"
+cum_since_2024_bn: 225      # 2024/5起累计买回估(TBAC口径+FiscalData逐场), 人工锚
 programs:
   - name: 流动性支持回购
     purpose: 买入off-the-run老券缓解做市商资产负债表; 长端加码是对30年收益率升至近20年高位的直接回应

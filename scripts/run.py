@@ -44,7 +44,10 @@ def refresh_ledger(rollforward=True, full_history=False, watch_changes=None):
     EV.sync_auctions(evs, _j("upcoming"), _j("auctions"), history=_j("auctions_history"))
     EV.supersede_tentative(evs)
     bbs_p = ROOT / "config/buyback_schedule.yaml"
-    if bbs_p.exists():
+    cal = _j("buyback_calendar")
+    if cal.get("ops"):  # 财政部暂定回购日历(XML)优先
+        EV.sync_buyback_schedule(evs, {"ops": [{"date": o["date"], "bucket": o["bucket"], "max_bn": o["max_bn"]} for o in cal["ops"]]})
+    elif bbs_p.exists():
         EV.sync_buyback_schedule(evs, yaml.safe_load(bbs_p.read_text(encoding="utf-8")))
     EV.sync_buybacks(evs, _j("buybacks"))
     EV.backfill(evs, _j("mts"))
@@ -52,7 +55,7 @@ def refresh_ledger(rollforward=True, full_history=False, watch_changes=None):
     meta = {"maintained_at": __import__("datetime").datetime.now().strftime("%Y-%m-%d %H:%M"),
             "counts": {}, "rules": {
                 "发行": "暂定=规则推算(日滚), 公告覆盖(daily), 结果回填(intraday)",
-                "回购": "计划表=每QRA后更新(buyback_schedule.yaml), 结果回填(intraday)",
+                "回购": "计划表=财政部暂定回购日历XML(daily), 结果回填(intraday)",
                 "文件": "节奏规则自动展开(daily滚动/weekly全量)",
                 "立法/到期日": "events_seed.yaml, 每周核对(weekly提醒)"}}
     from collections import Counter

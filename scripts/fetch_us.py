@@ -1145,6 +1145,38 @@ def _qra_abs(href):
     return href if href.startswith("http") else "https://home.treasury.gov" + href
 
 
+def _bb_bucket(name):
+    """'Nominal Coupons 20Y to 30Y' -> '名义券 20-30y'; 'TIPS 1Y to 10Y' -> 'TIPS 1-10y'。"""
+    n = re.sub(r"(\d+)(Y|Mo)\s+to\s+(\d+)Y", lambda m: f"{m.group(1)}{'Mo' if m.group(2) == 'Mo' else ''}-{m.group(3)}y", name)
+    return n.replace("Nominal Coupons", "名义券").strip()
+
+
+def fetch_buyback_calendar():
+    """财政部本季暂定回购日历(XML, QRA当天随文件发布) → buyback_calendar.json (daily)。两计划额度/期限篮/场次全由此计算。"""
+    import requests
+    t = requests.get(QRA_ARCH + "most-recent-quarterly-refunding-documents", timeout=60).text
+    m = re.search(r'href="?([^"\s>]*Tentative-Buyback-Schedule[^"\s>]*\.xml)"?', t, re.I)
+    if not m:
+        raise RuntimeError("最新文件页未找到 Tentative Buyback Schedule XML")
+    url = _qra_abs(m.group(1))
+    x = requests.get(url, timeout=60).text
+    g = lambda b, k: (re.search(f"<{k}>(.*?)</{k}>", b, re.S) or [None, None])[1]
+    ops = []
+    for b in re.findall(r"<BuybackCalendarDate>(.*?)</BuybackCalendarDate>", x, re.S):
+        typ = g(b, "OperationType") or ""
+        ops.append({"date": g(b, "OperationDate"), "announce": g(b, "AnnouncementDate"), "settle": g(b, "SettlementDate"),
+                    "type": "现金管理" if "cash" in typ.lower() else "流动性支持",
+                    "bucket": _bb_bucket(g(b, "PurchaseBucketName") or ""),
+                    "max_bn": round(int(g(b, "MaximumPurchaseAmountDollars") or 0) / 1e9, 3)})
+    if len(ops) < 5:
+        raise RuntimeError(f"回购日历只解析到 {len(ops)} 场")
+    ops.sort(key=lambda o: o["date"])
+    _write("buyback_calendar", {"sample": False, "name": g(x, "BuybackCalendarName"), "start": g(x, "StartDate"),
+                                "end": g(x, "EndDate"), "url": url, "ops": ops})
+    print(f"  buyback_calendar: {g(x, 'BuybackCalendarName')} · {len(ops)}场 · "
+          + " / ".join(f"{t} {sum(o['max_bn'] for o in ops if o['type'] == t):g}bn" for t in ("流动性支持", "现金管理")))
+
+
 def fetch_qra_docs():
     """QRA历史文件链接: 三个按年存档页(表格单元headers=年份, 文本"Nth Quarter") + 最新文件页补当季 (daily)。
     季度标签=财政部存档口径(refunding所在日历季: 2月=Q1, 5月=Q2, 8月=Q3, 11月=Q4)。"""
@@ -1494,7 +1526,7 @@ def fetch_coupon_deep():
 # due组=事件账本判定当日到期的文件类抓取
 FETCHERS = {
     "daily":    [ensure_seeds, fetch_debt, fetch_debt_limit, fetch_tga, fetch_dts_flows, fetch_upcoming,
-                 fetch_approps_status, fetch_qra_docs],
+                 fetch_approps_status, fetch_qra_docs, fetch_buyback_calendar],
     "intraday": [ensure_seeds, fetch_auctions, fetch_upcoming, fetch_buybacks],
     "weekly":   [ensure_seeds, fetch_mts,
                  fetch_avg_rates, fetch_interest,

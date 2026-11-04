@@ -8,6 +8,7 @@ build_site.py — 对象驱动渲染
 """
 import html as htmlmod
 import json
+import re
 from datetime import date, datetime, timedelta
 from pathlib import Path
 
@@ -718,26 +719,55 @@ def v_cash_buyback(obj, ctx):
     bs = yaml.safe_load((ROOT / "config/buyback_schedule.yaml").read_text(encoding="utf-8")) \
         if (ROOT / "config/buyback_schedule.yaml").exists() else {}
     recs = (ctx["buybacks"].get("records") or [])
+    cal = ctx.get("buyback_calendar") or {}
+    cops = cal.get("ops") or []
     typed = {str(o["date"]): o.get("type", "流动性支持") for o in bs.get("ops", [])}
+    typed.update({o["date"]: o["type"] for o in cops})
     sup = (ctx["supply"].get("series") or [{}])[-1]
     mkt = sup.get("bills_bn", 0) / (sup.get("tbills_share", 1) or 1) * 100 if sup.get("bills_bn") else None
     cum = bs.get("cum_since_2024_bn") or 0
-    h += f"<h4>回购计划结构 · {esc(bs.get('quarter', ''))}</h4>"
+    qlabel = (f'{cal["start"][5:].replace("-", "/")}–{cal["end"][5:].replace("-", "/")} · {cal.get("name", "")}'
+              if cops else bs.get("quarter", ""))
+    h += f"<h4>回购计划结构 · {esc(qlabel)}</h4>"
     for pg in bs.get("programs", []):
-        ex = sum(r.get("accepted_bn") or 0 for r in recs
-                 if typed.get(r.get("op_date")) == pg["name"].replace("回购", ""))
+        typ = pg["name"].replace("回购", "")
+        ex = sum(r.get("accepted_bn") or 0 for r in recs if typed.get(r.get("op_date")) == typ
+                 and (not cops or cal["start"] <= (r.get("op_date") or "") <= cal["end"]))  # 只算本季日历区间
         h += f'<div class="ptitle">{esc(pg["name"])}</div>'
-        h += table(["项目", "内容"], [
-            ("目的", esc(pg.get("purpose", ""))),
-            ("季度总额度", esc(pg["envelope_bn"]) if isinstance(pg.get("envelope_bn"), str) else f'{fmt(pg.get("envelope_bn"), 1)} bn'),
-            ("季度场次", f'{pg.get("ops_per_quarter", "—")} 场'),
-            ("节奏", esc(pg.get("cadence", ""))),
-            ("本季已执行", f'{fmt(ex, 1)} bn')])
-        h += table(["期限篮", "#每场上限 bn", "#季度场次"],
-                   [(bk["bucket"], fmt(bk.get("per_op_max_bn"), 2) if bk.get("per_op_max_bn") is not None else "按公告",
-                     bk.get("ops") if bk.get("ops") is not None else "按公告") for bk in pg.get("buckets", [])])
+        mine = [o for o in cops if o["type"] == typ]
+        if cops:  # 财政部暂定日历(XML)自动计算
+            tot = sum(o["max_bn"] for o in mine)
+            done = [o for o in mine if o["date"] <= TODAY.isoformat()]
+            nxt = next((o for o in mine if o["date"] > TODAY.isoformat()), None)
+            h += table(["项目", "内容"], [
+                ("目的", esc(pg.get("purpose", ""))),
+                ("本季总上限", f"{fmt(tot, 2).rstrip('0').rstrip('.')} bn"),
+                ("本季场次", f"{len(mine)} 场 (已过 {len(done)})"),
+                ("日程", esc(" ".join(o["date"][5:].replace("-", "/") for o in mine)) or "—"),
+                ("下一场", esc(f'{nxt["date"]} {nxt["bucket"]} 上限{nxt["max_bn"]:g}bn') if nxt else "—"),
+                ("本季已执行", f'{fmt(ex, 1)} bn')])
+            agg = {}
+            for o in mine:
+                a = agg.setdefault(o["bucket"], {"n": 0, "mx": set(), "tot": 0})
+                a["n"] += 1; a["mx"].add(o["max_bn"]); a["tot"] += o["max_bn"]
+            h += table(["期限篮", "#每场上限 bn", "#本季场次", "#合计上限 bn"],
+                       [(b, "/".join(f"{m:g}" for m in sorted(a["mx"])), a["n"], f'{a["tot"]:g}')
+                        for b, a in sorted(agg.items(), key=lambda kv: (kv[0].startswith("TIPS"),
+                                           0 if "Mo" in kv[0] else int(re.search(r"(\d+)", kv[0]).group(1))))])
+        else:
+            h += table(["项目", "内容"], [
+                ("目的", esc(pg.get("purpose", ""))),
+                ("季度总额度", esc(pg["envelope_bn"]) if isinstance(pg.get("envelope_bn"), str) else f'{fmt(pg.get("envelope_bn"), 1)} bn'),
+                ("季度场次", f'{pg.get("ops_per_quarter", "—")} 场'),
+                ("节奏", esc(pg.get("cadence", ""))),
+                ("本季已执行", f'{fmt(ex, 1)} bn')])
+            h += table(["期限篮", "#每场上限 bn", "#季度场次"],
+                       [(bk["bucket"], fmt(bk.get("per_op_max_bn"), 2) if bk.get("per_op_max_bn") is not None else "按公告",
+                         bk.get("ops") if bk.get("ops") is not None else "按公告") for bk in pg.get("buckets", [])])
+    if cops:
+        h += f'<div class="anchor-note">额度、期限篮、场次、日程取自财政部暂定回购日历(XML, <a href="{esc(cal.get("url", ""))}" target="_blank">原文</a>), daily自动更新</div>'
     pcts = f"{cum/mkt*100:.2f}%" if mkt else "—"
-    h += f'<div class="anchor-note">2024/5启动以来累计回购约 <b>{fmt(cum, 0)}bn</b>(估, 11/4更新) · 占marketable存量 {pcts} · {esc(bs.get("as_of", ""))} · 两计划均不改变久期政策含义</div>'
+    h += f'<div class="anchor-note">2024/5启动以来累计回购约 <b>{fmt(cum, 0)}bn</b>(估, 人工锚) · 占marketable存量 {pcts} · {esc(bs.get("as_of", ""))} · 两计划均不改变久期政策含义</div>'
     h += "<h4>近期操作</h4>"
     h += table(["日期", "类型", "bucket", "#上限", "#接纳", "#offer/max"],
                [((r.get("op_date") or "")[5:], typed.get(r.get("op_date"), "流动性支持"),
@@ -877,7 +907,7 @@ def main():
     ctx = {"anchors": cfg["anchors"]}
     for name in ["debt", "debt_limit", "debt_limit_history", "market", "tga", "mts", "mts_receipts", "mts_outlays",
                  "dts_flows", "auctions", "upcoming", "buybacks", "supply", "approps_status",
-                 "qra_history", "qra_street", "qra_docs", "coupon_sizes", "wam", "debt_long", "bill1y", "local_fiscal", "tic_holders", "soma", "tic_series", "corp_issuance", "gross_issuance", "allotments",
+                 "qra_history", "qra_street", "qra_docs", "buyback_calendar", "coupon_sizes", "wam", "debt_long", "bill1y", "local_fiscal", "tic_holders", "soma", "tic_series", "corp_issuance", "gross_issuance", "allotments",
                  "mspd_structure", "avg_rates", "interest"]:
         ctx[name] = J(name)
     ctx["fy_paths"] = fy_paths(ctx["mts"].get("series") or [])
