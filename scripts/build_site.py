@@ -626,7 +626,7 @@ def qra_live_inner(ctx):
 
 
 def qra_live_block():
-    """本期 QRA 文件分析: Statement / QRFE 与上季逐字红线 + 变化分析 + TBAC 讨论材料总结 (data/us/qra_live/<季>/)。"""
+    """本期 QRA 文件分析: Policy Statement 与上季逐句对比 (data/us/qra_live/<季>/)。"""
     base = DATA / "qra_live"
     qs = sorted([d.name for d in base.iterdir() if (d / "statement.json").exists()], reverse=True) if base.exists() else []
     if not qs:
@@ -643,23 +643,11 @@ def qra_live_block():
               f' · 抓取 {esc((d.get("fetched_at") or "")[11:19])} ET · 增{st.get("ins", 0)}词 / 删{st.get("del", 0)}词'
               f' · <a href="{esc(d["url"])}" target="_blank">本期原文</a>'
               + (f' · <a href="{esc(d["prev_url"])}" target="_blank">上期原文</a>' if d.get("prev_url") else "") + "</div>")
-        an = d.get("analysis")
         ver = f'{d.get("fetched_at", "")}|{d.get("analyzed_at") or ""}'
         h += f'<span class="qv" hidden>{esc(ver)}</span>'
         if d.get("redline_strict_html"):
             h += f'<div class="qsub">逐句对比 · 只列有改动的句子 · 红色划线=删除, 绿色=新增 · 与私信同一份</div><div class="redline strict">{d["redline_strict_html"]}</div>'
-        h += (f'<details class="qrl"><summary>模型整理 · 语言变化</summary><div class="qmd">{esc(an)}</div></details>' if an
-              else '<div class="anchor-note">模型整理生成中…</div>')
-        h += f'<details class="qrl"><summary>全文红线</summary><div class="redline">{d.get("redline_html", "")}</div></details>'
-        if kind == "statement":
-            tb = d.get("tbac_summary")
-            tt = d.get("tbac_table") or {}
-            if tt.get("rows"):
-                h += (f'<details class="qrl" open><summary>{esc(tt.get("title") or "TBAC Recommended Financing Table")}</summary>'
-                      + table(tt.get("headers") or [], [[str(c) for c in r] for r in tt["rows"]])
-                      + "".join(f'<div class="anchor-note">{esc(n)}</div>' for n in tt.get("notes") or []) + "</details>")
-            h += (f'<details class="qrl"><summary>TBAC 讨论材料 · 逐页总结</summary><div class="qmd">{esc(tb)}</div></details>' if tb
-                  else '<div class="anchor-note">TBAC 讨论材料总结生成中…</div>')
+        # 只放逐句对比; 规模表并入上方 Coupon 发行结构表, TBAC 讨论材料只发私信 (2026-11-05 用户要求)
         h += "</div>"
     return h
 
