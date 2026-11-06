@@ -67,4 +67,5 @@
 {"id": "jp-diet-2027", "date": "2027-01-23", "cat": "立法", "owner": "budget_cycle_jp", "dtype": "估", "label": "通常国会召集·预算审议开始(估)", "status": "scheduled", "created_at": "2026-09-08"}
 {"id": "jpauc-2027-01-25-流动性供给", "date": "2027-01-25", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 流动性供给 ¥0.6T", "checklist": [], "status": "scheduled", "created_at": "2026-10-28"}
 {"id": "jpauc-2027-02-01-10年", "date": "2027-02-01", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 10年 ¥2.6T", "checklist": [], "status": "scheduled", "created_at": "2026-11-04"}
+{"id": "jpauc-2027-02-03-30年", "date": "2027-02-03", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 30年 ¥0.7T", "checklist": [], "status": "scheduled", "created_at": "2026-11-06"}
 {"id": "jp-budget-pass", "date": "2027-03-31", "cat": "到期", "owner": "budget_cycle_jp", "dtype": "法定", "label": "FY2027当初预算成立期限(逾期→暂定预算)", "status": "scheduled", "created_at": "2026-09-08"}
