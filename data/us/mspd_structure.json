@@ -1,22 +1,22 @@
 {
  "sample": false,
- "as_of": "2026-09-30",
+ "as_of": "2026-10-31",
  "mix": [
   {
    "type": "Bills",
-   "out_bn": 7118.0
+   "out_bn": 7382.0
   },
   {
    "type": "Notes",
-   "out_bn": 16282.0
+   "out_bn": 16337.0
   },
   {
    "type": "Bonds",
-   "out_bn": 5551.0
+   "out_bn": 5563.0
   },
   {
    "type": "TIPS",
-   "out_bn": 2173.0
+   "out_bn": 2157.0
   },
   {
    "type": "FRN",
@@ -26,34 +26,34 @@
  "maturity_wall": [
   {
    "bucket": "<1y",
-   "bn": 10640.0
+   "bn": 10919.0
   },
   {
    "bucket": "1-2y",
-   "bn": 3804.0
+   "bn": 3749.0
   },
   {
    "bucket": "2-3y",
-   "bn": 2914.0
+   "bn": 2827.0
   },
   {
    "bucket": "3-5y",
-   "bn": 4344.0
+   "bn": 4260.0
   },
   {
    "bucket": "5-7y",
-   "bn": 2326.0
+   "bn": 2332.0
   },
   {
    "bucket": "7-10y",
-   "bn": 1974.0
+   "bn": 1964.0
   },
   {
    "bucket": "10y+",
-   "bn": 5828.0
+   "bn": 5841.0
   }
  ],
- "wam_months": 69.7,
+ "wam_months": 69.3,
  "note": "到期墙=MSPD表3逐券剩余期限分桶",
- "fetched_at": "2026-11-05T02:42:43.442094Z"
+ "fetched_at": "2026-11-06T02:45:34.235195Z"
 }
