@@ -1056,31 +1056,7 @@
    "pd_pct": null,
    "indirect_pct": null,
    "tail_bp": null
-  },
-  {
-   "auction_date": "2026-08-06",
-   "type": "Bill",
-   "term": "4-Week",
-   "cusip": "912797VB0",
-   "offering_bn": 110.0,
-   "high_yield": 3.701,
-   "btc": 2.68,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
-  },
-  {
-   "auction_date": "2026-08-06",
-   "type": "Bill",
-   "term": "8-Week",
-   "cusip": "912797VK0",
-   "offering_bn": 100.0,
-   "high_yield": 3.783,
-   "btc": 2.74,
-   "pd_pct": null,
-   "indirect_pct": null,
-   "tail_bp": null
   }
  ],
- "fetched_at": "2026-11-09T21:49:24.831944Z"
+ "fetched_at": "2026-11-10T00:51:00.864667Z"
 }
