@@ -121,11 +121,17 @@ def v_tax_progress(obj, ctx):
     ds = []
     for i, (k, v) in enumerate(fys.items()):
         ds.append({"label": k, "data": v + [None]*(len(ms)-len(v)), "color": cols[i % len(cols)],
-                   "w": 2.4 if "实绩" in k else 1.4, "dash": [5, 4] if "当初" in k else None})
+                   "w": 2.4 if "实绩" in k else 1.4, "dash": [5, 4] if ("当初" in k or "预算" in k) else None})
     h = chart("ch_tax_jp", "line", ms, ds, "", opts={"h": 320})
     h += f"<h4>税种进度 · {esc(t.get('as_of', ''))}</h4>"
-    h += table(["税种", "#FY2026当初", "#FY2025决算见込", "#当初/决算"],
-               [(r[0], fmt(r[1], 1), fmt(r[2], 1), f"{r[1]/r[2]*100:.0f}%" if r[2] else "—") for r in t.get("by_tax", [])])
+    if t.get("sample"):
+        h += table(["税种", "#FY2026当初", "#FY2025决算见込", "#当初/决算"],
+                   [(r[0], fmt(r[1], 1), fmt(r[2], 1), f"{r[1]/r[2]*100:.0f}%" if r[2] else "—") for r in t.get("by_tax", [])])
+    else:   # 真实: (税种, 预算, 前年度决算, 累计)
+        fy = t.get("fy", 0); ml = t.get("cum_label", "")
+        h += table(["税种", f"#FY{fy}预算", f"#FY{fy-1}决算", "#预算/决算", f"#{ml}累计", "#进度"],
+                   [(r[0], fmt(r[1], 1), fmt(r[2], 1), f"{r[1]/r[2]*100:.0f}%" if (r[1] and r[2]) else "—", fmt(r[3], 1),
+                     f"{r[3]/r[1]*100:.1f}%" if (r[1] and r[3] is not None) else "—") for r in t.get("by_tax", [])])
     return h + _note(t.get("note", "")) + qual_card(obj["qual"])
 
 
@@ -188,11 +194,12 @@ def v_boj_view(obj, ctx):
 def v_auctions_jp(obj, ctx):
     a = ctx.get("auctions_jp") or {}
     recs = a.get("records", [])
-    past = [r for r in recs if r["date"] <= TODAY.isoformat()][-12:]
+    past = [r for r in recs if r["date"] < TODAY.isoformat() or (r["date"] == TODAY.isoformat() and r.get("btc") is not None)][-12:]
     nxt = [r for r in recs if r["date"] > TODAY.isoformat()][:8]
     h = "<h4>近期招标结果</h4>"
     h += table(["日期", "期限", "#规模(¥T)", "#倍数", "#尾差bp"],
                [(r["date"][5:], r["tenor"], fmt(r["size_t"], 2), fmt(r.get("btc"), 2), fmt(r.get("tail_bp"), 1)) for r in reversed(past)])
+    nxt = [r for r in recs if r["date"] > TODAY.isoformat() or (r["date"] == TODAY.isoformat() and r.get("btc") is None)][:8]
     h += "<h4>未来招标日程</h4>"
     h += table(["日期", "期限", "#规模(¥T)"], [(r["date"][5:], r["tenor"], fmt(r["size_t"], 2)) for r in nxt])
     return h + _note(a.get("note", "")) + qual_card(obj["qual"])
@@ -223,7 +230,13 @@ def v_holders_jp(obj, ctx):
     h = chart("ch_holders_jp", "line", qs,
               [{"label": k, "data": v, "color": cols[i % 6], "w": 2 if k == "日本银行" else 1.4} for i, (k, v) in enumerate(S.items())],
               "%", opts={"tall": True, "zoom": True})
-    return h + _note(hd.get("note", "") + " · 日银份额从2013年11%升至2024年53%后进入减持段——供给侧对手方消失是日本国债市场结构变化的主线") + qual_card(obj["qual"])
+    bj = S.get("日本银行") or []
+    if bj and not hd.get("sample"):
+        i13 = next((i for i, q in enumerate(qs) if q.startswith("2013")), 0); ip = max(range(len(bj)), key=lambda i: bj[i] or 0)
+        arc = f" · 日银份额{qs[i13][:4]}年初{bj[i13]}% → {qs[ip]}峰值{bj[ip]}% → {qs[-1]} {bj[-1]}%"
+    else:
+        arc = " · 日银份额从2013年11%升至2024年53%后进入减持段"
+    return h + _note(hd.get("note", "") + arc + "——供给侧对手方消失是日本国债市场结构变化的主线") + qual_card(obj["qual"])
 
 
 def v_interest_jp(obj, ctx):

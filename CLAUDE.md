@@ -7,7 +7,7 @@
 
 对象制财政看板: 每个财政对象(债务上限、拨款、QRA、持有人结构…)有 状态行 / 工作视图 / 档案 三档。
 五层结构 L1规则与立法 → L2预算 → L3收支 → L4发行 → L5债务管理, 加 L0 Timeline(财政日历+近7日变化流水) 与 R参考层。
-US站约24个对象、13张图, 28/34数据集真实自动更新。JP站16个对象、15张图, 2/15真实(利率全史、宏观六序列), 其余为核实过的人工锚。
+US站约24个对象、13张图, 28/34数据集真实自动更新。JP站16个对象、15张图, 5/15真实(利率全史、宏观六序列、招标、税收月度、持有者), 其余为核实过的人工锚。
 用户sc: 宏观交易员, 要求中文简洁书面语、专业图表、先讨论结构再动手、改视觉必先说明差异。
 
 ## 2. 仓库结构
@@ -31,9 +31,9 @@ US站约24个对象、13张图, 28/34数据集真实自动更新。JP站16个对
 
 | 模式 | cron(UTC) | 内容 |
 |---|---|---|
-| daily | 22:30 周二至六 | DTS/TGA/债务/债限/拍卖日历/监听器/账本; JP: 利率 |
+| daily | 22:30 周二至六 | DTS/TGA/债务/债限/拍卖日历/监听器/账本; JP: 利率+招标 |
 | intraday | 17:45与21:00 工作日 | 仅拍卖/回购日生效, 结果回填 |
-| weekly | 12:00 周一 | 慢频全量: MSPD/供给/coupon深抓/TIC/SOMA/债务长史/市场日频/MTS套件bootstrap/annual/地方/总发行/SIFMA尝试/JP宏观+TIC历史 |
+| weekly | 12:00 周一 | 慢频全量: MSPD/供给/coupon深抓/TIC/SOMA/债务长史/市场日频/MTS套件bootstrap/annual/地方/总发行/SIFMA尝试/JP宏观+TIC历史/JP招标+税收+持有者 |
 | sample | 手动 | 全样例数据, 本地开发用 |
 
 本地: 需Python 3.12+(build_site用了3.12的f-string写法)。`python scripts/run.py --mode sample` 自动复制到`.sample/`(不进git)里跑, 页面在`.sample/docs/`, 仓库data/docs不受影响。
@@ -57,8 +57,8 @@ Actions日志的下载重定向到对象存储域名, 容器内不可读, 用`da
 
 US真实自动(31): MTS表1(96月)与分科目(表4收入/表9支出)、年度分科目(FY2025赤字=官方-1775B)、DTS/TGA/债限(组件透视)/债限史(DTS精确+DTP近似)、债务长史+NGDP、MSPD结构(含表3到期墙)、WAM(2001+由MSPD表3逐券计算, 之前为TBAC节点插值)、供给结构2001+、coupon尺寸2007+(新发/续发分列)、52周bill利率、拍卖与历史、buybacks(`/v1/accounting/od/buybacks_operations`)、SOMA(NY Fed)、TIC国别2000+(mfhhis回填+mfh逐月累积)、利率与利息10年、地方收支五序列(FRED: FGRECPT/FGEXPND/W077RC1Q027SBEA/W079RCQ027SBEA/FGSL)、总发行(全口径+coupon口径)、市场日频(SPX=FRED拼接, 10Y=FRED)、拨款12法案进度(congress.gov API, 2026-11起替代被封的CRS表)、投资者类别配售(财政部IC-Coupons.xls, 2009-10+)。
 US锚/样例(4): qra_street(卖方QRA预期, 本机定时任务qra-street-update在QRA前一周每天写入; 信源=智堡卖方研报, 用户定), qra_history, cbo_matrix(2月版, CBO封机房), corp_issuance(SIFMA xls需填表无法自动; 统计页YTD差分自2026-10起逐月累积真实值, 2025-09~2026-09=SIFMA固收汇总xls; 2008-05~2025-08=美联储Table 1.46 Bonds(fetch_fed_corp每周取当期页, backfill_fed_corp一次性回填存档); 2000-01~2008-04仍为旧锚。SIFMA公司债专表不公开, 表单只给汇总表)。
-JP真实(2): jgb_yields(财务省CSV 1974+, 英文站历史文件+当月文件累积), macro_jp(FRED JPNNGDP/JPNASSETS/IRLTLT01JPM156N + IMF WEO债务/收支/PB)。
-JP锚(13): 预算构成、补充预算史、中长期测算、发行计划、期限史、税收进度、国库收支、地方、债务长史、持有者、利息、日银减购、招标。
+JP真实(5): jgb_yields(财务省CSV 1974+, 英文站历史文件+当月文件累积), macro_jp(FRED JPNNGDP/JPNASSETS/IRLTLT01JPM156N + IMF WEO债务/收支/PB), auctions_jp(财务省入札カレンダー前2月~次月+逐场结果页, daily, 累积档保留2年; 利付债/物价联动/GX/流动性供给, 不含国库短期证券; 日历真实日期取代估算日程), tax_progress(财务省収入額調月度Excel 2023-02起, weekly; 各财年月末累计+当年预算线+税种进度), holders_jp(日银stat-search API db=FF, weekly; 国债·财投债+国库短期证券持有者份额2012Q1+)。
+JP锚(10): 预算构成、补充预算史、中长期测算、发行计划、期限史、国库收支、地方、债务长史、利息、日银减购。
 
 QRA发布日(本机, 2026-11-04起): AgentHub shell任务 qra-release-watch(cron 50 2,3,19,20, 按events.jsonl的qra_stmt-/qra_est-判断当天是否发布, 冬夏令时都覆盖) → scripts/qra_live.py 每2秒轮询「最新文件」页+新闻稿列表 → 抓正文与上季逐字红线 → data/us/qra_live/<季>/<statement|qrfe>.json(锚, pre-commit放行data/us/qra_live/) → 推送+触发daily重建; statement还会等TBAC Charges PDF(最多30分钟) → 触发 qra-release-analysis(Opus, 用户已预授权自动跑): 只写TBAC各Charge逐页总结+推荐融资表转录, 存本机并Slack私信D05DYPNHE7J, 不写网页不推仓库; qrfe时脚本同步qra_history.json。PDF只存本机 ~/agenthub/workspace/outputs/qra/<季>/。页面: QRA卡「Coupon发行结构(取本期Statement原表)+本期文件分析」包在 #qra-live 里, qra_live.py/分析任务写 data/us/qra_live/live.html, 页面在QRA当天每30秒经GitHub API直拉(不等Actions); 本期文件分析只放逐句对比(redline_strict_html, 与私信同源); 模型整理/全文红线/TBAC表/TBAC材料都不上网页(2026-11-05用户要求)。改页面代码后必须触发重建并线上核对。补救: `qra_live.py redo statement 2026Q4 [--publish]`。
 
@@ -92,6 +92,9 @@ QRA发布日(本机, 2026-11-04起): AgentHub shell任务 qra-release-watch(cron
 - Census QTAX: 需`CENSUS_API_KEY`, 字段名大写, 必带`for=us:*`。
 - TIC: mfh.txt白名单国别×13月矩阵; 历史文件`mfhhis01-05.txt`通用解析器。
 - 财务省利率CSV: `jgbcm.csv`当月(和历R8.9.1, Shift-JIS), 历史全量在英文站`english/policy/jgbs/reference/interest_rate/historical/jgbcme_all.csv`。
+- 财务省入札カレンダー: `/jgbs/auction/calendar/YYMM.htm`(YY=西暦后两位), 只取第一张表; 结果页`calendar/nyusatsu/resulYYYYMMDD.htm`(a后缀=第Ⅱ非价格, 不取), 预定额页`calendar/yotei/auctYYYYMMDD.htm`(面包屑也含'発行予定額', 用正则取'発行予定額…億円')。结果页导语句也含'第Ⅰ非価格', 从'応募額'之后找; 倍数=应募额/价格竞争募入决定额; 尾差=(募入最高-平均)利回り; 流动性供给为利回格差(▲负/+正); 40年(利回り竞争)与GX(单一价格)无平均, 尾差空。规模=价格竞争+第Ⅰ非价格。
+- 収入額調: 目录`/tax_policy/reference/taxes_and_stamp_revenues/data.htm`, 文件`YYYYMM.xls`(2023-03前.xlsx); `YYYYMMs`=新年度4/5月, 无s的04/05=上年度出纳整理期(列4=决算额概数)。列2预算/列4累计/列6前年度决算, 百万円; 新年度4月文件少一组列(列3=累计, 常为负)。标题数字可能全角。3月末累计约为决算的77%。
+- 日银资金循环: API `https://www.stat-search.boj.or.jp/api/v1/getDataCode?format=json&lang=jp&db=FF&code=…`, 资产侧存量`FOF_FFAS{部门}A311`(国债·财投债)+`A310`(国库短期证券), 億円; 部门110日银/120存款取扱(含邮储)/130保险·年金基金/424公的年金/500海外/700合计。SURVEY_DATES=YYYYQQ。元数据`getMetadata?db=FF`(25MB)。
 - FRED S&L: 总收入`W077RC1Q027SBEA`, 总支出`W079RCQ027SBEA`, 转移支付`FGSL`(B087RC1Q027SBEA是别的序列)。
 - SPX: Yahoo在机房返回过短, Stooq空, 用FRED SP500近十年拼接旧序列。
 
@@ -126,10 +129,10 @@ US
 8. 变化提醒规则细化。(mspd_table_3到期墙已接入)
 
 JP
-1. 尽力自动三项首跑校验: 招标结果HTML, 税收月度Excel(収入額調), 资金循环CSV。
+1. ~~尽力自动三项~~(2026-11-11完成: 招标/税收/资金循环全部自动, 见第5节)。剩国库对民间收支Excel未接入。holders_jp的text_status(qual)仍写日银~48%, 真实2026Q2为41.2%(含短券口径), 待对话改。
 2. 特例国债法5年延长成立确认; 骨太2026 PB表述; 中长期测算7月版录入; FY2026秋季补充预算与发行计划改定; FY2027政府案(12月下旬)。
 3. 是否复刻US的拍卖需求结构(日本无投资者类别统计)与总发行对照(社债用日本证券业协会统计做锚), 待用户定。
-4. 招标日程规则改为财务省月度日历真实日期。
+4. ~~招标日程规则改为财务省月度日历真实日期~~(2026-11-11随招标抓取完成; events_jp在auctions_jp为真实时停用RULE估算, 覆盖期内估算事件与样例期误写的'自动'结果作废)。
 
 技术债
 1. build_site.py单文件1400+行, 视图/引擎/JS混在一起, 宜拆模块(engine/views_us/views_jp/js)。

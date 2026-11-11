@@ -28,23 +28,36 @@ def refresh():
     seed = yaml.safe_load((ROOT / "config/events_seed_jp.yaml").read_text(encoding="utf-8")) or {}
     for e in seed.get("events", []):
         upsert(evs, dict(e))
+    p = DATA / "auctions_jp.json"
+    au = json.loads(p.read_text(encoding="utf-8")) if p.exists() else {}
+    real = not au.get("sample") and bool(au.get("records"))
     d0 = TODAY - timedelta(days=45)
-    for k in range(0, 135):
+    for k in range(0, 135 if not real else 0):   # 招标日历已真实抓取时不再生成估算日程
         d = d0 + timedelta(days=k)
         for dom, tenor, size in RULE:
             if d.day == dom and d.weekday() < 5:
                 upsert(evs, {"id": f"jpauc-{d.isoformat()}-{tenor}", "date": d.isoformat(), "cat": "发行",
                              "owner": "auctions_jp", "dtype": "估", "label": f"招标 {tenor} ¥{size}T", "checklist": []})
+    if real:   # 财务省日历: 公告日程upsert; 覆盖期内的估算事件与样例期误写的"自动"结果作废
+        ids = {f"jpauc-{r['date']}-{r['tenor']}" for r in au["records"]}
+        lo = min(r["date"] for r in au["records"])
+        for r in au["records"]:
+            sz = f" ¥{r['size_t']}T" if r.get("size_t") else ""
+            upsert(evs, {"id": f"jpauc-{r['date']}-{r['tenor']}", "date": r["date"], "cat": "发行", "owner": "auctions_jp",
+                         "dtype": "自动" if r.get("btc") is not None else "公告", "label": f"招标 {r['tenor']}{sz}", "checklist": []})
+        for e in evs:
+            if e.get("owner") == "auctions_jp" and e["id"] not in ids and e["status"] != "cancelled" \
+                    and (e.get("dtype") == "自动" or (e.get("dtype") == "估" and e["date"] >= lo)):
+                e["status"] = "cancelled"; e.pop("result", None)
     # 招标结果回填
-    p = DATA / "auctions_jp.json"
     if p.exists():
-        for r in json.loads(p.read_text(encoding="utf-8")).get("records", []):
+        for r in au.get("records", []):
             if r.get("btc") is not None:
                 eid = f"jpauc-{r['date']}-{r['tenor']}"
                 upsert(evs, {"id": eid, "date": r["date"], "cat": "发行", "owner": "auctions_jp", "dtype": "自动",
                              "label": f"招标 {r['tenor']} ¥{r['size_t']}T", "checklist": []})
                 ev = next(x for x in evs if x["id"] == eid)
-                ev["status"] = "occurred"; ev["result"] = {"summary": f"倍数 {r['btc']:.2f} · 尾差 {r.get('tail_bp', 0):.1f}bp"}
+                ev["status"] = "occurred"; ev["result"] = {"summary": f"倍数 {r['btc']:.2f} · 尾差 {r.get('tail_bp') or 0:.1f}bp"}
     for e in evs:
         if e["date"] < TODAY.isoformat() and e["status"] == "scheduled":
             e["status"] = "occurred"

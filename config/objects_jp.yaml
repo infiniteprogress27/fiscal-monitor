@@ -100,7 +100,7 @@ layers:
           state: FY2025决算见込约¥80T超当初; FY2026当初¥83.7T, 4-7月实绩进度与去年同期比较
           watch: 法人税5月/11月集中缴纳月的超收幅度; 消费税对名义增长的弹性; 决算剩余金去向
         sources:
-          - {name: 财务省租税及印花收入收入额调, freq: 月(滞后约2月), kind: Excel·尽力解析}
+          - {name: 财务省租税及印花收入收入额调, freq: 月(滞后约1.5月), kind: Excel·自动}
       - id: treasury_flows
         name: 国库对民间收支
         view: treasury_flows
@@ -160,7 +160,7 @@ layers:
         qual:
           state: 超长端招标倍数与尾差是2025年以来的市场压力表
         sources:
-          - {name: 财务省招标结果, freq: 逐场, kind: HTML·尽力解析}
+          - {name: 财务省入札カレンダー+逐场结果, freq: 逐场, kind: HTML·自动}
 
   - id: L5
     name: 债务管理
@@ -185,7 +185,7 @@ layers:
         qual:
           state: 日银退出后的边际买家是银行与海外; 生保受资本规制约束减持超长端
         sources:
-          - {name: 日银资金循环统计, freq: 季, kind: CSV·尽力解析}
+          - {name: 日银资金循环统计(stat-search API), freq: 季, kind: API·自动}
       - id: interest_jp
         name: 利息成本 · 预算假定利率
         view: interest_jp
@@ -215,6 +215,6 @@ framework_laws:
 
 reference:
   pipeline_notes:
-    - "自动: 日频利率(财务省CSV) · 名目GDP/债务·PB(IMF WEO+FRED) · 日银总资产(FRED)"
-    - "尽力解析(首跑校验): 招标结果HTML · 税收月度Excel · 国库对民间收支Excel · 资金循环CSV"
+    - "自动: 日频利率(财务省CSV) · 名目GDP/债务·PB(IMF WEO+FRED) · 日银总资产(FRED) · 招标日程与结果(财务省HTML) · 税收月度(収入額調Excel) · 持有者(日银资金循环API)"
+    - "尽力解析(待接入): 国库对民间收支Excel"
     - "人工锚(对话更新): 发行计划 · 当初/补充预算 · 中长期测算 · 骨太目安 · 假定利率 · 平均剩余期限"
