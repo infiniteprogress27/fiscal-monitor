@@ -61,12 +61,12 @@
 {"id": "jpauc-2026-11-05-10年", "date": "2026-11-05", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 10年 ¥2.6T", "checklist": [], "status": "occurred", "created_at": "2026-11-11", "result": {"summary": "倍数 3.21 · 尾差 3.2bp"}}
 {"id": "jpauc-2026-11-10-30年", "date": "2026-11-10", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 30年 ¥0.6T", "checklist": [], "status": "occurred", "created_at": "2026-11-11", "result": {"summary": "倍数 3.36 · 尾差 2.4bp"}}
 {"id": "jpauc-2026-11-11-20年", "date": "2026-11-11", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 20年 ¥0.9T", "checklist": [], "status": "cancelled", "created_at": "2026-09-08"}
-{"id": "jpauc-2026-11-12-5年", "date": "2026-11-12", "cat": "发行", "owner": "auctions_jp", "dtype": "公告", "label": "招标 5年 ¥2.5T", "checklist": [], "status": "occurred", "created_at": "2026-11-11"}
+{"id": "jpauc-2026-11-12-5年", "date": "2026-11-12", "cat": "发行", "owner": "auctions_jp", "dtype": "自动", "label": "招标 5年 ¥2.5T", "checklist": [], "status": "occurred", "created_at": "2026-11-11", "result": {"summary": "倍数 3.67 · 尾差 0.4bp"}}
 {"id": "jpauc-2026-11-16-10年物价联动", "date": "2026-11-16", "cat": "发行", "owner": "auctions_jp", "dtype": "公告", "label": "招标 10年物价联动 ¥0.25T", "checklist": [], "status": "scheduled", "created_at": "2026-11-11"}
 {"id": "jpauc-2026-11-17-2年", "date": "2026-11-17", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 2年 ¥2.6T", "checklist": [], "status": "cancelled", "created_at": "2026-09-08"}
 {"id": "jpauc-2026-11-18-20年", "date": "2026-11-18", "cat": "发行", "owner": "auctions_jp", "dtype": "公告", "label": "招标 20年 ¥0.7T", "checklist": [], "status": "scheduled", "created_at": "2026-11-11"}
 {"id": "jp-supp-2026", "date": "2026-11-20", "cat": "立法", "owner": "supplementary", "dtype": "估", "label": "FY2026补充预算阁议决定(估)", "checklist": ["规模", "财源构成", "发行计划改定"], "status": "scheduled", "created_at": "2026-09-08"}
-{"id": "jpauc-2026-11-20-流动性供给1-5年", "date": "2026-11-20", "cat": "发行", "owner": "auctions_jp", "dtype": "公告", "label": "招标 流动性供给1-5年", "checklist": [], "status": "scheduled", "created_at": "2026-11-11"}
+{"id": "jpauc-2026-11-20-流动性供给1-5年", "date": "2026-11-20", "cat": "发行", "owner": "auctions_jp", "dtype": "公告", "label": "招标 流动性供给1-5年 ¥0.7T", "checklist": [], "status": "scheduled", "created_at": "2026-11-11"}
 {"id": "jpauc-2026-11-25-流动性供给", "date": "2026-11-25", "cat": "发行", "owner": "auctions_jp", "dtype": "估", "label": "招标 流动性供给 ¥0.6T", "checklist": [], "status": "cancelled", "created_at": "2026-09-08"}
 {"id": "jpauc-2026-11-25-40年", "date": "2026-11-25", "cat": "发行", "owner": "auctions_jp", "dtype": "公告", "label": "招标 40年", "checklist": [], "status": "scheduled", "created_at": "2026-11-11"}
 {"id": "jpauc-2026-11-27-流动性供给5-11年", "date": "2026-11-27", "cat": "发行", "owner": "auctions_jp", "dtype": "公告", "label": "招标 流动性供给5-11年", "checklist": [], "status": "scheduled", "created_at": "2026-11-11"}

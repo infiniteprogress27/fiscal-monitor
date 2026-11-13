@@ -1,37 +1,37 @@
 {
  "sample": false,
- "as_of": "2026-09",
+ "as_of": "2026-10",
  "rows": [
   {
    "id": "rev_ind",
    "cat": "个人所得税",
-   "fytd": 2846.0,
-   "fytd_prior": 2656.0
+   "fytd": 186.0,
+   "fytd_prior": 217.0
   },
   {
    "id": "rev_pay",
    "cat": "Payroll(社保税)",
-   "fytd": 1812.0,
-   "fytd_prior": 1748.0
-  },
-  {
-   "id": "rev_corp",
-   "cat": "企业所得税",
-   "fytd": 381.0,
-   "fytd_prior": 452.0
-  },
-  {
-   "id": "rev_other",
-   "cat": "其他收入",
-   "fytd": 191.0,
-   "fytd_prior": 183.0
+   "fytd": 131.0,
+   "fytd_prior": 128.0
   },
   {
    "id": "rev_tariff",
    "cat": "关税",
-   "fytd": 173.0,
-   "fytd_prior": 195.0
+   "fytd": 19.0,
+   "fytd_prior": 31.0
+  },
+  {
+   "id": "rev_corp",
+   "cat": "企业所得税",
+   "fytd": 18.0,
+   "fytd_prior": 15.0
+  },
+  {
+   "id": "rev_other",
+   "cat": "其他收入",
+   "fytd": 14.0,
+   "fytd_prior": 13.0
   }
  ],
- "fetched_at": "2026-11-12T03:17:33.441321Z"
+ "fetched_at": "2026-11-13T02:51:26.670799Z"
 }
