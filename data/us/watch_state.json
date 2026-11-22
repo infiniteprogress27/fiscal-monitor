@@ -86,8 +86,8 @@
    "cbo": null
   },
   "119-hr-8469": {
-   "date": "2026-07-14",
-   "text": "Read the second time. Placed on Senate Legislative Calendar under General Orders. Calendar No. 455.",
+   "date": "2026-11-20",
+   "text": "Motion to proceed to consideration of measure made in Senate.",
    "cbo": null
   },
   "119-hr-8595": {
@@ -125,7 +125,7 @@
   "impoundment": "2026-11-16",
   "cbo_baseline": "2026-08-10",
   "tax_legislation": "2026-02-10",
-  "appropriations": "2026-09-02",
+  "appropriations": "2026-11-20",
   "fiscal_expansion": "2026-07-23"
  }
 }
