@@ -145,7 +145,12 @@
    "date": "2026-11-23",
    "deposits": 70.8,
    "withdrawals": 34.7
+  },
+  {
+   "date": "2026-11-24",
+   "deposits": 396.1,
+   "withdrawals": 326.0
   }
  ],
- "fetched_at": "2026-11-25T04:59:27.922047Z"
+ "fetched_at": "2026-11-26T04:17:32.643146Z"
 }
